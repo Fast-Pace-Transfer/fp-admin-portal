@@ -14,3 +14,31 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.Layout{
+  display: flex;
+  flex-direction: row;
+}
+
+/* sidebar*/
+.sidebar{
+  /* look */
+    min-height: 100%;
+    max-width: 30%;
+    position: fixed;
+
+    /* design */
+
+}
+/* sidebar*/
+
+/* Navbar */
+nav{
+  min-width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+/* Navbar */
