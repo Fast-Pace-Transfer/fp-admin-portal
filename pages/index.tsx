@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Input from '../components/resuables/Input'
+import Button from '../components/resuables/Button'
 
 // custom components
 
@@ -13,7 +15,8 @@ export default function Home() {
       </Head>
 
       <main className="main">
-         
+         <Input label="Email" placeholder="Email" state="tests" type="email" onChange={()=>{}}/>
+          <Button title="Sign In"/>
       </main>
     </>
   )
