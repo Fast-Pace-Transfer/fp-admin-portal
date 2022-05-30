@@ -5,9 +5,11 @@
 */
 
 
+
 const Navbar =()=>{
     return(
         <nav>
+            <h2>Hello Navbar</h2>
             <h2>Hello Navbar</h2>
         </nav>
     )

@@ -1,16 +1,9 @@
 import Head from 'next/head'
-// import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 // custom components
-import Button from '../components/resuables/Button'
+
 
 export default function Home() {
-
-  const show = ()=>{
-    alert('hello button')
-  }
-
   return (
     <>
       <Head>
@@ -19,9 +12,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-          <h2>index</h2>
-          <Button title="Click me" action={show} />
+      <main className="main">
+         
       </main>
     </>
   )

@@ -1,0 +1,33 @@
+/*
+0. Set category title
+1.import item component
+2. list items
+*/
+import {genRandCode} from '../../utils/'
+import SidebarItem from './SidebarItem'
+import Image from 'next/image'
+
+type SidebarCategoryProp ={
+    title:string,
+    list:{
+        icon:string,
+        title:string,
+        route:string
+    }[]
+}
+
+
+const SidebarCategory =({title,list}:SidebarCategoryProp)=>{
+
+    console.log(list)
+    return (
+        <div className='sidebarCategory'>
+            <h2>{title}</h2>
+            {list.map(link=><SidebarItem key={genRandCode(5)} icon={<Image src={`/${link.icon}`} width="15" height="15" />} title={link.title} route={link.route} />)}
+             
+        </div>
+    )
+}
+
+
+export default SidebarCategory

@@ -11,26 +11,84 @@ a {
   text-decoration: none;
 }
 
-* {
+:root{
+  --radius:4px;
+  --border:border: 2px solid;
+  --preferedWhite: #fff;
+  --shadow:0px 0px 2px #00000029;
+
   box-sizing: border-box;
+  background-color: aliceblue;
 }
 
+/* Layout */
 .Layout{
   display: flex;
   flex-direction: row;
+  min-height: fit-content;
+  padding: 2px;
+  min-width:fit-content
 }
 
 /* sidebar*/
-.sidebar{
+.Layout .sidebar{
   /* look */
     min-height: 100%;
-    max-width: 30%;
-    position: fixed;
+    min-width: 10%;
+    position: absolute;
 
     /* design */
+    background-color: var(--preferedWhite);
+    box-shadow: 0px 1px 1px #000;
 
 }
+.Layout .sidebar .sidebarCategory{
+  padding: 2px;
+}
+.Layout .sidebar ul{
+  margin: 0;
+  padding: 0;
+  border: none;
+
+}
+.Layout .sidebar li{
+  list-style-type: none;
+  /* border-bottom: 1px solid #90bade; */
+  margin: 0;
+}
+
+.Layout .sidebar li a {
+  display: block;
+  padding: 5px 5px 5px 0.5em;
+  background-color: inherit;
+  color: rgb(20, 20, 20);
+  /* text-decoration: none; */
+  width: inherit;
+  }
+
+  .active{
+    border-right: 5px solid #508fc4;
+    color: #508fc4;
+  }
 /* sidebar*/
+
+.Layout .main{
+  min-width: 90%;
+  margin-left: 10%;
+  
+
+}
+
+.Layout .main .content{/*main div where pages change on route*/
+padding: 10px;
+}
+
+.Layout footer{
+  bottom: auto;
+}
+/* layout */
+
+
 
 /* Navbar */
 nav{
@@ -39,6 +97,68 @@ nav{
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content:flex-end;
 }
 /* Navbar */
+
+/* row */
+.row{
+min-width:inherit;
+
+display:flex;
+flex-direction: row;
+
+}
+.row > .container{
+max-width: 50%;
+flex-wrap: wrap;
+}
+/* Column */
+
+
+/* form fields */
+
+.input_field{
+  display: flex;
+  flex-direction: column;
+}
+.input_field label{
+  font-size: small;
+}
+.input_field input[type="text"],input[type="password"],input[type="number"]{
+  border-radius: var(--radius);
+  
+}
+/* form fields */
+
+/* button */
+button{
+  padding:5px;
+  border-radius:var(--radius);
+
+  background-color: #fff;
+}
+/* button */
+
+/* Wallet */
+.wallet{
+  display: flex;
+  flex-direction: row;
+  width: inherit;
+  box-shadow: 1px 2px 3px #000;
+  justify-content: space-between;
+
+  padding: 10px;
+  border-radius: var(--radius);
+}
+/* Wallet */
+
+/* Card */
+
+.card{
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+
+}
+/* Card */
