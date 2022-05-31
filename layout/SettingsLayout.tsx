@@ -3,20 +3,17 @@
 1.import sidebar 
 2.create content area
 */
-import Navbar from "./NavBar"
-import Sidebar from "./Sidebar"
-import Footer from "./Footer"
+// import Footer from "../components/Footer"
+import React from "react"
 
 const Layout =({children})=>{
     return (
         <div className="Layout">
-            <Sidebar/>
             <div className="main">
-                <Navbar/>
                 <div className="content">
                 {children}
                 </div>
-                <Footer/>
+                {/* <Footer/> */}
 
             </div>
 
