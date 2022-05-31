@@ -1,4 +1,4 @@
-
+import styles from '../../styles/input.module.css'
 /*
 0.get label title
 1.get input state
@@ -13,15 +13,16 @@ type InputProp={
     type:string
 }
 
-const Input =({label,onChange,placeholder,state,type}:InputProp)=>{
+const Input =( { label,onChange,placeholder,state,type }: InputProp )=>{
     return (
-        <div className="input_field">
-            {label&&<label>{label}</label>}
+        <div className={styles.input}>
+            { label&&<label>{label}</label> }
           <input 
-          type={type}
-          value={state} 
-          onChange={onChange} 
-          placeholder={placeholder?placeholder:'Input field'}/>   
+            type={ type }
+            value={ state } 
+            onChange={ onChange } 
+            placeholder={ placeholder ? placeholder: 'Input field' }
+          />   
         </div>
        
     )

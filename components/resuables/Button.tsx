@@ -1,17 +1,15 @@
-
+import styles from '../../styles/button.module.css'
 type ButtonProps ={
     title:string,
-    style?:object,
-    action:()=>void
+    action?:()=>void
 }
 
-const Button =({title,style,action}:ButtonProps)=>{
+const Button =( { title,action }: ButtonProps )=>{
     return(
         <div>
-            <button style={style} onClick={action}>
+            <button className={ styles.base_button } onClick={action}>
                 {title}
             </button>
-
         </div>
     )
 }
