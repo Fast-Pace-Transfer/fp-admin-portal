@@ -8,15 +8,21 @@ import { useEffect, useState } from "react";
 // import icon from '../public/favicon.ico'
 import SidebarCategory from "./resuables/SidebarCategory"
 
-let link=[]
+// let link=[]
 
 const Sidebar = ()=>{
+const role='Admin'
 const [links,setLinks] = useState([])
     useEffect(()=>{
-        let links = [{
+        let link=[]
+        let links:{
+            icon:string
+            title:string
+            route:string
+        }[] = [{
         icon:'',
         title:"Link",
-        route:"https://google.com"
+        route:"/login"
     },{
         icon:'',
         title:"Facebook",
@@ -25,7 +31,7 @@ const [links,setLinks] = useState([])
         link.push(...links);
 
         setLinks(link)
-    },[links])
+    },[role])
     
 // console.log('size',links.length);
 
