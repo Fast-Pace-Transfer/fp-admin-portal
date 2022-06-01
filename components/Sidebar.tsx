@@ -3,16 +3,19 @@
 1.pass list of routes 
 2.
 */ 
-import Image from "next/image"
-import { useEffect, useState } from "react";
+// import Image from "next/image"
+import { useEffect, useState,useContext } from "react";
 // import icon from '../public/favicon.ico'
+import { AuthContext } from "../hooks/useAuth";
 import SidebarCategory from "./resuables/SidebarCategory"
 
 // let link=[]
 
 const Sidebar = ()=>{
 const role='Admin'
+const {pages}=useContext(AuthContext)
 const [links,setLinks] = useState([])
+
     useEffect(()=>{
         let link=[]
         let links:{

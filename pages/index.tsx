@@ -15,8 +15,10 @@ export default function Home() {
       </Head>
 
       <main className="main">
-         <Input label="Email" placeholder="Email" state="tests" type="email" onChange={()=>{}}/>
-          <Button title="Sign In"/>
+         <Input label="Email" placeholder="Email" state={""} type="email" onChange={()=>{}}/>
+          <Button title="Sign In" action={()=>{
+            
+          }}/>
       </main>
     </>
   )

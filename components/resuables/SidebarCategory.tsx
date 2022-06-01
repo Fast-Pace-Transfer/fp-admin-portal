@@ -7,7 +7,7 @@ import {genRandCode} from '../../utils/'
 import SidebarItem from './SidebarItem'
 import Image from 'next/image'
 
-type SidebarCategoryProp ={
+export type SidebarCategoryProp ={
     title:string,
     list:{
         icon:string,

@@ -4,7 +4,7 @@
 */ 
 import {useRouter} from 'next/router'
 
-type SidebarItemProp ={
+export type SidebarItemProp ={
     icon:object,
     title:string,
     route:string
