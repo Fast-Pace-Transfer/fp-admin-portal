@@ -7,10 +7,12 @@
   --first-accent-color: #B24949;
   --second-accent-color: #423E3B;
   --third-accent-color: #E3E3E3;
-  --radius:4px;
+  --radius:8px;
   --border:border: 2px solid;
   --preferedWhite: #fff;
   --shadow:0px 0px 2px #00000029;
+
+  transition: 0.5s ease-in-out;
 }
 
 html,
@@ -20,6 +22,9 @@ body {
   box-sizing: border-box;
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  
+    background-color: #C8D4E2CC;
+    /* opacity: 0.2; */
 }
 
 a {
@@ -42,32 +47,58 @@ a {
     min-height: 100%;
     min-width: 10%;
     position: absolute;
+    padding: auto;
 
     /* design */
     background-color: var(--preferedWhite);
     box-shadow: 0px 1px 1px #000;
 
 }
-.Layout .sidebar .sidebarCategory{
-  padding: 2px;
+.Layout .sidebar .links{
+  margin-top: 40%;
+  margin-left: 17%;
 }
+.Layout .sidebar .sidebarCategory{
+  
+  padding: 2px;
+  text-align: left;
+  font: normal normal normal 18px/5px Source Sans Pro;
+
+  /* font-size: small; */
+  /* font-weight:lighter; */
+  letter-spacing: 0.72px;
+  color: #343434CE;
+  opacity: 1;
+
+}
+
+.Layout .sidebar .sidebarCategory .title{
+  margin-bottom: 10%;
+}
+
 .Layout .sidebar ul{
   margin: 0;
   padding: 0;
   border: none;
+  margin: 50px;
 
 }
 .Layout .sidebar li{
   list-style-type: none;
   /* border-bottom: 1px solid #90bade; */
   margin: 0;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+
 }
 
 .Layout .sidebar li a {
   display: block;
   padding: 5px 5px 5px 0.5em;
-  background-color: inherit;
-  color: rgb(20, 20, 20);
+ color: var(--unnamed-color-383d6f);
+  text-align: left;
+  font: normal normal normal 14px/5px Source Sans Pro;
+  letter-spacing: 0px;
+  color: #383D6F;
   /* text-decoration: none; */
   width: inherit;
   }
@@ -127,6 +158,7 @@ flex-wrap: wrap;
 .input_field{
   display: flex;
   flex-direction: column;
+  width: auto;
 }
 .input_field label{
   font-size: small;
@@ -141,8 +173,11 @@ flex-wrap: wrap;
 button{
   padding:5px;
   border-radius:var(--radius);
-
+  width: auto;
   background-color: #fff;
+}
+button:hover{
+  opacity: 0.9;
 }
 /* button */
 
@@ -156,6 +191,41 @@ button{
 
   padding: 10px;
   border-radius: var(--radius);
+
+  top: 161px;
+  left: 252px;
+  width: 592px;
+  height: 286px;
+/* UI Properties */
+  background: var(--unnamed-color-4953b2) 0% 0% no-repeat padding-box;
+  background: #4953B2 0% 0% no-repeat padding-box;
+}
+
+.wallet .wallet_main{
+display: flex;
+
+flex-direction: column;
+
+justify-items: self-end;
+
+}
+
+.wallet .title{
+
+  color: var(--unnamed-color-ffffff);
+text-align: left;
+font: normal normal normal 30px/43px Source Sans Pro;
+letter-spacing: 0px;
+color: #FFFFFF;
+}
+
+.wallet .amount{
+  color: var(--unnamed-color-ffffff);
+text-align: left;
+font: normal normal bold 50px/61px Montserrat;
+letter-spacing: 0px;
+color: #FFFFFF;
+bottom: 0;
 }
 /* Wallet */
 

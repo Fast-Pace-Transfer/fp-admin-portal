@@ -16,8 +16,8 @@ const Wallet = ({extra,title,amount,style}:WalletProp)=>{
     return(
         <div className="wallet" style={style?style:{}}>
             <div className="wallet_main">
-                <h4>{title}</h4>
-                <h2>{amount}</h2>
+                <span className="title">{title}</span>
+                <span className="amount">{amount}</span>
             </div>
             {/* Extra */}
             <div className="wallet_extra">

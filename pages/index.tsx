@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Input from '../components/resuables/Input'
-import Button from '../components/resuables/Button'
+import Wallet from '../components/Dashboard/Wallet'
 
 // custom components
 
@@ -15,10 +14,15 @@ export default function Home() {
       </Head>
 
       <main className="main">
-         <Input label="Email" placeholder="Email" state={""} type="email" onChange={()=>{}}/>
-          <Button title="Sign In" action={()=>{
-            
-          }}/>
+         <div className="row">
+          <div className="container">
+            <Wallet/>
+          </div>
+         </div>
+
+         <div className="row">
+
+         </div>
       </main>
     </>
   )

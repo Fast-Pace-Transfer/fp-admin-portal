@@ -16,8 +16,9 @@ interface person{
     id:string
 }
 interface contextType {
-    pages:{}[]
+    pages:{}[]|null
     isAuthed:boolean
+    logout:any
 }
 
 export const AuthContext = createContext({} as contextType)
@@ -27,23 +28,31 @@ export const AuthContext = createContext({} as contextType)
 function useProvideAuth() {
     const cookie:boolean = Cookie.get("auth");
   
-    const [isAuthed, setIsAuthed] = useState<boolean>(cookie);
+    const [isAuthed, setIsAuthed] = useState<boolean|number>(cookie);
     const [pages,setPages]=useState<{}[]>([])
-  
+
+    const logout =useCallback(()=>{
+      Cookie.remove("auth")
+      Cookie.remove("user")
+      Cookie.remove("dp")
+      Cookie.set("role","none")
+
+      Router.push('/login')
+    },[])
   console.log('from context',isAuthed)
     useEffect(() => {
       if (!isAuthed) {
         Router.push("/login");
         Cookie.remove("auth");
       } else {
-          console.log(Pages())
+          // console.log(Pages())
+
         setPages(Pages())
-        Cookie.set("auth", true);
         setIsAuthed(true)
       }
     }, [isAuthed]);
   
-    return { isAuthed,pages };
+    return { isAuthed,pages,logout };
   }
 
 

@@ -6,44 +6,39 @@
 // import Image from "next/image"
 import { useEffect, useState,useContext } from "react";
 // import icon from '../public/favicon.ico'
-import { AuthContext } from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import SidebarCategory from "./resuables/SidebarCategory"
+import cookie from 'js-cookie'
 
 // let link=[]
 
 const Sidebar = ()=>{
-const role='Admin'
-const {pages}=useContext(AuthContext)
+
+const {pages}= useAuth()
 const [links,setLinks] = useState([])
 
     useEffect(()=>{
+
         let link=[]
-    //     let links:{
-    //         icon:string
-    //         title:string
-    //         route:string
-    //     }[] = [{
-    //     icon:'',
-    //     title:"Link",
-    //     route:"/login"
-    // },{
-    //     icon:'',
-    //     title:"Facebook",
-    //     route:"/" 
-    // }]
-        link.push(...pages);
+      if(cookie.get("auth")==="true"){
+          link.push(...pages);
+      }
+        
 
         setLinks(link)
-    },[role])
+    },[links])
     
 // console.log('size',links.length);
 
     return(
         <div className="sidebar">
-            <h2>Hello sidebar</h2>
-            {links.map(route=>{
+            <h2>sidebar</h2>
+            <div className="links">
+                {links.map(route=>{
                 return <SidebarCategory title={route.title} list={route.sub} />
             })}
+            </div>
+            
            
         </div>
     )
