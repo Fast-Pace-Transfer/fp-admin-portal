@@ -4,10 +4,9 @@
 2. create function for login and logout
 */ 
 
-import { useState,useEffect,createContext } from "react";
-import {codeEncrypt,codeDecrypt} from '../utils'
+import { useState,useEffect,createContext,useCallback, useContext } from "react";
 import Cookie from 'js-cookie'
-
+import Router from "next/router";
 import Pages from '../utils/Routes'
 
 interface person{
@@ -18,117 +17,53 @@ interface person{
 }
 interface contextType {
     pages:{}[]
-    IsRouteAllowed:any
-    userID:string
+    isAuthed:boolean
 }
 
 export const AuthContext = createContext({} as contextType)
 
 
 // login function
-export const HasLoggedIn=({name,image,role,id}:person)=>{
-        // save user details to localstorage
-       
-       try{
-           let details = {name,image}
-           console.log(name,image,role,id)
-
-        localStorage.setItem('user',JSON.stringify(details))
-
-        // encrypt role and ID
-        const encrptedID = codeEncrypt(id)
-        // console.log(JSON.stringify(encrptedID))
-        localStorage.setItem('userID',JSON.stringify(encrptedID));
-
-        // encrypt role
-        const encryptedRole = codeEncrypt(role);
-        localStorage.setItem('userRole',JSON.stringify(encryptedRole));
-       } 
-       catch(error){
-           throw error
-       }
-}
-
-export const HasLoggedOut = ()=>{
-    try{
-        let props:string[]=['user','userID','userRole']
-
-        for(let data of props){
-            localStorage.removeItem(data)
-        }
-
-        return true
-
-    }
-    catch(error){
-        throw error
-    }
-}
+function useProvideAuth() {
+    const cookie:boolean = Cookie.get("auth");
+  
+    const [isAuthed, setIsAuthed] = useState<boolean>(cookie);
+    const [pages,setPages]=useState<{}[]>([])
+  
+  console.log('from context',isAuthed)
+    useEffect(() => {
+      if (!isAuthed) {
+        Router.push("/login");
+        Cookie.remove("auth");
+      } else {
+          console.log(Pages())
+        setPages(Pages())
+        Cookie.set("auth", true);
+        setIsAuthed(true)
+      }
+    }, [isAuthed]);
+  
+    return { isAuthed,pages };
+  }
 
 
 
 
 
-
-const AuthContextProvider=({children})=>{
-    let user:{id:string,role:string} = {id:'',role:undefined}
-
-    // let cookie = Cookie.get('userID')
-    // const [isAuthed,setIsAuthed]=useState(cookie)
-    const [userID,setUserID] = useState(user.id)
-    const [userRole,setUserRole] = useState(user.role?user.role:'Admin')
-
-    const [pages,setPages]=useState(()=>Pages(userRole))
-
-        useEffect(()=>{
-                if(JSON.parse(localStorage.getItem('userID'))){
-
-                setUserID(codeDecrypt(JSON.parse(localStorage.getItem('userID'))));
-                setUserRole(codeDecrypt(JSON.parse(localStorage.getItem('userRole'))));  
-            }
-            else{
-                HasLoggedOut()
-            }  
-            
-            setPages(Pages(userRole))
-
-
-        },[userID])
-       
-
-    //check if current route is valid 
-    const IsRouteAllowed =(rout)=>{
-        let bigValid=[]
-
-        for(let r of pages){
-            bigValid = r.sub.map(rt=>rt.route)
-        }
-
-        if(bigValid.includes(rout)){
-            return true
-        }
-        else{
-            false
-        }
-
-        
-    }
-
-    const values:contextType={
-        pages:pages,
-        IsRouteAllowed:IsRouteAllowed,
-        userID:userID
-    }
+export const AuthContextProvider=({children})=>{
     
-
-
-
+    const value:contextType = useProvideAuth();
+    console.log('from provider',value)
     return(
-        <AuthContext.Provider value={values}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )
 }
 
 
-export default AuthContextProvider
+const useAuth=()=>{
+    return useContext(AuthContext)
+}
+
+export default useAuth

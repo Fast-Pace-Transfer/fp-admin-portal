@@ -1,9 +1,55 @@
 import Head from 'next/head'
-
+import Button from '../components/resuables/Button'
+import { useState } from 'react'
+import Input from '../components/resuables/Input'
+import { useRouter } from 'next/router'
+import cookie from 'js-cookie'
 // custom components
+const Login=async (username:string,password:string)=>{
 
+    try{
+        let login = await fetch("/api/login",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({username,password}) 
+        })
 
-export default function Home() {
+         const token=(await login.json())
+
+         if(token.token){
+            cookie.set("user",token.token)
+         cookie.set("dp",token.profile)
+         cookie.set("role",token.role)
+         cookie.set("auth",true)
+         }
+         
+        
+        login?true:false
+    }
+    catch(error){
+        throw error
+
+    }
+
+}
+
+ const Home=()=> {
+     const router = useRouter()
+
+    const [userName,setUsername] = useState<string>('')
+    const [userPassword,setUserPassword] = useState<string>('')
+
+    const handleClick=()=>{
+        let state =Login(userName,userPassword)
+
+        if(state){
+            router.push('/')
+        }
+    }
+    
+
   return (
     <>
       <Head>
@@ -12,9 +58,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="main">
-         <h3>This is login</h3>
-      </main>
+      <div className="main">
+          <Input type="email" label="Email" placeholder="Enter username or email" state={userName} onChange={(e)=>{setUsername(e.target.value)}}/>
+          <Input type="password" label="Password" placeholder="Enter password" state={userPassword} onChange={(e)=>{setUserPassword(e.target.value)}}/>
+        <Button title="Login" action={handleClick}/>
+      </div>
     </>
   )
 }
+
+export default Home

@@ -18,20 +18,20 @@ const [links,setLinks] = useState([])
 
     useEffect(()=>{
         let link=[]
-        let links:{
-            icon:string
-            title:string
-            route:string
-        }[] = [{
-        icon:'',
-        title:"Link",
-        route:"/login"
-    },{
-        icon:'',
-        title:"Facebook",
-        route:"/" 
-    }]
-        link.push(...links);
+    //     let links:{
+    //         icon:string
+    //         title:string
+    //         route:string
+    //     }[] = [{
+    //     icon:'',
+    //     title:"Link",
+    //     route:"/login"
+    // },{
+    //     icon:'',
+    //     title:"Facebook",
+    //     route:"/" 
+    // }]
+        link.push(...pages);
 
         setLinks(link)
     },[role])
@@ -41,7 +41,10 @@ const [links,setLinks] = useState([])
     return(
         <div className="sidebar">
             <h2>Hello sidebar</h2>
-           <SidebarCategory title="Transactions" list={links} />
+            {links.map(route=>{
+                return <SidebarCategory title={route.title} list={route.sub} />
+            })}
+           
         </div>
     )
 
