@@ -19,7 +19,7 @@ export type SidebarCategoryProp ={
 
 const SidebarCategory =({title,list}:SidebarCategoryProp)=>{
 
-    console.log(list)
+    // console.log(list)
     return (
         <div className='sidebarCategory'>
             <span className='title'>{title}</span>

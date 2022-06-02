@@ -17,8 +17,8 @@ interface person{
 }
 interface contextType {
     pages:{}[]|null
-    isAuthed:boolean
-    logout:any
+    isAuthed:boolean|number
+    logout:()=>void
 }
 
 export const AuthContext = createContext({} as contextType)

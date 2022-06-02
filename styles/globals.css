@@ -9,7 +9,7 @@
   --third-accent-color: #E3E3E3;
   --radius:8px;
   --border:border: 2px solid;
-  --preferedWhite: #fff;
+  --preferedWhite: #FFFFFF;
   --shadow:0px 0px 2px #00000029;
 
   transition: 0.5s ease-in-out;
@@ -23,7 +23,8 @@ body {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   
-    background-color: #C8D4E2CC;
+    background:  #c8d4e20c 0% 0% no-repeat padding-box;
+    height: -webkit-fill-available;
     /* opacity: 0.2; */
 }
 
@@ -47,11 +48,11 @@ a {
     min-height: 100%;
     min-width: 10%;
     position: absolute;
-    padding: auto;
+    padding-left:5px;
 
     /* design */
     background-color: var(--preferedWhite);
-    box-shadow: 0px 1px 1px #000;
+    box-shadow: 0px 2px 4px #000;
 
 }
 .Layout .sidebar .links{
@@ -111,9 +112,13 @@ a {
 
 .Layout .main{
   min-width: 90%;
-  margin-left: 10%;
+  margin-left: 5%;
   
 
+}
+
+main{
+  padding:2%;
 }
 
 .Layout .main .content{/*main div where pages change on route*/
@@ -144,11 +149,12 @@ min-width:inherit;
 
 display:flex;
 flex-direction: row;
-
+gap:18%
 }
 .row > .container{
 max-width: 50%;
 flex-wrap: wrap;
+
 }
 /* Column */
 
@@ -181,60 +187,29 @@ button:hover{
 }
 /* button */
 
-/* Wallet */
-.wallet{
-  display: flex;
-  flex-direction: row;
-  width: inherit;
-  box-shadow: 1px 2px 3px #000;
-  justify-content: space-between;
 
-  padding: 10px;
-  border-radius: var(--radius);
 
-  top: 161px;
-  left: 252px;
-  width: 592px;
-  height: 286px;
-/* UI Properties */
-  background: var(--unnamed-color-4953b2) 0% 0% no-repeat padding-box;
-  background: #4953B2 0% 0% no-repeat padding-box;
+
+
+
+/* Notification */
+.notification{
+  position: relative;
+  cursor: pointer;
 }
 
-.wallet .wallet_main{
-display: flex;
-
-flex-direction: column;
-
-justify-items: self-end;
-
+.notifications{
+  position: absolute;
+background-color: var(--preferedWhite);
+box-shadow: var(--shadow);
+border-radius: var(--radius);
+padding: 10px;
+display: none;
+width:max-content
 }
-
-.wallet .title{
-
-  color: var(--unnamed-color-ffffff);
-text-align: left;
-font: normal normal normal 30px/43px Source Sans Pro;
-letter-spacing: 0px;
-color: #FFFFFF;
+.notifications li{
+  list-style-type: none;
+  align-self: center;
+  font-size: small;
 }
-
-.wallet .amount{
-  color: var(--unnamed-color-ffffff);
-text-align: left;
-font: normal normal bold 50px/61px Montserrat;
-letter-spacing: 0px;
-color: #FFFFFF;
-bottom: 0;
-}
-/* Wallet */
-
-/* Card */
-
-.card{
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: flex;
-
-}
-/* Card */
+/* Notification */

@@ -7,7 +7,7 @@ const Balance =()=>{
     return(
         <>
         <Wallet
-        title="Balance"
+        title="USD Balance"
         amount={24556}
         />
         </>

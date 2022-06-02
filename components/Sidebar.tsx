@@ -9,6 +9,7 @@ import { useEffect, useState,useContext } from "react";
 import useAuth from "../hooks/useAuth";
 import SidebarCategory from "./resuables/SidebarCategory"
 import cookie from 'js-cookie'
+import { genRandCode } from "../utils";
 
 // let link=[]
 
@@ -22,11 +23,12 @@ const [links,setLinks] = useState([])
         let link=[]
       if(cookie.get("auth")==="true"){
           link.push(...pages);
+          setLinks(link)
       }
         
 
-        setLinks(link)
-    },[links])
+        
+    },[pages])
     
 // console.log('size',links.length);
 
@@ -35,7 +37,7 @@ const [links,setLinks] = useState([])
             <h2>sidebar</h2>
             <div className="links">
                 {links.map(route=>{
-                return <SidebarCategory title={route.title} list={route.sub} />
+                return <SidebarCategory key={genRandCode(4)} title={route.title} list={route.sub} />
             })}
             </div>
             

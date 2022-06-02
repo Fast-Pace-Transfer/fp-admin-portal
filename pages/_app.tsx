@@ -33,7 +33,7 @@ console.log('authenticatd',isAuthed);
     Router.push('/')
   }
   
-  },[isAuthed])
+  },[])
   
 
 

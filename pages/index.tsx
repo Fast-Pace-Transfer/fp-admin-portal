@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Analytic from '../components/Dashboard/Analytics'
 import Wallet from '../components/Dashboard/Wallet'
 
 // custom components
@@ -17,6 +18,9 @@ export default function Home() {
          <div className="row">
           <div className="container">
             <Wallet/>
+          </div>
+          <div className="container">
+          <Analytic/>
           </div>
          </div>
 

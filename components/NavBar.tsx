@@ -5,6 +5,7 @@
 */
 import useAuth from "../hooks/useAuth"
 import Button from "./resuables/Button"
+import Notification from "./Notification"
 
 
 
@@ -14,8 +15,14 @@ const Navbar =()=>{
     return(
         <nav>
             {/* <Button title="Logout" action={logout}/> */}
-            <h2>Hello Navbar</h2>
-            <h2>Hello Navbar</h2>
+            {/* notification */}
+            <section>
+        <Notification/>
+            </section>
+            {/* user */}
+            <section>
+
+            </section>
         </nav>
     )
 }
