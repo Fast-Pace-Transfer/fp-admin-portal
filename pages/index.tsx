@@ -1,6 +1,9 @@
 import Head from 'next/head'
 import Analytic from '../components/Dashboard/Analytics'
+import Graph from '../components/Dashboard/Graph'
+import History from '../components/Dashboard/History'
 import Wallet from '../components/Dashboard/Wallet'
+import ExchangeRate from '../components/ExchangeRate'
 
 // custom components
 
@@ -21,11 +24,17 @@ export default function Home() {
           </div>
           <div className="container">
           <Analytic/>
+          <ExchangeRate />
           </div>
          </div>
 
          <div className="row">
-
+          <div className="container">
+            <Graph />
+          </div>
+          <div className="container">
+            <History/>
+          </div>
          </div>
       </main>
     </>

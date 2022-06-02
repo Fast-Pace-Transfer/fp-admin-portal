@@ -147,14 +147,16 @@ nav{
 /* row */
 .row{
 min-width:inherit;
-
+width: 100%;
 display:flex;
 flex-direction: row;
-gap:10%
+gap:10%;
+margin-top:1%;
 }
 .row > .container{
-max-width: 50%;
+width: 50%;
 flex-wrap: wrap;
+gap:10px;
 
 }
 /* Column */
@@ -188,6 +190,13 @@ button:hover{
 }
 /* button */
 
+/* card */
+.card{
+  background-color: var(--preferedWhite);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+/* card */
 
 
 
