@@ -140,6 +140,7 @@ nav{
   display: flex;
   flex-direction: row;
   justify-content:flex-end;
+  padding:1%
 }
 /* Navbar */
 
@@ -149,7 +150,7 @@ min-width:inherit;
 
 display:flex;
 flex-direction: row;
-gap:18%
+gap:10%
 }
 .row > .container{
 max-width: 50%;
