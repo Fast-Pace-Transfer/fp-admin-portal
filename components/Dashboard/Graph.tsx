@@ -2,7 +2,7 @@
 /*
 0.
 */ 
-import style from '../../styles/graph.module.css'
+import style from '../../styles/dashboard/graph.module.css'
 import { genRandCode } from '../../utils';
 import Select from '../resuables/Select';
 import { Bar } from 'react-chartjs-2';

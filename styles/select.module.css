@@ -1,0 +1,45 @@
+
+  /* Custom Select wrapper */
+  .select {
+    position: relative;
+    display: flex;
+    width: 10em;
+    height: 1.5em;
+    border-radius: .25em;
+    overflow: hidden;
+    /* box-shadow: 0.5px 0.5px 1px 0.5px #0202024d; */
+  }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px;
+    background-color: #eceef002;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  /* Transition */
+  .select:hover::after {
+    color: #020202;
+  }
+
+  .select select {
+    /* Reset Select */
+    appearance: none;
+    outline: 0;
+    border: 0;
+    /* box-shadow: var(--shadow); */
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #000;
+    background-color: #eeeff800;
+    background-image: none;
+    cursor: pointer;
+  }
+  /* Remove IE arrow */
+  .select select::-ms-expand {
+    display: block;
+  }

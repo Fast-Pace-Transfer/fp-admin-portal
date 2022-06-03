@@ -6,11 +6,13 @@
 // import Image from "next/image"
 import { useEffect, useState,useContext } from "react";
 // import icon from '../public/favicon.ico'
+import style from '../styles/sidebar.module.css'
 import useAuth from "../hooks/useAuth";
 import SidebarCategory from "./resuables/SidebarCategory"
 import cookie from 'js-cookie'
 import { genRandCode } from "../utils";
-
+import Image from "next/image";
+import logo from '../public/images/fp_logo.png'
 // let link=[]
 
 const Sidebar = ()=>{
@@ -33,8 +35,11 @@ const [links,setLinks] = useState([])
 // console.log('size',links.length);
 
     return(
-        <div className="sidebar">
-            <h2>sidebar</h2>
+        <div className={style.sidebar}>
+            <div style={{padding:'20%'}}>
+                 <Image src={logo} width="150" height="30" layout="intrinsic" />
+            </div>
+           
             <div className="links">
                 {links.map(route=>{
                 return <SidebarCategory key={genRandCode(4)} title={route.title} list={route.sub} />

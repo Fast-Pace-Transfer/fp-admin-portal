@@ -13,7 +13,10 @@
     left: 252px;
     width: 592px;
     height: 286px;
-  
+    background-image: url('../public/images/Cardillustraiont-2Asset_14.svg');
+    background-repeat: no-repeat;
+    background-size: 300px 300px;
+    background-position: right 1% bottom 3%;
     
   }
   

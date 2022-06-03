@@ -3,7 +3,7 @@
 1.import Link component from next
 */ 
 import {useRouter} from 'next/router'
-
+import style from '../../styles/sidebar.module.css'
 export type SidebarItemProp ={
     icon:object,
     title:string,
@@ -22,12 +22,18 @@ const SidebarItem =({icon,title,route}:SidebarItemProp)=>{
 
 
     return(
-        <li className={router.pathname == route ? "active" : ""}>
+        <div style={{
+            background: '#FFFFFF 0% 0% no-repeat padding-box',
+            marginTop:'5%'
+        }}>
+        <li className={router.pathname == route ? style.active : ""}>
         <a className="anchorTag" href={route} onClick={handleClick}>
         <>{icon} </> 
-        <>{title}</>
+        <span>{title}</span>
         </a>
         </li>
+        </div>
+        
        
     )
 

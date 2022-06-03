@@ -3,6 +3,7 @@
 1.import item component
 2. list items
 */
+import style from '../../styles/sidebar.module.css'
 import {genRandCode} from '../../utils/'
 import SidebarItem from './SidebarItem'
 import Image from 'next/image'
@@ -21,10 +22,11 @@ const SidebarCategory =({title,list}:SidebarCategoryProp)=>{
 
     // console.log(list)
     return (
-        <div className='sidebarCategory'>
-            <span className='title'>{title}</span>
-            {list.map(link=><SidebarItem key={genRandCode(5)} icon={<Image src={`/${link.icon}`} width="15" height="15" />} title={link.title} route={link.route} />)}
-             
+        <div className={style.sidebarCategory}>
+            <span className={style.title}>{title}</span>
+            <ul>
+            {list.map(link=><SidebarItem key={genRandCode(5)} icon={<Image src={link.icon} width="15" height="15" />} title={link.title} route={link.route} />)}
+            </ul>
         </div>
     )
 }
