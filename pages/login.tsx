@@ -2,12 +2,13 @@ import Head from 'next/head'
 import Button from '../components/resuables/Button'
 import { useState } from 'react'
 import Input from '../components/resuables/Input'
-import { useRouter } from 'next/router'
+import Router,{ useRouter } from 'next/router'
 import cookie from 'js-cookie'
 // custom components
 const Login=async (username:string,password:string)=>{
 
     try{
+
         let login = await fetch("/api/login",{
             method:"POST",
             headers:{
@@ -19,7 +20,7 @@ const Login=async (username:string,password:string)=>{
          const token=(await login.json())
 
          if(token.token){
-            cookie.set("user",token.token)
+          cookie.set("user",token.token)
          cookie.set("dp",token.profile)
          cookie.set("role",token.role)
          cookie.set("auth",true)
@@ -35,8 +36,19 @@ const Login=async (username:string,password:string)=>{
 
 }
 
- const Home=()=> {
-     const router = useRouter()
+interface HomeProp{
+  loggedIn:boolean
+}
+
+ const Home=({loggedIn}:HomeProp)=> {
+  const router = useRouter()
+console.log('status',loggedIn)
+
+  if(loggedIn){
+    router.push('/')      
+  }
+
+    
 
     const [userName,setUsername] = useState<string>('')
     const [userPassword,setUserPassword] = useState<string>('')
@@ -65,6 +77,26 @@ const Login=async (username:string,password:string)=>{
       </div>
     </>
   )
+}
+
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts.
+ 
+  // const loggedIn = (await res.json()).isLoggedIn
+  console.log('logged',cookie.get('auth'))
+  let isLoggedIn = false
+  if(cookie.get("auth")&&cookie.get("user")&&cookie.get("role")){
+      isLoggedIn=true
+      Router.push('/');
+  }
+ 
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      loggedIn:isLoggedIn
+    },
+  }
 }
 
 export default Home

@@ -60,9 +60,9 @@ function useProvideAuth() {
 
 
 export const AuthContextProvider=({children})=>{
-    
+
     const value:contextType = useProvideAuth();
-    console.log('from provider',value)
+   
     return(
         <AuthContext.Provider value={value}>
             {children}
@@ -74,5 +74,8 @@ export const AuthContextProvider=({children})=>{
 const useAuth=()=>{
     return useContext(AuthContext)
 }
+
+
+
 
 export default useAuth

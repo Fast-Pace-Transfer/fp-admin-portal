@@ -19,7 +19,7 @@ const Wallet = ({extra,title,amount,style}:WalletProp)=>{
         <div className={styles.wallet} style={style?style:{backgroundColor:'#4953B2'}}>
             <div className={styles.wallet_main}>
                 <span className={styles.title}>{title}</span>
-                <span className={styles.amount}>${amount}</span>
+                <span className={styles.amount}>${amount.toFixed(1)}</span>
             </div>
             {/* Extra */}
             <div className={styles.wallet_extra}>

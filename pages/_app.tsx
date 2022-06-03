@@ -5,6 +5,7 @@ import Layout from '../layout/Layout'
 import SettingsLayout from '../layout/SettingsLayout'
 import Router,{useRouter} from 'next/router'
 import {AuthContextProvider} from '../hooks/useAuth'
+import Cookie from 'js-cookie'
 
 
 
@@ -12,9 +13,11 @@ import {AuthContextProvider} from '../hooks/useAuth'
 
 
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps,loggedIn }) {
   const settings =['/login'];
   
+  console.log('check log',loggedIn)
+
   const router = useRouter();
   const [isAuthed,setIsAuthed] = useState<boolean>(cookie.get('auth')==='true'?true:false)
  
@@ -58,5 +61,26 @@ console.log('authenticatd',isAuthed);
   )
   
 }
+
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts.
+ 
+  // const loggedIn = (await res.json()).isLoggedIn
+  console.log('logged',Cookie.get('auth'))
+  if(!Cookie.get("auth")){
+  Router.push('/login')
+  }
+  else{
+    Router.push('/')
+  }
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      loggedIn:Cookie.get('user')
+    },
+  }
+}
+
 
 export default MyApp
