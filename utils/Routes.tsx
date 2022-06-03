@@ -53,6 +53,29 @@ const Admin:pages=[
     
 ]
 
+const Client:pages=[
+    {
+        title:'Transaction',
+        sub:[{
+            icon:dashboard,
+            title:'Dashboard',
+            route:'/'
+        }
+        ]
+    },
+    {
+        title:'Developers',
+        sub:[
+            {
+                icon:apikey,
+                title:'API keys',
+                route:'/api_keys' 
+            }
+        ]
+    },
+    
+]
+
 
 const Pages = ()=>{
     if(cookie.get("auth")==="true"){
@@ -62,7 +85,9 @@ const Pages = ()=>{
         case 'Admin':
             return Admin
             break;
-    
+        case 'Client':
+            return Client
+            break;
         default:
             throw new Error('Invalid Role')
             break;
