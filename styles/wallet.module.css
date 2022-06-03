@@ -16,7 +16,7 @@
     background-image: url('../public/images/Cardillustraiont-2Asset_14.svg');
     background-repeat: no-repeat;
     background-size: 300px 300px;
-    background-position: right 1% bottom 3%;
+    background-position: right -112px bottom -118px;
     
   }
   
@@ -29,8 +29,12 @@
     display: flex;
     flex-direction: column;
     justify-items:center;
-    padding:4%
+    padding:4%;
   
+    /* background-image: url('../public/images/Cardillustraiont-2Asset_14.svg');
+    background-repeat: no-repeat;
+    background-size: 300px 300px;
+    background-position: right 1% bottom 3%; */
   }
   
   .title{

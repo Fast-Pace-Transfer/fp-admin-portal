@@ -13,7 +13,7 @@ let data =[{
     number:1500
 },
 {
-    caption:"Yearly Transactions",
+    caption:"Annual Transactions",
     number:2300
 }
 

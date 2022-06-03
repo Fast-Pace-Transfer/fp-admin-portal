@@ -7,7 +7,7 @@ const PostFund =()=>{
     return(
         <>
         <Wallet
-        title="USD Balance"
+        title="GHS Balance"
         amount={24556}
         style={{backgroundColor:'#B24949'}}
         />

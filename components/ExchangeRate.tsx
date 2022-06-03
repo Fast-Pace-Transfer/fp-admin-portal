@@ -26,7 +26,7 @@ const ExchangeRate =()=>{
         <div className={style.card}>
             <div className='title'>Exchange Rate</div>
             <div>
-                <Select color={{color:"#000",backgroundColor:"#4953B2"}} value={rate} options={selects} onChange={(e)=>setRate(e.target.value)}/>
+                <Select color={{color:"#fff",backgroundColor:"#4953B2"}} value={rate} options={selects} onChange={(e)=>setRate(e.target.value)}/>
             </div>
             <div className='title'>GHS 174.9</div>
         </div>

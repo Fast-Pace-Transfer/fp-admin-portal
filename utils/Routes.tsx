@@ -22,7 +22,7 @@ type pages ={
 }[]
 const Admin:pages=[
     {
-        title:'Transaction',
+        title:'Payments',
         sub:[{
             icon:dashboard,
             title:'Dashboard',

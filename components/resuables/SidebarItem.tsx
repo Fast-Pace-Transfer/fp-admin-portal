@@ -27,10 +27,10 @@ const SidebarItem =({icon,title,route}:SidebarItemProp)=>{
             marginTop:'5%'
         }}>
         <li className={router.pathname == route ? style.active : ""}>
-        <a className="anchorTag" href={route} onClick={handleClick}>
-        <>{icon} </> 
-        <span>{title}</span>
-        </a>
+            <a className="anchorTag" href={route} onClick={handleClick}>
+                <>{icon} </> 
+                <span>{title}</span>
+            </a>
         </li>
         </div>
         

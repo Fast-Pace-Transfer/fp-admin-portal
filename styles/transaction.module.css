@@ -5,10 +5,8 @@
     width: 98%;
     height: max-content;
     display: flex;
-    flex-direction: row;
     border-bottom: 1px solid #423e3b34;
-    padding:10px;
-    /* justify-content: space-between; */
+    padding:25px;
 }
 
 /* .li:nth-child(even){
@@ -20,8 +18,9 @@
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 0px 2px #16960C29;
     border-radius: 7px;
-    margin-right: 10%;
+    margin-right: 20%;
     position: relative;
+    border: 1px solid red;;
 }
 
 .title{
@@ -54,5 +53,7 @@
     font-weight:normal; 
     letter-spacing: 0px;
     color: #423E3B;
+
     justify-self: flex-end;
+    
 }
