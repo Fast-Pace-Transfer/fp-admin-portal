@@ -4,24 +4,27 @@ import style from '../../styles/dashboard/history.module.css'
 
 
 let list =[
-    {
+    {   
+        id: 1,
         icon:'/../../public/vercel.svg',
         title:'Account Credited by Fast Pace ….',
         time:'Wednesday 30th April',
         amount:3000
     },
-    {
+    {   
+        id:2,
         icon:'/../../public/vercel.svg',
         title:'Account Credited by Fast Pace ….',
         time:'Wednesday 30th April',
         amount:30000
     },
-    {
+    {   
+        id: 3,
         icon:'/../../public/vercel.svg',
-        title:'Account Credited by Flex LLC',
+        title:'Account Credited by Fast Pace ….',
         time:'Wednesday 30th April',
-        amount:20000
-    }
+        amount:3000
+    },
 ]
 
 const History=()=>{
@@ -42,9 +45,9 @@ const History=()=>{
             </div>
 
             <ul className={style.transactions}>
-                {list.map(tr=>{
+                {list.map((tr)=>{
                     return(
-                        <Transactions icon={tr.icon} title={tr.title} date={tr.time} amount={tr.amount}/>
+                        <Transactions key={tr.id} icon={tr.icon} title={tr.title} date={tr.time} amount={tr.amount}/>
                     )
                 })}
             </ul>
