@@ -1,0 +1,294 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.input label {
+  color: #5a5a5a;
+  font-size: 12px;
+}
+
+input[type="text"],
+input[type="password"] {
+  height: 40px;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  padding: 10px 40px;
+  background: #fff;
+  font-size: 18px;
+  color: #343434;
+}
+
+
+label{
+  font-size:14px;
+  color:rgb(147, 141, 141);
+}
+input[type="submit"] {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  background: #1D1E45;
+  border: 1px solid #01d28e;
+  color: #fff;
+  padding: 10px 20px;
+  width:auto;
+}
+
+input[type="submit"]:hover {
+  background: #393a57;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form {
+  background-color: white;
+  width:350px;
+  padding: 30px;
+  height:auto
+}
+
+.list-container {
+  display: flex;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.title {
+  font-size: 14px;
+ 
+  text-align: center;
+  color:#9f9fa4;
+
+
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px;
+  padding-top:15px;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.maincontainer {
+  height: 100%;
+  width:100%;
+  display:grid;
+  grid-template-columns: 50% 50%;
+}
+.LoginRight{
+  background:#1D1E45;
+}
+.LoginLeft{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.createaccounts{
+  font-size: 10px;
+  color: rgb(168, 166, 166);
+  margin: 10px;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.checkboxStyle{
+  margin:10px;
+}
+.checkboxStyle label{
+  font-size: 10px;
+  color: rgb(109, 107, 107);
+  
+
+}
+.createaccounts a{
+  color: rgb(98, 97, 97);
+}
+
+.Logo{
+  width:auto;
+  padding:60px;
+
+}
+.logoimage{
+  height:100%;
+  width:100%;
+}
+
+.LoginRight{
+ display:grid;
+ grid-template-rows: 30% 70%;
+grid-template-columns: 50% 50%;
+grid-template-areas: "top top"
+                      "bleft bright";
+
+}
+.imageblogleft{
+  grid-area:bleft;
+  position: relative;
+height:100%;
+width:100%;
+
+
+
+ 
+}
+.imageblogright{
+  grid-area:bright;
+  position: relative;
+height:100%;
+width:100%;
+
+
+ 
+}
+
+.image1{
+  position: relative;
+
+  left: 0;
+  height: 99.8%;
+  width: 220%;
+  margin-left: -100%;
+  z-index: 2;
+}
+.coinUSD{
+  width: 65%;
+  position: absolute;
+  left: 15%;
+  top: -15%;
+}
+
+.image2{
+  position: relative;
+
+  right: 0;
+  height: 99.8%;
+  width: 120%;
+  margin-left: -20%;
+  z-index: 1;
+   
+}
+.coinEUR{
+  top: -30%;
+  width: 70%;
+  position: absolute;
+  left: 15%;
+}
+
+
+
+
+.login-section .login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-section .login-container h2{
+    text-align: center;
+
+    font-family: var(--body-font);
+}
+
+.login-section .login-container .more-info{
+    text-align: center;
+
+    color: #898989;
+}
+
+.login-section .login-container .authentication-code{
+    
+    font-family: var(--body-font);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+.login-section .login-container .register-text{
+    text-align: center;
+ 
+    color: #898989;
+}
+
+button{
+  width: 60%;
+  font-size: 16px;
+  padding: 0.7rem;
+  color: white;
+  border-radius: 2px;
+  border-style: none;
+  background: #393a57;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+  button{
+      width: 90%;
+  }
+}
+.qr_scan_image{
+  height:120px;
+  width:120px;
+  border: 1px solid grey;
+}
+.footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:flex-end;
+  bottom: 0;
+  height:100%;
+  font-size: 12px;
+  color:#464647;
+
+
+}

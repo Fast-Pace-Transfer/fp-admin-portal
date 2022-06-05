@@ -71,8 +71,8 @@ console.log('status',loggedIn)
       </Head>
 
       <div className="main">
-          <Input type="email" label="Email" placeholder="Enter username or email" state={userName} onChange={(e)=>{setUsername(e.target.value)}}/>
-          <Input type="password" label="Password" placeholder="Enter password" state={userPassword} onChange={(e)=>{setUserPassword(e.target.value)}}/>
+          <Input type="email" label="Email" placeholder="Enter username or email" state={userName} required={true} onChange={(e)=>{setUsername(e.target.value)}}/>
+          <Input type="password" label="Password" placeholder="Enter password" state={userPassword} required={true} onChange={(e)=>{setUserPassword(e.target.value)}}/>
         <Button title="Login" action={handleClick}/>
       </div>
     </>

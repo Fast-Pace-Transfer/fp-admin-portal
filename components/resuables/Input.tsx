@@ -11,9 +11,10 @@ type InputProp={
     placeholder:string,
     state:string,
     type:string
+    required:boolean
 }
 
-const Input =( { label,onChange,placeholder,state,type }: InputProp )=>{
+const Input =( { label,onChange,placeholder,state,type,required }: InputProp )=>{
     return (
         <div className={styles.input}>
             { label&&<label>{label}</label> }
@@ -22,6 +23,7 @@ const Input =( { label,onChange,placeholder,state,type }: InputProp )=>{
             value={ state } 
             onChange={ onChange } 
             placeholder={ placeholder ? placeholder: 'Input field' }
+            required={required}
           />   
         </div>
        
