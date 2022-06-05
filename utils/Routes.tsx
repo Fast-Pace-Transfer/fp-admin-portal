@@ -1,6 +1,6 @@
 import { SidebarCategoryProp } from "../components/resuables/SidebarCategory"
 import jwt from 'jsonwebtoken'
-import cookie from 'js-cookie'
+// import cookie from 'js-cookie'
 import { StaticImageData } from "next/image"
 // icons
 import dashboard from '../public/images/DashboardAsset_3.svg'
@@ -77,11 +77,10 @@ const Client:pages=[
 ]
 
 
-const Pages = ()=>{
-    if(cookie.get("auth")==="true"){
-        const nRole = jwt.decode(cookie.get('role')) as {[key:string]:string}
-    console.log('role',nRole);
-    switch (nRole.role) {
+const Pages = (role:string)=>{
+    if(role==='Admin'||role==='Client'){
+     
+    switch (role) {
         case 'Admin':
             return Admin
             break;

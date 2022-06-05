@@ -1,5 +1,7 @@
-// import Input from '../resuables/Input'
+
 import Button from '../resuables/Button'
+import style from '../../styles/login.module.css'
+
 
 
 interface Auth2FAProps{
@@ -14,14 +16,19 @@ const Auth2FA =({QRcode,action}:Auth2FAProps)=>{
         <>
         <section className="login-section">
     {/* <div class="login-container"> */}
+    <div className={style.form_fields}>
       <h2>Set up your Authenticator</h2>
-      <p className="qrcode_text">Set up your 2FA by scanning the barcode below. Alternatively you can code use below</p>
-      <p className="authentication-code">QR122ST234DAAS</p> 
-      <div className="qr_scan_image" v-if="setup2FA" v-html="setup2FA.qr_image">
+      <p className="qrcode_text">Set up your 2FA by scanning the barcode below. Alternatively you can use the code below</p>
+      <p className={style.authentication_code}>QR122ST234DAAS</p> 
+      <div className={style.qr_scan_image} >
 
       </div>
+      </div>
       <p className="qrcode_info">You must set up your 2FA before you can continue</p>
-      <Button action={action} title="Complete Registration" />
+      <div className={style.form_action}>
+        <Button action={action} title="Complete Registration" />
+      </div>
+      
          
         {/* </div> */}
     </section>

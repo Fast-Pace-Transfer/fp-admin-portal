@@ -7,9 +7,9 @@
 import { useEffect, useState,useContext } from "react";
 // import icon from '../public/favicon.ico'
 import style from '../styles/sidebar.module.css'
-import useAuth from "../hooks/useAuth";
+import { AuthContext } from "../hooks/useAuth";
 import SidebarCategory from "./resuables/SidebarCategory"
-import cookie from 'js-cookie'
+// import cookie from 'js-cookie'
 import { genRandCode } from "../utils";
 import Image from "next/image";
 import logo from '../public/images/fp_logo.png'
@@ -17,17 +17,22 @@ import logo from '../public/images/fp_logo.png'
 
 const Sidebar = ()=>{
 
-const {pages}= useAuth()
+const {pages}= useContext(AuthContext)
+
 const [links,setLinks] = useState([])
 
     useEffect(()=>{
-
-        let link=[]
-      if(cookie.get("auth")==="true"){
+         let link=[]
+         
+        if(pages){
+            
           link.push(...pages);
           setLinks(link)
-      }
+
         
+        }
+
+       
 
         
     },[pages])

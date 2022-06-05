@@ -32,11 +32,18 @@ const toBase64 = (str) =>
     : window.btoa(str)
 
 
+    // const  UserException=(status:number,message:string)=>{
+    //     this.message = message;
+    //     this.status =status
+    //     this.name = 'UserException';
+    //   }
+
 
 export {
     genRandCode,
     shimmer,
-    toBase64
+    toBase64,
+    // UserException
 }
 
 

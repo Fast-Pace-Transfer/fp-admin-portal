@@ -1,11 +1,16 @@
 import Head from 'next/head'
-import Button from '../components/resuables/Button'
 import { useState } from 'react'
-import Input from '../components/resuables/Input'
 import Router,{ useRouter } from 'next/router'
-import cookie from 'js-cookie'
+import logo from '../public/images/fp_logo.png'
+import Image from 'next/image'
+
+import Login from '../components/Login/Login'
+import Auth2FA from '../components/Login/Auth2fa'
+import Confirm2FA from '../components/Login/Confirm2FA'
+
+import style from '../styles/login.module.css'
 // custom components
-const Login=async (username:string,password:string)=>{
+const LoginController=async (username:string,password:string)=>{
 
     try{
 
@@ -17,49 +22,60 @@ const Login=async (username:string,password:string)=>{
             body:JSON.stringify({username,password}) 
         })
 
-         const token=(await login.json())
+        if(!login.ok){
+          let errors = await login.json()
 
-         if(token.token){
-          cookie.set("user",token.token)
-         cookie.set("dp",token.profile)
-         cookie.set("role",token.role)
-         cookie.set("auth",true)
-         }
+          throw errors.message
+
+        }
          
         
-        login?true:false
+       return true
     }
     catch(error){
+
         throw error
 
     }
 
 }
 
-interface HomeProp{
-  loggedIn:boolean
-}
+// interface HomeProp{
+//   loggedIn:boolean
+// }
 
- const Home=({loggedIn}:HomeProp)=> {
+ const Home=()=> {
   const router = useRouter()
-console.log('status',loggedIn)
-
-  if(loggedIn){
-    router.push('/')      
-  }
-
-    
 
     const [userName,setUsername] = useState<string>('')
     const [userPassword,setUserPassword] = useState<string>('')
 
-    const handleClick=()=>{
-        let state =Login(userName,userPassword)
+    const [two_f_a,setTFA]=useState<string>('');
 
-        if(state){
-            router.push('/')
-        }
+    const [loggedIn,setLoggedIn] = useState<boolean>(false)
+    const [scanned,setScanned]=useState<boolean>(false)
+    const [verified,setVerified]=useState<boolean>(false)
+
+    const handleLogin= async ()=>{
+        // let login =await LoginController(userName,userPassword)
+
+        // if(login){
+        //   setLoggedIn(true)
+        // }
+        setLoggedIn(true)
     }
+    
+    const handleQR =async()=>{
+      setScanned(true)
+    }
+
+
+    const handleConfirm = async()=>{
+
+      setVerified(true)
+    }
+
+
     
 
   return (
@@ -70,33 +86,44 @@ console.log('status',loggedIn)
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="main">
-          <Input type="email" label="Email" placeholder="Enter username or email" state={userName} required={true} onChange={(e)=>{setUsername(e.target.value)}}/>
-          <Input type="password" label="Password" placeholder="Enter password" state={userPassword} required={true} onChange={(e)=>{setUserPassword(e.target.value)}}/>
-        <Button title="Login" action={handleClick}/>
+      <div className={style.row}>
+
+        <div className={style.container}>
+          <div className={style.form_container}>
+
+          {!loggedIn&&<Login btnAction={handleLogin} password={userPassword} passControl={(e)=>setUserPassword(e.target.value)} username={userName} userControl={(e)=>setUsername(e.target.value)} />}
+
+          {loggedIn&&!scanned&&<Auth2FA QRcode="qr_code" action={handleQR} />}
+
+          {scanned?<Confirm2FA state={two_f_a} setState={(e)=>setTFA(e.target.value)} action={handleConfirm} />:null}
+       
+        <div className={style.footer}>
+                  <h5>footer</h5>
+        </div>
+          </div>
+         
+        </div>
+
+        <div className={style.container}>
+          <div className={style.fp_logo}>
+
+            <div className={style.fp_circle}>
+
+              <div className={style.image}>
+                  <Image src={logo} width="350"  layout="intrinsic" />
+              </div>
+            
+            </div>
+
+          </div>
+
+        </div>
+
+       
+          
       </div>
     </>
   )
-}
-
-export async function getStaticProps() {
-  // Call an external API endpoint to get posts.
- 
-  // const loggedIn = (await res.json()).isLoggedIn
-  console.log('logged',cookie.get('auth'))
-  let isLoggedIn = false
-  if(cookie.get("auth")&&cookie.get("user")&&cookie.get("role")){
-      isLoggedIn=true
-      Router.push('/');
-  }
- 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      loggedIn:isLoggedIn
-    },
-  }
 }
 
 export default Home

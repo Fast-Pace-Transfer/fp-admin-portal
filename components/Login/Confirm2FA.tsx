@@ -1,9 +1,10 @@
 import Input from '../resuables/Input'
 import Button from '../resuables/Button'
+import style from '../../styles/login.module.css'
 
 
 interface Confirm2FAProps{
-    action:()=>boolean
+    action:()=>void
     state:string
     setState:(e)=>void
 }
@@ -13,10 +14,21 @@ const Confirm2FA=({action,state,setState}:Confirm2FAProps)=>{
     return(
         <>
         <section className="login-section">
-        <p className="register-text">Verify 2FA</p>
-        <Input type="text" placeholder="Enter 2fa Code" state={state} onChange={setState} label="2fa" required={true} />
-        {/* {renderErrorMessage("2fa")} */}
-        <Button action={action} title="Verify"/>
+            <div className={style.form_fields}>
+        <p style={{
+            textAlign: "center",
+            fontSize:"18px",
+            fontWeight:"normal",
+            letterSpacing: "0px",
+            color: "#4D4F5C"
+        }}>Verify 2FA</p>
+        <Input type="text" placeholder="Enter 2fa Code" state={state} onChange={setState} label="2fa Code" required={true} />
+            </div>
+            <div className="for_action">
+                <Button action={action} title="Verify"/>
+            </div>
+       
+        
     
     </section>
         </>

@@ -3,14 +3,12 @@
 1. Import user components
 2. Style
 */
-import useAuth from "../hooks/useAuth"
 import Button from "./resuables/Button"
 import Notification from "./Notification"
 
 
 
 const Navbar =()=>{ 
-    const {logout}=useAuth()
 
     return(
         <nav>

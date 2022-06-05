@@ -5,9 +5,10 @@
 */ 
 
 import { useState,useEffect,createContext,useCallback, useContext } from "react";
-import Cookie from 'js-cookie'
+// import Cookie from 'js-cookie'
 import Router from "next/router";
 import Pages from '../utils/Routes'
+const base_url = process.env.Host_BASE_URL
 
 interface person{
     name:string,
@@ -15,67 +16,53 @@ interface person{
     role:string,
     id:string
 }
-interface contextType {
+interface contextType{
     pages:{}[]|null
-    isAuthed:boolean|number
-    logout:()=>void
 }
 
 export const AuthContext = createContext({} as contextType)
 
-
-// login function
-function useProvideAuth() {
-    const cookie:boolean = Cookie.get("auth");
-  
-    const [isAuthed, setIsAuthed] = useState<boolean|number>(cookie);
-    const [pages,setPages]=useState<{}[]>([])
-
-    const logout =useCallback(()=>{
-      Cookie.remove("auth")
-      Cookie.remove("user")
-      Cookie.remove("dp")
-      Cookie.set("role","none")
-
-      Router.push('/login')
-    },[])
-  console.log('from context',isAuthed)
-    useEffect(() => {
-      if (!isAuthed) {
-        Router.push("/login");
-        Cookie.remove("auth");
-      } else {
-          // console.log(Pages())
-
-        setPages(Pages())
-        setIsAuthed(true)
-      }
-    }, [isAuthed]);
-  
-    return { isAuthed,pages,logout };
-  }
+const AuthContextProvider=({children})=>{
 
 
+          let thisRole;
+          const res = fetch(`${base_url}/api/auth/user`)
+
+          res.then((data)=>{
+            return data.json()
+          }).then((res)=>{
+            thisRole= res.role
+          }).catch((error)=>{
+            console.error(error)
+          })
 
 
+          const [role,setRole]=useState<string>(thisRole)
+          const [pages,setPages]=useState<{}[]>([])
 
-export const AuthContextProvider=({children})=>{
+          useEffect(() => {
+          
+            
+              setPages(Pages(role))
+            
+            
+          }, [role]);
 
-    const value:contextType = useProvideAuth();
    
     return(
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={{pages}}>
             {children}
         </AuthContext.Provider>
     )
 }
 
 
-const useAuth=()=>{
-    return useContext(AuthContext)
-}
+// const useAuth=()=>{
+//     return useContext(AuthContext)
+// }
 
 
 
 
-export default useAuth
+
+export default AuthContextProvider

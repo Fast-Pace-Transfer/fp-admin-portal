@@ -9,14 +9,7 @@ import React from "react"
 const Layout =({children})=>{
     return (
         <div className="Layout">
-            <div className="main">
-                <div className="content">
                 {children}
-                </div>
-                {/* <Footer/> */}
-
-            </div>
-
         </div>
     )
 }
