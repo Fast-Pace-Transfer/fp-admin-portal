@@ -12,6 +12,9 @@ import report from '../public/images/ReportsAsset_5.svg';
 import wallet from '../public/images/WalletAsset_4.svg';
 // icons
 // const key ="abdibidbadasdnbiq"
+
+const base_url=process.env.Host_BASE_URL;
+console.log(process.env.Host_BASE_URL)
 type pages ={
     title:string
     sub?:{
@@ -76,9 +79,41 @@ const Client:pages=[
     
 ]
 
+const Other:pages=[
+    {
+        title:"Extra",
+        sub:[
+            {
+                icon:docs,
+                title:"Documentation",
+                route:'https://documenter.getpostman.com/view/17812328/Uz5GowQ4'
+            }
+        ]
+    }
+]
 
-const Pages = (role:string)=>{
-    if(role==='Admin'||role==='Client'){
+
+const Role =async ()=>{
+    const res = await fetch(`/api/auth/user`)
+    let data = await res.json()
+
+    let role=data.role
+    
+console.log('role here',role)
+     return role
+
+}
+
+
+const Pages = ()=>{
+                
+
+    let role
+       const rol= Role().then(data=>{
+        role= data
+    })            
+                    
+           if(!role){
      
     switch (role) {
         case 'Admin':
@@ -88,11 +123,10 @@ const Pages = (role:string)=>{
             return Client
             break;
         default:
-            throw new Error('Invalid Role')
+            return Other
             break;
     }
     }
-    return 
     
 }
 

@@ -18,7 +18,7 @@ import logo from '../public/images/fp_logo.png'
 const Sidebar = ()=>{
 
 const {pages}= useContext(AuthContext)
-
+console.log('route',pages)
 const [links,setLinks] = useState([])
 
     useEffect(()=>{

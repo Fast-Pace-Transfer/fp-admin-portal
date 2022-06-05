@@ -22,31 +22,21 @@ interface contextType{
 
 export const AuthContext = createContext({} as contextType)
 
+
+
+
+
 const AuthContextProvider=({children})=>{
 
-
-          let thisRole;
-          const res = fetch(`${base_url}/api/auth/user`)
-
-          res.then((data)=>{
-            return data.json()
-          }).then((res)=>{
-            thisRole= res.role
-          }).catch((error)=>{
-            console.error(error)
-          })
-
-
-          const [role,setRole]=useState<string>(thisRole)
           const [pages,setPages]=useState<{}[]>([])
 
           useEffect(() => {
           
             
-              setPages(Pages(role))
+              setPages(Pages())
             
             
-          }, [role]);
+          }, [pages]);
 
    
     return(
