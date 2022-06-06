@@ -18,6 +18,7 @@ interface person{
 }
 interface contextType{
     pages:{}[]|null
+    validRoutes?:string[]
 }
 
 export const AuthContext = createContext({} as contextType)
@@ -29,18 +30,28 @@ export const AuthContext = createContext({} as contextType)
 const AuthContextProvider=({children})=>{
 
           const [pages,setPages]=useState<{}[]>([])
+          const [validRoutes,setValidRoutes]=useState<string[]>([])
 
           useEffect(() => {
           
-            
-              setPages(Pages())
+            let page= Pages()
+            let valid:string[]=[]
+            for(let vr of page){
+              vr.sub.map(root=>{
+                console.log('route',root.route)
+                valid.push(root.route)
+              })
+            }
+
+            setPages(page)
+            setValidRoutes(valid)
             
             
           }, [pages]);
 
    
     return(
-        <AuthContext.Provider value={{pages}}>
+        <AuthContext.Provider value={{pages,validRoutes}}>
             {children}
         </AuthContext.Provider>
     )

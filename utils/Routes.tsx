@@ -12,9 +12,6 @@ import report from '../public/images/ReportsAsset_5.svg';
 import wallet from '../public/images/WalletAsset_4.svg';
 // icons
 // const key ="abdibidbadasdnbiq"
-
-const base_url=process.env.Host_BASE_URL;
-console.log(process.env.Host_BASE_URL)
 type pages ={
     title:string
     sub?:{
@@ -86,7 +83,7 @@ const Other:pages=[
             {
                 icon:docs,
                 title:"Documentation",
-                route:'https://documenter.getpostman.com/view/17812328/Uz5GowQ4'
+                route:'/docs'
             }
         ]
     }

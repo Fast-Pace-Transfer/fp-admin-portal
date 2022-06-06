@@ -4,6 +4,7 @@ import Layout from '../layout/Layout'
 import SettingsLayout from '../layout/SettingsLayout'
 import Router,{useRouter} from 'next/router'
 import AuthContextProvider from '../hooks/useAuth'
+import { AuthContext } from '../hooks/useAuth'
 
 
 
@@ -11,17 +12,18 @@ import AuthContextProvider from '../hooks/useAuth'
 
 
 
-function MyApp({ Component, pageProps,loggedIn }) {
+function MyApp({ Component, pageProps }) {
   const settings =['/login'];
-
   const router = useRouter();
+
+const {validRoutes,pages}=useContext(AuthContext)
+
  
  
   useEffect(()=>{
 
-    
   
-  },[])
+  },[router.pathname])
   
 
 
