@@ -26,19 +26,18 @@ export const AuthContext = createContext({} as contextType)
 
 
 
-
 const AuthContextProvider=({children})=>{
 
-          const [pages,setPages]=useState<{}[]>([])
-          const [validRoutes,setValidRoutes]=useState<string[]>([])
+  const [pages,setPages]=useState<{}[]>([])
+  const [validRoutes,setValidRoutes]=useState<string[]>([])
 
-          useEffect(() => {
-          
-            let page= Pages()
+          useEffect( () => {
+
+           let page= Pages()
             let valid:string[]=[]
             for(let vr of page){
               vr.sub.map(root=>{
-                console.log('route',root.route)
+                
                 valid.push(root.route)
               })
             }

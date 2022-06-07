@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Router,{ useRouter } from 'next/router'
 import logo from '../public/images/fp_logo.png'
 import Image from 'next/image'
@@ -7,30 +7,37 @@ import Image from 'next/image'
 import Login from '../components/Login/Login'
 import Auth2FA from '../components/Login/Auth2fa'
 import Confirm2FA from '../components/Login/Confirm2FA'
+import NewPass from '../components/Login/NewPass'
 
 import style from '../styles/login.module.css'
 // custom components
 const LoginController=async (username:string,password:string)=>{
 
     try{
-
-        let login = await fetch("/api/login",{
+          
+        let login = await fetch("/api/auth/login",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({username,password}) 
         })
-
+        
         if(!login.ok){
+          console.log('in OK')
           let errors = await login.json()
-
           throw errors.message
 
         }
-         
+
+        let res= await login.json()
+
+        if(!res.isSuccessful){
+          console.log('in success')
+          throw 'Action was not successful'
+        }
         
-       return true
+       return res
     }
     catch(error){
 
@@ -38,6 +45,39 @@ const LoginController=async (username:string,password:string)=>{
 
     }
 
+}
+
+const SetPassController = async (password:string,confirmed)=>{
+
+  try{
+  let res = await fetch("/api/auth/setpass",{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({password,password_confirmation:confirmed})   
+    })
+
+    if(!res.ok){
+      console.log('in Execute')
+        throw "Error Executing"
+    }
+    console.log(res)
+
+    let respond = await res.json()
+
+    if(respond.message!=="Error attempting to reset password"){
+      console.log('in execute')
+      throw "Error Executing"
+    }
+
+    return true
+
+  }
+  catch(error){
+    console.log(error)
+    return false
+  }
 }
 
 // interface HomeProp{
@@ -50,31 +90,109 @@ const LoginController=async (username:string,password:string)=>{
     const [userName,setUsername] = useState<string>('')
     const [userPassword,setUserPassword] = useState<string>('')
 
+    const [newPass1,setNewPass1]=useState<string>('')
+    const [newPass2,setNewPass2]=useState<string>('')
+
+    const [qrcode,setQrcode]=useState<string>('')
+    const [secret,setSecret]=useState<string>('')
+
+
     const [two_f_a,setTFA]=useState<string>('');
+   
 
     const [loggedIn,setLoggedIn] = useState<boolean>(false)
+    const [password,SetPassword]=useState<boolean>(true)
     const [scanned,setScanned]=useState<boolean>(false)
     const [verified,setVerified]=useState<boolean>(false)
 
     const handleLogin= async ()=>{
-        let login =await LoginController(userName,userPassword)
+      try {
+        console.log(userName,userPassword)
 
-        // if(login){
-        //   setLoggedIn(true)
-        // }
-        setLoggedIn(true)
+        if(userName===""||userPassword===""){
+          console.log('error here')
+        throw 'Username or Login is not available'
+      }
+        let data =await LoginController(userName,userPassword)
+
+        if(data.isSuccessful){
+          console.log('successful',data.passwordChanged)
+          if(!data.passwordChanged){
+            setLoggedIn(true)
+            SetPassword(false)
+          }
+          else{
+            setLoggedIn(true)
+            SetPassword(true)
+          }
+          console.log(loggedIn,password)
+          
+        }
+        else{
+          throw "Login was not successful"
+        }
+
+        
+      } 
+      catch(error) {
+        console.log(error)
+        setLoggedIn(false)
+      }
+
+      
     }
+
+    const handlePassword = async()=>{
+        try{
+          if(newPass1===""||newPass2===""){
+            throw "Fields can not be empty"
+          }
+          else if(newPass1!==newPass2){
+            throw "Passwords do not match"
+          }
+          else{
+            const newPass:boolean = await SetPassController(newPass1,newPass2);
+
+            if(!newPass){
+              SetPassword(false)
+            }
+            SetPassword(true)
+
+          }
+        }
+        catch(error){
+          SetPassword(false)
+        }
+
+
+    }
+    
+    useEffect(()=>{
+      if(loggedIn&&password){
+        fetch('/api/auth/get2FA').then(res=>{
+          res.json().then(qr=>{
+            console.log(qr)
+              setQrcode(qr.qrcode)
+              setSecret(qr.secret)
+          })
+        })
+      }else{
+        setQrcode('')
+      }
+      
+    },[loggedIn])
     
     const handleQR =async()=>{
       setScanned(true)
     }
 
 
+
     const handleConfirm = async()=>{
 
       setVerified(true)
     }
-
+ 
 
     
 
@@ -86,14 +204,18 @@ const LoginController=async (username:string,password:string)=>{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+     
       <div className={style.row}>
+     
 
         <div className={style.container}>
           <div className={style.form_container}>
 
           {!loggedIn&&<Login btnAction={handleLogin} password={userPassword} passControl={(e)=>setUserPassword(e.target.value)} username={userName} userControl={(e)=>setUsername(e.target.value)} />}
 
-          {loggedIn&&!scanned&&<Auth2FA QRcode="qr_code" action={handleQR} />}
+          {loggedIn&&!password&&<NewPass action={handlePassword} state1={newPass1} setState1={(e)=>setNewPass1(e.target.value)} state2={newPass2} setState2={(e)=>setNewPass2(e.target.value)} />}
+          
+          {loggedIn&&password&&!scanned&&<Auth2FA QRcode={qrcode} secret={secret} action={handleQR} />}
 
           {scanned?<Confirm2FA state={two_f_a} setState={(e)=>setTFA(e.target.value)} action={handleConfirm} />:null}
        

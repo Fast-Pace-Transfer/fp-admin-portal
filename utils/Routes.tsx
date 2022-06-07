@@ -91,39 +91,40 @@ const Other:pages=[
 
 
 const Role =async ()=>{
+
     const res = await fetch(`/api/auth/user`)
+
     let data = await res.json()
 
-    let role=data.role
-    
-console.log('role here',role)
-     return role
+
+     return data.role.role
 
 }
 
 
 const Pages = ()=>{
-                
 
-    let role
-       const rol= Role().then(data=>{
-        role= data
-    })            
-                    
-           if(!role){
+    // Role().then(role=>{
+    //     return role
+    // })
+    
+    // console.log('role',Role().then(role=>{
+    //     return role
+    // }));
+     let role='admin'
      
     switch (role) {
-        case 'Admin':
+        case 'admin':
             return Admin
             break;
-        case 'Client':
+        case 'client':
             return Client
             break;
         default:
             return Other
             break;
     }
-    }
+    
     
 }
 

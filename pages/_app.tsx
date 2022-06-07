@@ -13,7 +13,7 @@ import { AuthContext } from '../hooks/useAuth'
 
 
 function MyApp({ Component, pageProps }) {
-  const settings =['/login'];
+  const settings =['/login','/404'];
   const router = useRouter();
 
 const {validRoutes,pages}=useContext(AuthContext)
