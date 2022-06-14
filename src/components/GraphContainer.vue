@@ -14,19 +14,21 @@
         </select>
       </div>
     </div>
-    <!-- <div class="graph_component">
-      <BarCharts />
-    </div> -->
+    <div class="graph_container"><BarCharts /></div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BarCharts from "./common/BarCharts.vue";
+</script>
 
 <style>
 .graph_layout {
-  border: 1px solid red;
+  background: #fff;
+  box-shadow: 0px 2px 6px #0000000a;
+  border-radius: 10px;
+  padding: 0 10px;
 }
-
 .graph_layout .graph_layout_header {
   display: flex;
   justify-content: space-between;
@@ -52,6 +54,7 @@
   background: #fff;
   color: #383d6f;
   font-size: 12px;
+  padding: 0 10px;
   box-shadow: 0 2px 3px #0000000d;
 }
 

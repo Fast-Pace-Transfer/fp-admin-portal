@@ -54,6 +54,8 @@ const props = defineProps({
   color: #343434;
   font-size: 1.175rem;
   margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: normal;
 }
 
 .dashboard_inner_right_column_stats_content .amount_of_transactions {
@@ -68,8 +70,16 @@ const props = defineProps({
 .dashboard_inner_right_column_stats_content .bottom_stats {
   display: flex;
   gap: 5px;
+  align-items: center;
   font-family: "Poppins", sans-serif;
   font-size: 12px;
+}
+
+.dashboard_inner_right_column_stats_content
+  .bottom_stats
+  .bottom_stats_percentage,
+.dashboard_inner_right_column_stats_content .bottom_stats .bottom_stats_icon {
+  font-size: 15px;
 }
 
 .dashboard_inner_right_column_stats_content

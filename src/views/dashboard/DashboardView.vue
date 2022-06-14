@@ -10,10 +10,13 @@
         <div class="dashboard_inner_left_column_content">
           <div class="dashboard_inner_left_column_top_content">
             <WalletView
-              :width="`75%`"
-              :switchable="true"
+              :width="`500px`"
+              :wallet-object="prefundingAccounts"
+              :title="`Prefund Account`"
+              :switchable="false"
               :background-color="`#4953B2`"
               :border-color="`#4953B2`"
+              :background-image="`url(src/assets/images/wallet.svg)`"
             />
           </div>
           <div class="dashboard_inner_left_column_bottom_content">
@@ -26,7 +29,7 @@
           <!-- End of stats card -->
           <!-- Settlement rates -->
           <div class="dashboard_inner_right_column_content_second_row">
-            <div class="settlement_rate_title">Settlement Rate</div>
+            <div class="settlement_rate_title">Indicative Exchange Rate</div>
             <div class="countries_select_box">
               <select>
                 <option>USD - GHS</option>
@@ -42,8 +45,8 @@
             <div class="transaction_history_header">
               <h3>Transaction History</h3>
               <div class="durations">
-                <p>Today</p>
-                <p>This week</p>
+                <p class="duration-title active">Today</p>
+                <p class="duration-title">This week</p>
               </div>
             </div>
             <div class="transaction_history_content">
@@ -88,11 +91,54 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from "vuex";
+import { computed, ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "../../components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
 import GraphContainer from "@/components/GraphContainer.vue";
 import StatsCard from "@/components/common/StatsCard.vue";
+
+// Initialize store
+const store = useStore();
+
+// Get token
+const token = computed(() => store.getters.getToken);
+
+// Interface for prefund account
+interface PrefundAccount {
+  id: string;
+  partner_id: string;
+  currency: string;
+  balance: number;
+  type: string;
+  name: null | string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  partner: {
+    id: string;
+    name: string;
+  };
+}
+
+// Initial values for prefunding accounts
+const prefundingAccounts = ref<PrefundAccount>();
+
+// When component is mounted
+onMounted(async () => {
+  // Get prefunding accounts
+  const response = await axios.get(`/accounts/pre-fund`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+
+  // Set prefunding accounts
+  prefundingAccounts.value = response.data.data;
+});
 
 const statArray = [
   {
@@ -128,7 +174,7 @@ const statArray = [
   margin-top: 5rem;
   padding: 0 1.875rem;
   display: flex;
-  gap: 4%;
+  gap: 10%;
 }
 
 /* Inner Left Content CSS */
@@ -139,7 +185,7 @@ const statArray = [
   width: 48%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 80px;
 }
 /* End of Inner Left Content CSS */
 
@@ -177,7 +223,7 @@ const statArray = [
 }
 
 .dashboard_inner_right_column_content_third_row {
-  margin-top: 40px;
+  margin-top: 80px;
 }
 
 /* Transaction history */
@@ -255,5 +301,14 @@ const statArray = [
   .transaction_history_item_amount {
   font-size: 1.25rem;
   color: #423e3b;
+}
+
+.duration-title {
+  cursor: pointer;
+}
+
+.duration-title.active {
+  color: var(--primary-color);
+  font-weight: bold;
 }
 </style>

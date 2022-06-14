@@ -1,5 +1,6 @@
 <template>
   <div class="layout_dashboard">
+    <PageLoader v-if="loading" />
     <!-- Sidebar -->
     <SidebarView />
     <!-- End of sidebar -->
@@ -7,27 +8,6 @@
     <section class="layout_dashboard_content">
       <NavbarView />
       <div class="dashboard_inner_content_operational_account">
-        <!-- Accounts -->
-        <div class="list_of_accounts">
-          <div class="prefunded_account">
-            <WalletView
-              :width="`100%`"
-              :switchable="false"
-              :background-color="`#4953B2`"
-              :border-color="`#4953B2`"
-            />
-          </div>
-          <div class="operational_accounts">
-            <WalletView
-              :title="`Transacting Balance - GHS Wallet`"
-              :width="`100%`"
-              :switchable="true"
-              :background-color="`#B24949`"
-              :border-color="`#B24949`"
-            />
-          </div>
-        </div>
-        <!-- End of Accounts -->
         <!-- Stats -->
         <div class="total_statistics_layout">
           <div class="total_statistics">
@@ -188,9 +168,11 @@
 </template>
 
 <script setup lang="ts">
+import { useStore } from "vuex";
+import { computed } from "vue";
+import PageLoader from "@/components/common/PageLoader.vue";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
-import WalletView from "@/components/common/WalletView.vue";
 import StatsCard from "@/components/common/StatsCard.vue";
 
 const statArray = [
@@ -219,6 +201,12 @@ const statArray = [
     drop: true,
   },
 ];
+
+// Initialize store
+const store = useStore();
+
+// Get loading status
+const loading = computed(() => store.getters.getLoadingStatus);
 </script>
 
 <style>
@@ -239,30 +227,12 @@ const statArray = [
   padding: 0 1.875rem;
 }
 
-/* List of accounts */
-.list_of_accounts {
-  display: flex;
-  justify-content: center;
-  gap: 14%;
-  width: 100%;
-}
-
-.list_of_accounts .prefunded_account {
-  width: 38%;
-}
-
-.list_of_accounts .operational_accounts {
-  width: 38%;
-}
-/* End of list of accounts */
-
 /* Stats CSS*/
 .total_statistics_layout {
   display: flex;
   justify-content: center;
 }
 .total_statistics {
-  margin-top: 60px;
   width: 90%;
 }
 /* End of Stats CSS*/

@@ -1,87 +1,62 @@
 <template>
-  <div>
-    <Bar
-      :chart-options="chartOptions"
-      :chart-data="chartData"
-      :chart-id="chartId"
-      :dataset-id-key="datasetIdKey"
-      :plugins="Plugins"
-      :css-classes="cssClasses"
-      :styles="styles"
-      :width="width"
-      :height="height"
-    />
-  </div>
+  <div class="chart_container"><canvas id="myChart"></canvas></div>
 </template>
-<script lang="ts">
-import { defineComponent, h, PropType } from "vue";
-import { Bar } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  PluginOptionsByType,
-} from "chart.js";
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
 
-export default defineComponent({
-  name: "BarChart",
-  components: { Bar },
-  props: {
-    chartId: {
-      type: String,
-      default: "bar-chart",
-    },
-    width: {
-      type: Number,
-      default: 200,
-    },
-    height: {
-      type: Number,
-      default: 200,
-    },
-    cssClasses: {
-      default: "",
-      type: String,
-    },
-    styles: {
-      type: Object as PropType<Partial<CSSStyleDeclaration>>,
-      default: () => {},
-    },
-    plugins: {
-      type: Object as PropType<PluginOptionsByType<"bar">>,
-      default: () => {},
-    },
-  },
-  setup(props) {
-    const chartData = {
-      labels: ["January", "February", "March"],
-      datasets: [{ data: [40, 20, 12] }],
-    };
+<script setup lang="ts">
+import { onMounted } from "vue";
+import Chart from "chart.js/auto";
+import { Legend } from "chart.js";
+Chart.register(Legend);
 
-    const chartOptions = { responsive: true };
-    return {
-      chartOptions,
-      chartData,
-      chartID: props.chartId,
-      datasetIdKey: "dataset-id",
-      Plugins: props.plugins,
-      width: props.width,
-        height: props.height,
-    };
-  },
+onMounted(() => {
+  const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+  ctx.getContext("2d");
+
+  // Initialize chart
+  const myChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+      datasets: [
+        {
+          data: [6, 4, 2, 3, 5, 3, 4],
+          backgroundColor: ["#4953B2"],
+          borderColor: ["#4953B2"],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 12,
+          grid: {
+            drawBorder: false,
+            color: "#EAF0F4",
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
+
+  myChart;
 });
 </script>
 
-<style scoped></style>
+<style>
+.chart_container {
+  height: 100%;
+  width: 100%;
+}
+</style>

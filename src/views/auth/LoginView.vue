@@ -108,6 +108,22 @@ const submitLoginForm = async () => {
 
         // Set token
         store.dispatch("setToken", response.data.data.token.access_token);
+
+        // Set user data
+        const userData = {
+          id: response.data.data.id,
+          email: response.data.data.email,
+          role: response.data.data.role,
+          two_fa_active: response.data.data.two_fa_active,
+          partner: {
+            id: response.data.data.partner.id,
+            name: response.data.data.partner.name,
+          },
+        };
+        store.dispatch("setUserData", userData);
+
+        // Set role
+        store.dispatch("setRole", response.data.data.role);
         // Redirect to change password view
         if (response.data.data.password_changed !== null) {
           if (response.data.data.two_fa_active === true) {

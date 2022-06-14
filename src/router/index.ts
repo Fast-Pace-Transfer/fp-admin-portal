@@ -63,44 +63,11 @@ const router = createRouter({
       meta: {
         title: "Dashboard",
         requiresAuth: true,
-        checkRole: ["admin", "finance", "user", "developer"],
+        checkRole: ["admin", "finance"],
       },
     },
     {
-      path: "/prefunded-account",
-      name: "prefunded-account",
-      component: {
-        render: () => h(resolveComponent("router-view")),
-      },
-      children: [
-        {
-          path: "",
-          name: "browse-prefunded-account",
-          component: () =>
-            import("@/views/dashboard/account/BrowsePrefundingAccount.vue"),
-          meta: {
-            title: "Browse Prefunded Accounts",
-            requiresAuth: true,
-            checkRole: ["admin", "finance", "user"],
-          },
-        },
-        {
-          path: "request-funding",
-          name: "request-funding",
-          component: () =>
-            import(
-              "@/views/dashboard/account/PrefundingAccountFundingRequest.vue"
-            ),
-          meta: {
-            title: "Request Funding",
-            requiresAuth: true,
-            checkRole: ["admin", "finance", "user"],
-          },
-        },
-      ],
-    },
-    {
-      path: "/operational-accounts",
+      path: "/accounts",
       name: "accounts",
       component: {
         render: () => h(resolveComponent("router-view")),
@@ -108,24 +75,54 @@ const router = createRouter({
       children: [
         {
           path: "",
-          name: "browse-operational-accounts",
-          component: () =>
-            import("@/views/dashboard/wallets/BrowseOperationalAccounts.vue"),
+          name: "browse-accounts",
+          component: () => import("@/views/dashboard/account/AccountsView.vue"),
           meta: {
-            title: "Browse Operational Accounts",
+            title: "Browse Accounts",
             requiresAuth: true,
-            checkRole: ["admin", "finance", "user"],
+            checkRole: ["admin", "finance"],
           },
         },
         {
-          path: "transfer-funds",
+          path: "transfer-funds/:id",
           name: "transfer-funds",
           component: () =>
-            import("@/views/dashboard/wallets/AccountFunding.vue"),
+            import("@/views/dashboard/wallets/FundsTransfer.vue"),
           meta: {
             title: "Transfer Funds",
             requiresAuth: true,
-            checkRole: ["admin", "finance", "user"],
+            checkRole: ["admin", "finance"],
+          },
+        },
+      ],
+    },
+    {
+      path: "/transactions",
+      name: "transactions",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "browse-transactions",
+          component: () =>
+            import("@/views/dashboard/transactions/BrowseTransactions.vue"),
+          meta: {
+            title: "Browse Transactions",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
+          },
+        },
+        {
+          path: "view/:id",
+          name: "view-transactions",
+          component: () =>
+            import("@/views/dashboard/transactions/ViewTransactions.vue"),
+          meta: {
+            title: "View Transaction",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
           },
         },
       ],
@@ -148,22 +145,22 @@ router.beforeEach((toRoute, fromRoute, next) => {
   }
 });
 
-// router.beforeEach((toRoute, fromRoute, next) => {
-//   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
-//   if (toRoute.matched.some((record) => record.meta.checkRole)) {
-//     if (
-//       toRoute.meta.checkRole instanceof Array &&
-//       toRoute.meta.checkRole !== null
-//     ) {
-//       if (!toRoute.meta.checkRole.includes(role.value)) {
-//         next({ path: "/:catchAll(.*)" });
-//       } else {
-//         next();
-//       }
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((toRoute, fromRoute, next) => {
+  window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
+  if (toRoute.matched.some((record) => record.meta.checkRole)) {
+    if (
+      toRoute.meta.checkRole instanceof Array &&
+      toRoute.meta.checkRole !== null
+    ) {
+      if (!toRoute.meta.checkRole.includes(role.value)) {
+        next({ path: "/:catchAll(.*)" });
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
+});
 
 export default router;

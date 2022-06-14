@@ -30,7 +30,6 @@
               :is-input-num="true"
               :conditionalClass="['one', 'two', 'three', 'four']"
               :placeholder="['', '', '', '', '', '']"
-              @on-change="handleOnChange"
               @on-complete="handleOnComplete"
             />
           </div>
@@ -71,6 +70,9 @@ const loading = computed(() => store.getters.getLoadingStatus);
 // Get the token
 const token = computed(() => store.getters.getToken);
 
+// Get role
+const role = computed(() => store.getters.getRole);
+
 const otpInput = ref(null);
 
 const handleOnComplete = async (value: string) => {
@@ -93,10 +95,12 @@ const handleOnComplete = async (value: string) => {
     .then((response) => {
       // Set loading status
       store.dispatch("isLoading");
-      if (response.status === 200) {
-        console.log("2FA code verified");
-        // Redirect to dashboard
+      if (response.status === 200 && role.value !== "user") {
+        // Redirect to their respective routes
         router.push({ name: "dashboard" });
+      } else {
+        // Redirect to their respective routes
+        router.push({ name: "transactions" });
       }
     })
     .catch((error) => {
@@ -114,9 +118,9 @@ const handleOnComplete = async (value: string) => {
     });
 };
 
-const handleOnChange = (value: string) => {
-  console.log("OTP changed: ", value);
-};
+// const handleOnChange = (value: string) => {
+//   console.log("OTP changed: ", value);
+// };
 </script>
 
 <style>

@@ -13,6 +13,7 @@
               v-slot="{ isActive }"
               :to="{ name: 'dashboard' }"
               class="link"
+              v-if="['admin', 'finance'].includes(role)"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -32,8 +33,9 @@
             </router-link>
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-prefunded-account' }"
+              :to="{ name: 'browse-accounts' }"
               class="link"
+              v-if="['admin', 'finance'].includes(role)"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -46,15 +48,16 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Prefunded Account
+                  Accounts
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-operational-accounts' }"
+              :to="{ name: 'browse-transactions' }"
               class="link"
+              v-if="['admin', 'finance', 'dev', 'user'].includes(role)"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -67,19 +70,22 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Operational Accounts
+                  Transactions
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
           </ul>
         </nav>
-        <nav class="sidebar_category">
+        <nav
+          class="sidebar_category"
+          v-if="['admin', 'finance'].includes(role)"
+        >
           <p class="sidebar_category_title">Business</p>
           <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'prefunded-account' }"
+              :to="{ name: 'browse-transactions' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
@@ -94,74 +100,6 @@
                   class="sidebar_category_item_title"
                 >
                   Reports
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'accounts' }"
-              class="link"
-            >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconReports :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Documents
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
-          </ul>
-        </nav>
-        <nav class="sidebar_category">
-          <p class="sidebar_category_title">Developers</p>
-          <ul class="sidebar_category_list">
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'prefunded-account' }"
-              class="link"
-            >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconApiKeys :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  API Keys
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'accounts' }"
-              class="link"
-            >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconApiKeys :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  API Documentation
                 </p>
                 <!-- End of Link title -->
               </li>
@@ -181,6 +119,16 @@ import IconApiDocumentation from "../icons/developers/IconApiDocumentation.vue";
 import IconApiKeys from "../icons/developers/IconApiKeys.vue";
 import IconReports from "../icons/business/IconReports.vue";
 import { RouterLink } from "vue-router";
+import { useStore } from "vuex";
+import { computed } from "vue";
+
+// Initialize the store
+const store = useStore();
+
+// Get role
+const role = computed(() => {
+  return store.getters.getRole;
+});
 </script>
 
 <style>
