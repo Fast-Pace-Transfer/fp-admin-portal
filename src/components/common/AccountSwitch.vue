@@ -74,13 +74,20 @@ onMounted(() => {
     .then((response) => {
       // Set operational accounts
       operationalAccounts.value = response.data;
-      store.dispatch("setSelectedOperationalAccount", {
-        id: operationalAccounts.value[0].id,
-        currency: operationalAccounts.value[0].currency,
-        balance: operationalAccounts.value[0].balance,
-        type: operationalAccounts.value[0].type,
-        name: operationalAccounts.value[0].name,
-      });
+
+      // Check if there is a selected account id in LocalStorage
+      if (!localStorage.getItem("selectedOperationalAccount")) {
+        // Add selected account ID to LocalStorage
+        localStorage.setItem("selectedOperationalAccount", "true");
+        // Add selected account to store
+        store.dispatch("setSelectedOperationalAccount", {
+          id: operationalAccounts.value[0].id,
+          currency: operationalAccounts.value[0].currency,
+          balance: operationalAccounts.value[0].balance,
+          type: operationalAccounts.value[0].type,
+          name: operationalAccounts.value[0].name,
+        });
+      }
     })
     .catch((error) => {
       // Show error message
@@ -92,12 +99,11 @@ onMounted(() => {
 const changeOperationalAccount = (event: any) => {
   // Get selected account
   const selectedAccount = event.target.options[event.target.selectedIndex];
-  console.log(selectedAccount);
   // Get account data
   const accountData = {
     id: selectedAccount.dataset.id,
     currency: selectedAccount.dataset.currency,
-    balance: selectedAccount.dataset.balance,
+    balance: Number(selectedAccount.dataset.balance),
     type: selectedAccount.dataset.type,
     name: selectedAccount.dataset.name,
   };
@@ -109,6 +115,9 @@ const changeOperationalAccount = (event: any) => {
     type: accountData.type,
     name: accountData.name,
   });
+
+  // Add selected account ID to LocalStorage
+  localStorage.setItem("selectedOperationalAccount", "true");
 };
 </script>
 

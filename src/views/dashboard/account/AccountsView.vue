@@ -25,9 +25,9 @@
           </div>
           <div class="operational_accounts">
             <WalletView
-              :wallet-object="operationalAccounts[0]"
+              :wallet-object="operationalAccount"
               :show-request="true"
-              :title="`Operational Account - GHS`"
+              :title="`Operational Account - ${operationalAccount.currency}`"
               :type="'operation'"
               :width="`500px`"
               :switchable="operationalAccounts.length > 1 ? true : false"
@@ -89,10 +89,11 @@
                   <tr v-for="history in fundingHistory" :key="history.id">
                     <td>
                       {{
-                        new Date(history.created_at).toLocaleDateString(
-                          "en-US",
-                          options
-                        )
+                        new Date(history.created_at)
+                          .toLocaleDateString("en-US", options)
+                          .replace("/", "-")
+                          .replace("/", "-")
+                          .replace(",", "  ")
                       }}
                     </td>
                     <td>{{ history.reference }}</td>
@@ -220,14 +221,10 @@ const operationalAccounts = ref<OperationalAccount[]>([]);
 // Initial values for funding history
 const fundingHistory = ref<FundingHistory[]>([]);
 
-// Get operational accounts
-function getOperationalAccounts() {
-  return axios.get("/accounts/operation", {
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-    },
-  });
-}
+// Get operational account from store
+const operationalAccount = computed(() => {
+  return store.getters.getSelectedOperationalAccount;
+});
 
 // Get prefunding accounts
 function getPrefundingAccounts() {
@@ -251,16 +248,11 @@ function getAccountsHistory() {
 onMounted(async () => {
   // Run axios requests
   await store.dispatch("isLoading");
-  await Promise.all([
-    getPrefundingAccounts(),
-    getOperationalAccounts(),
-    getAccountsHistory(),
-  ])
+  await Promise.all([getPrefundingAccounts(), getAccountsHistory()])
     .then(function (results) {
       store.dispatch("isLoading");
       prefundingAccounts.value = results[0].data.data;
-      operationalAccounts.value = results[1].data.data;
-      fundingHistory.value = results[2].data.data;
+      fundingHistory.value = results[1].data.data;
     })
     .catch(function (error) {
       if (error.response) {
