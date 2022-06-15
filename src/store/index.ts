@@ -9,10 +9,11 @@ export default createStore({
     token: "",
     user: {},
     role: "",
+    selectedOperationalAccount: {},
   },
   plugins: [
     createPersistedState({
-      paths: ["token", "user", "role"],
+      paths: ["token", "user", "role", "selectedOperationalAccount"],
       storage: {
         getItem: (key) => ls.get(key),
         setItem: (key, value) => ls.set(key, value),
@@ -36,6 +37,10 @@ export default createStore({
     setUserData(state, payload) {
       state.user = payload;
     },
+
+    setSelectedOperationalAccount(state, payload) {
+      state.selectedOperationalAccount = payload;
+    },
   },
 
   actions: {
@@ -54,6 +59,10 @@ export default createStore({
     setUserData(state, payload) {
       state.commit("setUserData", payload);
     },
+
+    setSelectedOperationalAccount(state, payload) {
+      state.commit("setSelectedOperationalAccount", payload);
+    },
   },
   modules: {},
 
@@ -62,5 +71,6 @@ export default createStore({
     getToken: (state) => state.token,
     getUser: (state) => state.user,
     getRole: (state) => state.role,
+    getSelectedOperationalAccount: (state) => state.selectedOperationalAccount,
   },
 });

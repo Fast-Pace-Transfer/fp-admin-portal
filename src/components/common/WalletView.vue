@@ -24,7 +24,17 @@
     </div>
   </div>
   <div class="request_or_transfer_funds" v-if="showRequest">
-    <p v-if="type === 'operation'" @click="reRoute(walletObject.id, type)">
+    <p
+      v-if="type === 'operation'"
+      @click="reRoute(walletObject.id, type, walletObject.currency)"
+    >
+      {{ walletObject.currency }} Funds Request
+      <i class="fa-solid fa-circle-right"></i>
+    </p>
+    <p
+      v-if="type === 'pre-fund'"
+      @click="reRoute(walletObject.id, type, walletObject.currency)"
+    >
       {{ walletObject.currency }} Funds Request
       <i class="fa-solid fa-circle-right"></i>
     </p>
@@ -84,12 +94,23 @@ const props = defineProps({
 
 // Initialize router
 const router = useRouter();
-const reRoute = (id: string, type: string) => {
+const reRoute = (id: string, type: string, currency: string) => {
   if (type !== "pre-fund") {
     router.push({
       name: "transfer-funds",
       params: {
         id: id,
+        type: type,
+        currency: currency,
+      },
+    });
+  } else {
+    router.push({
+      name: "funding-request",
+      params: {
+        id: id,
+        type: type,
+        currency: currency,
       },
     });
   }

@@ -1,30 +1,76 @@
 <template>
   <div class="navbar">
-    <div class="search_by_keyword_section">
+    <!-- <div class="search_by_keyword_section">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input
         type="text"
         placeholder="Search by keyword"
         class="search_by_keyword_input"
       />
-    </div>
-    <div class="notifications_and_name_section">
-      <div class="notifications">
-        <div class="new_notification"></div>
-        <i class="fa-solid fa-bell"></i>
-      </div>
-      <div class="separation"></div>
-      <div class="name_section">
-        <div class="name-circle">
-          <p>A E</p>
+    </div> -->
+    <div class="navbar_content_section">
+      <AccountSwitch />
+      <div class="notifications_and_name_section">
+        <div class="notifications">
+          <div class="new_notification"></div>
+          <i class="fa-solid fa-bell"></i>
         </div>
-        <i class="fa-solid fa-chevron-down"></i>
+        <div class="separation"></div>
+        <div class="name_section" @click="toggleNameSectionDropdown">
+          <div class="name-circle">
+            <p>A E</p>
+          </div>
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
       </div>
+      <ul
+        ref="name_section_dropdown"
+        v-show="name_section_dropdown_active"
+        class="name_section_dropdown"
+      >
+        <li @click="logoutUser">Logout</li>
+      </ul>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import AccountSwitch from "@/components/common/AccountSwitch.vue";
+
+// Initial state of dropdown
+const name_section_dropdown_active = ref(false);
+
+// Initialize router and store
+const router = useRouter();
+const store = useStore();
+
+// Toggle dropdown
+const toggleNameSectionDropdown = () => {
+  name_section_dropdown_active.value = !name_section_dropdown_active.value;
+};
+
+// Get token
+const token = computed(() => store.getters.getToken);
+// Logout user
+const logoutUser = async () => {
+  await store.dispatch("isLoading");
+  await axios
+    .get("/logout", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then(() => {
+      store.dispatch("isLoading");
+      localStorage.removeItem("vuex");
+      router.push({ name: "login" });
+    });
+};
+</script>
 
 <style>
 /* Navbar CSS */
@@ -34,7 +80,15 @@
   padding: 0 1.875rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.navbar .navbar_content_section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 23%;
   position: relative;
 }
 .navbar .search_by_keyword_section {
@@ -67,7 +121,7 @@
   display: flex;
   gap: 2%;
   align-items: center;
-  width: 11%;
+  width: 100%;
   justify-content: space-evenly;
 }
 
@@ -113,6 +167,7 @@
     0% no-repeat padding-box;
   box-shadow: 0px 0px 2px #61a147bf;
   color: #fff;
+  cursor: pointer;
 }
 
 /* End of navbar CSS */

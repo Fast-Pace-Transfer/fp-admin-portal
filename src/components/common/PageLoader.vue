@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 .loading {
   top: 0;
   z-index: 101;

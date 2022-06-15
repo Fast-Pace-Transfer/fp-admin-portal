@@ -14,7 +14,7 @@
             <h2>Funds Transfer Form</h2>
           </div>
           <div class="funds_form">
-            <form>
+            <form @submit.prevent="transferFunds">
               <div class="funds_form_input">
                 <label for="funds_form_select">Prefund Account</label>
                 <select
@@ -25,25 +25,20 @@
                   <option
                     v-for="(prefundAccount, index) in prefundingAccounts"
                     :key="index"
+                    :value="prefundAccount.id"
                   >
-                    {{ prefundAccount.currency }} - Prefund Balance
+                    {{ prefundAccount.currency }} - Prefund Account
                   </option>
                 </select>
               </div>
               <div class="funds_form_input">
-                <label for="funds_form_select">Operational Account</label>
-                <select
-                  id="funds_form_select"
+                <label for="funds_form_input">Operational Account</label>
+                <input
+                  type="text"
+                  id="funds_form_input"
+                  disabled
                   v-model="initialState.operationalAccount"
-                >
-                  <option value="" selected disabled>Select Account</option>
-                  <option
-                    v-for="operationalAccount in operationalAccounts"
-                    :key="operationalAccount.id"
-                  >
-                    {{ operationalAccount.currency }} - Operational Balance
-                  </option>
-                </select>
+                />
               </div>
               <!-- <div class="rate_calculation">
                 <div class="debit_amount">
@@ -68,7 +63,11 @@
               <p class="settlement_rate">at 7.7 GHS settlement rate</p> -->
               <div class="funds_form_input">
                 <label for="amount_input">Amount</label>
-                <input type="number" id="amount_input" />
+                <input
+                  type="number"
+                  id="amount_input"
+                  v-model="initialState.debitAmount"
+                />
               </div>
               <div class="submit_button_container">
                 <button type="submit">Submit</button>
@@ -110,27 +109,17 @@ interface PrefundAccount {
   };
 }
 
-interface OperationalAccount {
-  id: string;
-  partner_id: string;
-  currency: string;
-  balance: number;
-  type: string;
-  name: null | string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  partner: {
-    id: string;
-    name: string;
-  }[];
-}
-
 // Initialize store
 const store = useStore();
 
 // Initialize router
 const router = useRouter();
+
+// Initialize route
+const route = useRoute();
+
+// Get route params
+const { id, type, currency } = route.params;
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -141,55 +130,74 @@ const token = computed(() => store.getters.getToken);
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<PrefundAccount[]>([]);
 
-// Initial values for operational accounts
-const operationalAccounts = ref<OperationalAccount[]>([]);
-
-// Get operational accounts
-function getOperationalAccounts() {
-  return axios.get("/accounts/operation", {
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-    },
-  });
-}
-
 // Get prefunding accounts
-function getPrefundingAccounts() {
-  return axios.get("/accounts/pre-fund", {
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-    },
-  });
-}
+// function getPrefundingAccounts() {
+//   return axios.get("/accounts/pre-fund", {
+//     headers: {
+//       Authorization: `Bearer ${token.value}`,
+//     },
+//   });
+// }
 
-// // When component is mounted
-// onMounted(async () => {
-//   // Run axios requests
-//   await store.dispatch("isLoading");
-//   await Promise.all([getPrefundingAccounts(), getOperationalAccounts()])
-//     .then(function (results) {
-//       store.dispatch("isLoading");
-//       prefundingAccounts.value = results[0].data.data;
-//       operationalAccounts.value = results[1].data.data;
-//     })
-//     .catch(function (error) {
-//       if (error.response) {
-//         store.dispatch("isLoading");
-//         Swal.fire({
-//           icon: "error",
-//           title: "Error",
-//           text: error.response.data.errors.join(" "),
-//         });
-//       }
-//     });
-// });
+// When component is mounted
+onMounted(async () => {
+  // Run axios requests
+  await store.dispatch("isLoading");
+  axios.get("http://localhost:8080/prefund-accounts").then((res) => {
+    store.dispatch("isLoading");
+    prefundingAccounts.value = res.data;
+  });
+});
 
 // Inital states for the form
 const initialState = {
   prefundAccount: "",
-  operationalAccount: "",
+  operationalAccount: `${currency} - Account`,
   debitAmount: 0,
-  creditAmount: 0,
+};
+
+// Submit funds transfer form
+const transferFunds = async () => {
+  // Get form values
+  const data = {
+    prefund_account_id: initialState.prefundAccount,
+    credit_account_id: id,
+    amount: initialState.debitAmount,
+  };
+
+  // Run axios request
+  await store.dispatch("isLoading");
+  axios
+    .post("/accounts-transfer", data, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then(() => {
+      // Show success message
+      Swal.fire({
+        title: "Success",
+        text: "Funds Transfer request submitted successfully",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        // Redirect to dashboard
+        router.push({ name: "browse-prefunded-account" });
+      });
+    })
+    .catch((error) => {
+      // Set loading status
+      store.dispatch("isLoading");
+
+      // Show error message
+      if (error.response) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response.data.errors.join(" "),
+        });
+      }
+    });
 };
 </script>
 

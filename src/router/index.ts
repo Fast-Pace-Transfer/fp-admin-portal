@@ -84,12 +84,25 @@ const router = createRouter({
           },
         },
         {
-          path: "transfer-funds/:id",
+          path: "transfer-funds/:id/:type/:currency",
           name: "transfer-funds",
           component: () =>
             import("@/views/dashboard/wallets/FundsTransfer.vue"),
           meta: {
             title: "Transfer Funds",
+            requiresAuth: true,
+            checkRole: ["admin", "finance"],
+          },
+        },
+        {
+          path: "funding-request/:id/:type/:currency",
+          name: "funding-request",
+          component: () =>
+            import(
+              "@/views/dashboard/account/PrefundingAccountFundingRequest.vue"
+            ),
+          meta: {
+            title: "Funding Request",
             requiresAuth: true,
             checkRole: ["admin", "finance"],
           },
