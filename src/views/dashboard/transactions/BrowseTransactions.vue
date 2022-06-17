@@ -57,102 +57,64 @@
                   <tr>
                     <th>Date & Time</th>
                     <th>Reference</th>
-                    <th>Channel</th>
+                    <th>Transaction Type</th>
                     <th>Sender</th>
                     <th>Recipient</th>
                     <th>Account Number</th>
-                    <th>Send Amount</th>
-                    <th>Receive Amount</th>
-                    <th>Rate</th>
-                    <th>Fee</th>
+                    <th>Amount</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
+                <tbody v-if="transactions.length">
+                  <tr v-for="transaction in transactions" :key="transaction.id">
+                    <td>
+                      {{
+                        new Date(transaction.created_at)
+                          .toLocaleDateString("en-US", options)
+                          .replace("/", "-")
+                          .replace("/", "-")
+                          .replace(",", "  ")
+                      }}
+                    </td>
+                    <td>{{ transaction.reference }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.sender_name }}</td>
+                    <td>{{ transaction.beneficiary_name }}</td>
+                    <td>
+                      {{
+                        transaction.transaction_type === "bank"
+                          ? transaction.bank_account_number
+                          : transaction.phone_number
+                      }}
+                    </td>
+                    <td>{{ transaction.currency }} {{ transaction.amount }}</td>
+                    <td
+                      class="status success"
+                      v-if="transaction.status === 'processed'"
+                    >
+                      <span>{{ transaction.status }}</span>
+                    </td>
+                    <td
+                      class="status pending"
+                      v-if="transaction.status === 'pending'"
+                    >
+                      <span>{{ transaction.status }}</span>
+                    </td>
+                    <td
+                      class="status error"
+                      v-if="transaction.status === 'canceled'"
+                    >
+                      <span>{{ transaction.status }}</span>
+                    </td>
                     <td><i class="fa-solid fa-circle-info"></i></td>
                   </tr>
+                </tbody>
+                <tbody v-else>
                   <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
-                  </tr>
-                  <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
-                  </tr>
-                  <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
-                  </tr>
-                  <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
-                  </tr>
-                  <tr>
-                    <td>20-05-2022 11:30:51</td>
-                    <td>FP342224</td>
-                    <td>Ecobank</td>
-                    <td>Albert Olu</td>
-                    <td>Francis Nwa</td>
-                    <td>144435666</td>
-                    <td>$ 200</td>
-                    <td>GHS 200</td>
-                    <td>7.35</td>
-                    <td>£ 2</td>
-                    <td>Processed</td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
+                    <td colspan="9" style="text-align: center">
+                      No transaction data found
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -169,10 +131,13 @@
 
 <script setup lang="ts">
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, ref, onMounted } from "vue";
+import type { Transaction } from "@/models/transactions/transaction.interface";
 import PageLoader from "@/components/common/PageLoader.vue";
 import SidebarView from "@/components/common/SidebarView.vue";
+import Swal from "sweetalert2";
 import NavbarView from "@/components/common/NavbarView.vue";
+import axios from "axios";
 import StatsCard from "@/components/common/StatsCard.vue";
 
 const statArray = [
@@ -202,11 +167,60 @@ const statArray = [
   },
 ];
 
+const options: Intl.DateTimeFormatOptions = {
+  year: "2-digit",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "numeric",
+  second: "numeric",
+};
+
+// Initial value for transactions
+const transactions = ref<Transaction[]>([]);
+
 // Initialize store
 const store = useStore();
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
+
+// Get token
+const token = computed(() => store.getters.getToken);
+
+// Get transactions when component is mounted
+onMounted(() => {
+  // Set loading status to true
+  store.dispatch("isLoading");
+
+  // Get transactions
+  axios
+    .get("/transactions", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      // Set loading status to false
+      store.dispatch("isLoading");
+
+      // Set transactions
+      transactions.value = response.data.data.transactions;
+    })
+    .catch((error) => {
+      // Set loading status to false
+      store.dispatch("isLoading");
+
+      // Set error
+      if (error.response) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response.data.errors.join(" "),
+        });
+      }
+    });
+});
 </script>
 
 <style>

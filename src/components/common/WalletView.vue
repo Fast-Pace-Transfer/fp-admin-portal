@@ -12,10 +12,10 @@
       <p>{{ title }}</p>
     </div>
     <div class="account_balance">
-      <p>
-        {{ walletObject.currency }}&nbsp;
+      <p v-if="account[0]">
+        {{ account[0].symbol }}&nbsp;
         {{
-          walletObject.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          account[0].balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </p>
     </div>
@@ -23,48 +23,35 @@
       <p>Switch</p>
     </div>
   </div>
-  <div class="request_or_transfer_funds" v-if="showRequest">
+  <div class="request_or_transfer_funds" v-if="showRequest && account[0]">
     <p
       v-if="type === 'operation'"
-      @click="reRoute(walletObject.id, type, walletObject.currency)"
+      @click="reRoute(account[0].id, type, account[0].currency)"
     >
-      {{ walletObject.currency }} Funds Request
+      {{ account[0].currency }} Funds Request
       <i class="fa-solid fa-circle-right"></i>
     </p>
     <p
       v-if="type === 'pre-fund'"
-      @click="reRoute(walletObject.id, type, walletObject.currency)"
+      @click="reRoute(account[0].id, type, account[0].currency)"
     >
-      {{ walletObject.currency }} Funds Request
+      {{ account[0].currency }} Funds Request
       <i class="fa-solid fa-circle-right"></i>
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { AccountInterface } from "@/models/accounts/account.interface";
 import { useRouter } from "vue-router";
-const props = defineProps({
-  walletObject: {
-    type: Object,
-    default: () => ({
-      id: "",
-      partner_id: "",
-      currency: "",
-      balance: 0,
-      type: "",
-      name: "",
-      is_active: true,
-      created_at: "",
-      updated_at: "",
-      partner: {
-        id: "",
-        name: "",
-      },
-    }),
+const prop = defineProps({
+  account: {
+    type: Array<AccountInterface>,
+    required: true,
   },
   type: {
     type: String,
-    default: "",
+    required: true,
   },
   title: {
     type: String,
@@ -72,26 +59,29 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: "100%",
+    required: true,
   },
   showRequest: {
     type: Boolean,
-    default: false,
+    required: true,
   },
   backgroundColor: {
     type: String,
+    required: true,
   },
   backgroundImage: {
     type: String,
+    required: true,
   },
   borderColor: {
     type: String,
+    required: true,
   },
   switchable: {
     type: Boolean,
+    required: true,
   },
 });
-
 // Initialize router
 const router = useRouter();
 const reRoute = (id: string, type: string, currency: string) => {

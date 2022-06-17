@@ -143,10 +143,16 @@ const prefundingAccounts = ref<PrefundAccount[]>([]);
 onMounted(async () => {
   // Run axios requests
   await store.dispatch("isLoading");
-  axios.get("http://localhost:8080/prefund-accounts").then((res) => {
-    store.dispatch("isLoading");
-    prefundingAccounts.value = res.data;
-  });
+  axios
+    .get("/accounts/pre-fund", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((res) => {
+      store.dispatch("isLoading");
+      prefundingAccounts.value = res.data.data;
+    });
 });
 
 // Inital states for the form
@@ -160,15 +166,15 @@ const initialState = {
 const transferFunds = async () => {
   // Get form values
   const data = {
-    prefund_account_id: initialState.prefundAccount,
+    debit_account_id: initialState.prefundAccount,
     credit_account_id: id,
-    amount: initialState.debitAmount,
+    debit_amount: initialState.debitAmount,
   };
 
   // Run axios request
   await store.dispatch("isLoading");
   axios
-    .post("/accounts-transfer", data, {
+    .post("/account-transfer", data, {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },

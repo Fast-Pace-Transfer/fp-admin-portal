@@ -11,8 +11,12 @@
           <div class="dashboard_inner_left_column_top_content">
             <WalletView
               :width="`500px`"
-              :wallet-object="prefundingAccounts"
-              :title="`Prefund Account`"
+              :account="prefundingAccounts"
+              :type="`pre-fund`"
+              :title="`Prefund Account - ${
+                prefundingAccounts[0] ? prefundingAccounts[0].currency : ''
+              }`"
+              :showRequest="false"
               :switchable="false"
               :background-color="`#4953B2`"
               :border-color="`#4953B2`"
@@ -91,6 +95,7 @@
 </template>
 
 <script setup lang="ts">
+import type { AccountInterface } from "@/models/accounts/account.interface";
 import { useStore } from "vuex";
 import { computed, ref, onMounted } from "vue";
 import axios from "axios";
@@ -107,25 +112,8 @@ const store = useStore();
 // Get token
 const token = computed(() => store.getters.getToken);
 
-// Interface for prefund account
-interface PrefundAccount {
-  id: string;
-  partner_id: string;
-  currency: string;
-  balance: number;
-  type: string;
-  name: null | string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  partner: {
-    id: string;
-    name: string;
-  };
-}
-
 // Initial values for prefunding accounts
-const prefundingAccounts = ref<PrefundAccount>();
+const prefundingAccounts = ref<AccountInterface[]>([]);
 
 // When component is mounted
 onMounted(async () => {

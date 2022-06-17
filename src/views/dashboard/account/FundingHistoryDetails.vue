@@ -7,46 +7,7 @@
     <!-- Content -->
     <section class="layout_dashboard_content">
       <NavbarView />
-      <div class="dashboard_inner_content_prefunding_account">
-        <!-- List of accounts -->
-        <div class="list_of_accounts">
-          <div class="prefunded_account">
-            <WalletView
-              :account="prefundingAccounts"
-              :title="`Prefund Account - ${
-                prefundingAccounts[0] ? prefundingAccounts[0].currency : ''
-              }`"
-              :type="`${
-                prefundingAccounts[0] ? prefundingAccounts[0].type : ''
-              }`"
-              :width="`500px`"
-              :switchable="false"
-              :background-color="`#4953B2`"
-              :border-color="`#4953B2`"
-              :show-request="true"
-              :background-image="`url('src/assets/images/wallet.svg')`"
-            />
-          </div>
-          <div class="operational_accounts">
-            <WalletView
-              :account="operationalAccount"
-              :show-request="true"
-              :title="`Operational Account - ${operationalAccount[0].currency}`"
-              :type="'operation'"
-              :width="`500px`"
-              :switchable="operationalAccounts.length > 1 ? true : false"
-              :background-color="`#B24949`"
-              :border-color="`#B24949`"
-              :background-image="`url('src/assets/images/wallet_red.svg')`"
-            />
-          </div>
-        </div>
-        <!-- End of list of accounts -->
-        <!-- Funding History Table -->
-        <FundingHistoryTable />
-        <TransferHistoryTable />
-        <!-- End of Funding History Table -->
-      </div>
+      <div class="dashboard_inner_content_prefunding_account"></div>
     </section>
     <!-- End of Content -->
   </div>
@@ -62,9 +23,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
-import WalletView from "@/components/common/WalletView.vue";
-import FundingHistoryTable from "@/components/FundingHistoryTable.vue";
-import TransferHistoryTable from "@/components/TransferHistoryTable.vue";
 
 // Initialize store
 const store = useStore();

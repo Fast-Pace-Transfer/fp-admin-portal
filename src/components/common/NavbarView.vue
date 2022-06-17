@@ -11,14 +11,14 @@
     <div class="navbar_content_section">
       <AccountSwitch />
       <div class="notifications_and_name_section">
-        <div class="notifications">
+        <!-- <div class="notifications">
           <div class="new_notification"></div>
           <i class="fa-solid fa-bell"></i>
         </div>
-        <div class="separation"></div>
+        <div class="separation"></div> -->
         <div class="name_section" @click="toggleNameSectionDropdown">
           <div class="name-circle">
-            <p>A E</p>
+            <p>{{ partner_name.charAt(0) }}</p>
           </div>
           <i class="fa-solid fa-chevron-down"></i>
         </div>
@@ -53,6 +53,11 @@ const toggleNameSectionDropdown = () => {
   name_section_dropdown_active.value = !name_section_dropdown_active.value;
 };
 
+// Get name of partner
+const partner_name = computed(() => {
+  return store.getters.getUser.partner.name;
+});
+
 // Get token
 const token = computed(() => store.getters.getToken);
 // Logout user
@@ -67,6 +72,7 @@ const logoutUser = async () => {
     .then(() => {
       store.dispatch("isLoading");
       localStorage.removeItem("vuex");
+      localStorage.removeItem("selectedOperationalAccount");
       router.push({ name: "login" });
     });
 };
@@ -88,7 +94,7 @@ const logoutUser = async () => {
   display: flex;
   align-items: center;
   gap: 20px;
-  width: 23%;
+  width: 15%;
   position: relative;
 }
 .navbar .search_by_keyword_section {

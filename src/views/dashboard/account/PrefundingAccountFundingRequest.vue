@@ -135,11 +135,9 @@ const submitFundingRequest = async () => {
           title: "Success",
           text: "Funding request submitted successfully",
           icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          // Redirect to dashboard
-          router.push({ name: "browse-prefunded-account" });
         });
+        // Redirect to dashboard
+        router.push({ name: "browse-prefunded-account" });
       }
     })
     .catch((error) => {
