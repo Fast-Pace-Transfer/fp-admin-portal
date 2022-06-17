@@ -2,7 +2,7 @@
   <div class="table_layout">
     <div class="table">
       <div class="table_header">
-        <h2>Funding History</h2>
+        <h2>Account Funding History</h2>
         <div class="filter_fields_layout">
           <p>Filter by</p>
           <div class="filter_fields">
@@ -40,7 +40,7 @@
             <tr>
               <th>Date & Time</th>
               <th>Reference</th>
-              <th>Amount Debited</th>
+              <th>Amount</th>
               <th>Funding Status</th>
               <th>Action</th>
             </tr>
@@ -71,7 +71,10 @@
                 <span class="view" @click="viewFundingDetails(history.id)"
                   >View</span
                 >
-                <span class="cancel" @click="cancelFunding(history.id)"
+                <span
+                  class="cancel"
+                  v-if="history.status === 'pending'"
+                  @click="cancelFunding(history.id)"
                   >Cancel</span
                 >
               </td>
@@ -165,7 +168,7 @@ const cancelFunding = (id: string) => {
     if (result.value) {
       // Cancel funding
       axios
-        .put(`/account-funding/${id}`, {
+        .post(`/account-funding/${id}`, {
           headers: {
             Authorization: `Bearer ${token.value}`,
           },

@@ -139,6 +139,7 @@ const role = computed(() => {
   display: flex;
   justify-content: center;
   position: fixed;
+  background: #fff;
 }
 
 .layout_dashboard_sidebar .inner_sidebar_content {

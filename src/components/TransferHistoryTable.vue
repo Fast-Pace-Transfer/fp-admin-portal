@@ -40,8 +40,6 @@
             <tr>
               <th>Date & Time</th>
               <th>Reference</th>
-              <th>Debit Amount</th>
-              <th>Rate</th>
               <th>Credit Amount</th>
               <th>Transfer Status</th>
               <th>Action</th>
@@ -60,13 +58,8 @@
               </td>
               <td>{{ transfer.reference }}</td>
               <td>
-                {{ transfer.pre_fund_account.currency }}
-                {{ transfer.debit_amount }}
-              </td>
-              <td>{{ transfer.rate }}</td>
-              <td>
                 {{ transfer.operations_account.currency }}
-                {{ transfer.credit_amount }}
+                {{ transfer.debit_amount }}
               </td>
               <td class="status success" v-if="transfer.status === 'approved'">
                 <span>{{ transfer.status }}</span>
@@ -77,13 +70,19 @@
               <td class="status error" v-if="transfer.status === 'rejected'">
                 <span>{{ transfer.status }}</span>
               </td>
+              <td class="status error" v-if="transfer.status === 'canceled'">
+                <span>{{ transfer.status }}</span>
+              </td>
               <td class="actions">
                 <span
                   class="view"
                   @click="viewFundsTransferDetails(transfer.id)"
                   >View</span
                 >
-                <span class="cancel" @click="cancelFundsTransfer(transfer.id)"
+                <span
+                  class="cancel"
+                  v-if="transfer.status === 'pending'"
+                  @click="cancelFundsTransfer(transfer.id)"
                   >Cancel</span
                 >
               </td>

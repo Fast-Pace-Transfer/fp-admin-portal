@@ -26,6 +26,7 @@
  * @property {string} beneficiary_name
  * @property {string} phone_number
  * @property {string} network
+ * @property {string} channel
  * @property {string} bank_code
  * @property {string} bank_account_number
  * @property {string} otc_code
@@ -65,6 +66,7 @@ export interface Transaction {
   beneficiary_name: string;
   phone_number: string;
   network: string;
+  channel: string;
   bank_code: string;
   bank_account_number: string;
   otc_code: string;

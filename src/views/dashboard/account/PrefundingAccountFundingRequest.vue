@@ -127,7 +127,6 @@ const submitFundingRequest = async () => {
     .then((response) => {
       // Set loading status
       store.dispatch("isLoading");
-      console.log(response);
       // Check if response is successful
       if (response.status === 200 || response.status === 201) {
         // Show success message
@@ -137,7 +136,7 @@ const submitFundingRequest = async () => {
           icon: "success",
         });
         // Redirect to dashboard
-        router.push({ name: "browse-prefunded-account" });
+        router.push({ name: "browse-accounts" });
       }
     })
     .catch((error) => {

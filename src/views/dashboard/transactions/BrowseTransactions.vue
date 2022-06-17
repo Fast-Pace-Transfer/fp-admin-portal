@@ -58,6 +58,7 @@
                     <th>Date & Time</th>
                     <th>Reference</th>
                     <th>Transaction Type</th>
+                    <th>Channel</th>
                     <th>Sender</th>
                     <th>Recipient</th>
                     <th>Account Number</th>
@@ -79,6 +80,7 @@
                     </td>
                     <td>{{ transaction.reference }}</td>
                     <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.channel }}</td>
                     <td>{{ transaction.sender_name }}</td>
                     <td>{{ transaction.beneficiary_name }}</td>
                     <td>
@@ -103,7 +105,13 @@
                     </td>
                     <td
                       class="status error"
-                      v-if="transaction.status === 'canceled'"
+                      v-if="transaction.status === 'cancelled'"
+                    >
+                      <span>{{ transaction.status }}</span>
+                    </td>
+                    <td
+                      class="status error"
+                      v-if="transaction.status === 'failed'"
                     >
                       <span>{{ transaction.status }}</span>
                     </td>

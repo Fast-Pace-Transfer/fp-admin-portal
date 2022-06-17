@@ -165,37 +165,37 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((toRoute, fromRoute, next) => {
-//   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
-//   if (toRoute.matched.some((record) => record.meta.requiresAuth)) {
-//     // this route requires auth, check if logged in
-//     // if not, redirect to login page.
-//     if (!token.value) {
-//       next({ name: "login" });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((toRoute, fromRoute, next) => {
+  window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
+  if (toRoute.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!token.value) {
+      next({ name: "login" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
-// router.beforeEach((toRoute, fromRoute, next) => {
-//   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
-//   if (toRoute.matched.some((record) => record.meta.checkRole)) {
-//     if (
-//       toRoute.meta.checkRole instanceof Array &&
-//       toRoute.meta.checkRole !== null
-//     ) {
-//       if (!toRoute.meta.checkRole.includes(role.value)) {
-//         next({ path: "/:catchAll(.*)" });
-//       } else {
-//         next();
-//       }
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((toRoute, fromRoute, next) => {
+  window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
+  if (toRoute.matched.some((record) => record.meta.checkRole)) {
+    if (
+      toRoute.meta.checkRole instanceof Array &&
+      toRoute.meta.checkRole !== null
+    ) {
+      if (!toRoute.meta.checkRole.includes(role.value)) {
+        next({ path: "/:catchAll(.*)" });
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
+});
 
 export default router;

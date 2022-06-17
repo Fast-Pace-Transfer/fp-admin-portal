@@ -64,7 +64,7 @@ onMounted(() => {
 
       // Check if there is a selected account id in LocalStorage
       if (!localStorage.getItem("selectedOperationalAccountBalance")) {
-        // Add selected account ID to LocalStorage
+        // Add selected account balance to LocalStorage
         localStorage.setItem(
           "selectedOperationalAccountBalance",
           operationalAccounts.value[0].balance.toString()
@@ -79,7 +79,38 @@ onMounted(() => {
           symbol: operationalAccounts.value[0].symbol,
         });
       } else {
-        console.log("No selected account");
+        // Loop through operational accounts
+        for (const operationalAccount of operationalAccounts.value) {
+          // Check if selected account id is equal to operational account id
+          if (
+            selectedOperationalAccount.value[0].id === operationalAccount.id
+          ) {
+            // Check if selected account balance is equal to operational account balance
+            if (
+              selectedOperationalAccount.value[0].balance !==
+              operationalAccount.balance
+            ) {
+              console.log(selectedOperationalAccount.value[0].balance);
+              console.log(operationalAccount.balance);
+              // Add selected account balance to LocalStorage
+              localStorage.setItem(
+                "selectedOperationalAccountBalance",
+                operationalAccount.balance.toString()
+              );
+              // Clear selected account in store
+              store.dispatch("clearOperationalAccount");
+              // Add selected account to store
+              store.dispatch("setOperationalAccount", {
+                id: operationalAccount.id,
+                currency: operationalAccount.currency,
+                balance: operationalAccount.balance,
+                type: operationalAccount.type,
+                name: operationalAccount.name,
+                symbol: operationalAccount.symbol,
+              });
+            }
+          }
+        }
       }
     })
     .catch((error) => {

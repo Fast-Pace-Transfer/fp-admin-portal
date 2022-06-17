@@ -86,28 +86,12 @@
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
+import type { AccountInterface } from "@/models/accounts/account.interface";
 import { useStore } from "vuex";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-
-// Interfaces for accounts
-interface PrefundAccount {
-  id: string;
-  partner_id: string;
-  currency: string;
-  balance: number;
-  type: string;
-  name: null | string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  partner: {
-    id: string;
-    name: string;
-  };
-}
 
 // Initialize store
 const store = useStore();
@@ -128,16 +112,7 @@ const loading = computed(() => store.getters.getLoadingStatus);
 const token = computed(() => store.getters.getToken);
 
 // Initial values for prefunding accounts
-const prefundingAccounts = ref<PrefundAccount[]>([]);
-
-// Get prefunding accounts
-// function getPrefundingAccounts() {
-//   return axios.get("/accounts/pre-fund", {
-//     headers: {
-//       Authorization: `Bearer ${token.value}`,
-//     },
-//   });
-// }
+const prefundingAccounts = ref<AccountInterface[]>([]);
 
 // When component is mounted
 onMounted(async () => {
@@ -181,6 +156,8 @@ const transferFunds = async () => {
     })
     .then(() => {
       // Show success message
+      // Set loading status
+      store.dispatch("isLoading");
       Swal.fire({
         title: "Success",
         text: "Funds Transfer request submitted successfully",
@@ -188,7 +165,7 @@ const transferFunds = async () => {
         confirmButtonText: "OK",
       }).then(() => {
         // Redirect to dashboard
-        router.push({ name: "browse-prefunded-account" });
+        router.push({ name: "browse-accounts" });
       });
     })
     .catch((error) => {
