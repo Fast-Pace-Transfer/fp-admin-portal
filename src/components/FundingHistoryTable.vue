@@ -38,11 +38,11 @@
         <table>
           <thead>
             <tr>
-              <th>Date & Time</th>
-              <th>Reference</th>
-              <th>Amount</th>
-              <th>Funding Status</th>
-              <th>Action</th>
+              <th style="width: 20%">Date & Time</th>
+              <th style="width: 20%">Reference</th>
+              <th style="width: 20%">Amount</th>
+              <th style="width: 20%">Funding Status</th>
+              <th style="width: 20%">Action</th>
             </tr>
           </thead>
           <tbody v-if="fundingHistory.length">
@@ -57,19 +57,37 @@
                 }}
               </td>
               <td>{{ history.reference }}</td>
-              <td>{{ history.account.currency }} {{ history.amount }}</td>
+              <td class="bold-fields">
+                {{ history.account.currency }}
+                {{
+                  history.amount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }}
+              </td>
               <td class="status success" v-if="history.status === 'approved'">
-                <span>{{ history.status }}</span>
+                <span>{{
+                  history.status.charAt(0).toUpperCase() +
+                  history.status.slice(1)
+                }}</span>
               </td>
               <td class="status pending" v-if="history.status === 'pending'">
-                <span>{{ history.status }}</span>
+                <span>{{
+                  history.status.charAt(0).toUpperCase() +
+                  history.status.slice(1)
+                }}</span>
               </td>
               <td class="status error" v-if="history.status === 'rejected'">
-                <span>{{ history.status }}</span>
+                <span
+                  >{{
+                    history.status.charAt(0).toUpperCase() +
+                    history.status.slice(1)
+                  }}
+                </span>
               </td>
               <td class="actions">
                 <span class="view" @click="viewFundingDetails(history.id)"
-                  >View</span
+                  >Enquiry</span
                 >
                 <span
                   class="cancel"
@@ -347,5 +365,10 @@ const cancelFunding = (id: string) => {
 .actions .cancel {
   color: #fff;
   background: #b24949;
+}
+
+/* Amount */
+.bold-fields {
+  font-weight: bold;
 }
 </style>

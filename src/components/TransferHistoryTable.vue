@@ -7,29 +7,13 @@
           <p>Filter by</p>
           <div class="filter_fields">
             <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
+              <option>Start Date</option>
             </select>
             <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
+              <option>End Date</option>
             </select>
             <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
+              <option>Status</option>
             </select>
           </div>
         </div>
@@ -38,11 +22,13 @@
         <table>
           <thead>
             <tr>
-              <th>Date & Time</th>
-              <th>Reference</th>
-              <th>Credit Amount</th>
-              <th>Transfer Status</th>
-              <th>Action</th>
+              <th style="width: 15%">Date & Time</th>
+              <th style="width: 24%">Reference</th>
+              <th style="width: 13%">Debit Amount</th>
+              <th style="width: 10%">Rate</th>
+              <th style="width: 13%">Credit Amount</th>
+              <th style="width: 10%">Status</th>
+              <th style="width: 15%">Action</th>
             </tr>
           </thead>
           <tbody v-if="fundsTransferHistory.length">
@@ -57,27 +43,57 @@
                 }}
               </td>
               <td>{{ transfer.reference }}</td>
-              <td>
-                {{ transfer.operations_account.currency }}
-                {{ transfer.debit_amount }}
+              <td class="bold-fields">
+                {{ transfer.pre_fund_account.currency }}
+                {{
+                  transfer.debit_amount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }}
+              </td>
+              <td class="bold-fields">
+                {{ transfer.rate ? transfer.rate : "N/A" }}
+              </td>
+              <td class="bold-fields">
+                {{
+                  transfer.credit_amount
+                    ? `${
+                        transfer.operations_account.currency
+                      } ${transfer.credit_amount
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+                    : "N/A"
+                }}
               </td>
               <td class="status success" v-if="transfer.status === 'approved'">
-                <span>{{ transfer.status }}</span>
+                <span>{{
+                  transfer.status.charAt(0).toUpperCase() +
+                  transfer.status.slice(1)
+                }}</span>
               </td>
               <td class="status pending" v-if="transfer.status === 'pending'">
-                <span>{{ transfer.status }}</span>
+                <span>{{
+                  transfer.status.charAt(0).toUpperCase() +
+                  transfer.status.slice(1)
+                }}</span>
               </td>
               <td class="status error" v-if="transfer.status === 'rejected'">
-                <span>{{ transfer.status }}</span>
+                <span>{{
+                  transfer.status.charAt(0).toUpperCase() +
+                  transfer.status.slice(1)
+                }}</span>
               </td>
               <td class="status error" v-if="transfer.status === 'canceled'">
-                <span>{{ transfer.status }}</span>
+                <span>{{
+                  transfer.status.charAt(0).toUpperCase() +
+                  transfer.status.slice(1)
+                }}</span>
               </td>
               <td class="actions">
                 <span
                   class="view"
                   @click="viewFundsTransferDetails(transfer.id)"
-                  >View</span
+                  >Enquiry</span
                 >
                 <span
                   class="cancel"
@@ -291,7 +307,7 @@ const cancelFundsTransfer = (id: string) => {
 
 .table table thead tr th {
   color: #423e3b;
-  font-size: 14px;
+  font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   padding-bottom: 5px;
@@ -301,6 +317,7 @@ const cancelFundsTransfer = (id: string) => {
   border-bottom: 2px solid #d7dbec;
   color: #423e3b;
   text-align: left;
+  font-size: 14px;
 }
 
 .table table tbody tr:last-of-type {
@@ -353,5 +370,10 @@ const cancelFundsTransfer = (id: string) => {
 .actions .cancel {
   color: #fff;
   background: #b24949;
+}
+
+/* Amount */
+.bold-fields {
+  font-weight: bold;
 }
 </style>
