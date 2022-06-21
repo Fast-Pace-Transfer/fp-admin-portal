@@ -1,0 +1,167 @@
+{
+    "operational-accounts": [
+        {
+            "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "partner_id": "f1131035-e8ee-41bd-8b38-52d94211ae6e",
+            "currency": "GHS",
+            "balance": 2000,
+            "type": "operation",
+            "name": null,
+            "is_active": true,
+            "created_at": "2022-06-04T15:17:48.000000Z",
+            "updated_at": "2022-06-04T15:17:48.000000Z"
+        },
+        {
+            "id": "3e8cd62d-8e62-5a1f-acd8-c5c4998843b1",
+            "partner_id": "f1131035-e8ee-41bd-8b38-52d94211ae6e",
+            "currency": "NGN",
+            "balance": 10000,
+            "type": "operation",
+            "name": null,
+            "is_active": true,
+            "created_at": "2022-06-04T16:17:48.000000Z",
+            "updated_at": "2022-06-04T16:17:48.000000Z"
+        },
+        {
+            "id": "2e8cd62d-6e62-3a1f-acd8-c5c4998843b1",
+            "partner_id": "f1131035-e8ee-41bd-8b38-52d94211ae6e",
+            "currency": "USD",
+            "balance": 100000,
+            "type": "operation",
+            "name": null,
+            "is_active": true,
+            "created_at": "2022-06-04T17:17:48.000000Z",
+            "updated_at": "2022-06-04T17:17:48.000000Z"
+        }
+    ],
+    "prefund-accounts": [
+        {
+            "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "partner_id": "f1131035-e8ee-41bd-8b38-52d94211ae6e",
+            "currency": "GBP",
+            "balance": 0,
+            "type": "pre-fund",
+            "name": null,
+            "is_active": true,
+            "created_at": "2022-06-04T15:17:48.000000Z",
+            "updated_at": "2022-06-04T15:17:48.000000Z"
+        }
+    ],
+    "account-transfers": [
+        {
+            "id": "ce10a8f7-9974-4df0-aa45-67960a604b8a",
+            "debit_account_id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "credit_account_id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+            "debit_amount": 100,
+            "rate": 9.8,
+            "credit_amount": 980,
+            "status": "pending",
+            "requested_by": 2,
+            "reference": "ATRGBPGHS10020220608112324",
+            "created_at": "2022-06-08T11:23:24.000000Z",
+            "updated_at": "2022-06-08T11:23:24.000000Z",
+            "pre_fund_account": {
+              "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+              "currency": "GBP",
+              "balance": 1000
+            },
+            "operations_account": {
+              "id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+              "currency": "GHS",
+              "balance": 0
+            }
+        },
+        {
+            "id": "ce10a8f7-9974-4df0-aa45-67960a604b8a",
+            "debit_account_id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "credit_account_id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+            "debit_amount": 100,
+            "rate": 9.8,
+            "credit_amount": 980,
+            "status": "pending",
+            "requested_by": 2,
+            "reference": "ATRGBPGHS10020220608112324",
+            "created_at": "2022-06-08T11:23:24.000000Z",
+            "updated_at": "2022-06-08T11:23:24.000000Z",
+            "pre_fund_account": {
+              "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+              "currency": "GBP",
+              "balance": 1000
+            },
+            "operations_account": {
+              "id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+              "currency": "GHS",
+              "balance": 0
+            }
+        },
+        {
+            "id": "ce10a8f7-9974-4df0-aa45-67960a604b8a",
+            "debit_account_id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "credit_account_id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+            "debit_amount": 100,
+            "rate": 9.8,
+            "credit_amount": 980,
+            "status": "pending",
+            "requested_by": 2,
+            "reference": "ATRGBPGHS10020220608112324",
+            "created_at": "2022-06-08T11:23:24.000000Z",
+            "updated_at": "2022-06-08T11:23:24.000000Z",
+            "pre_fund_account": {
+              "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+              "currency": "GBP",
+              "balance": 1000
+            },
+            "operations_account": {
+              "id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+              "currency": "GHS",
+              "balance": 0
+            }
+        },
+        {
+            "id": "ce10a8f7-9974-4df0-aa45-67960a604b8a",
+            "debit_account_id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "credit_account_id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+            "debit_amount": 100,
+            "rate": 9.8,
+            "credit_amount": 980,
+            "status": "pending",
+            "requested_by": 2,
+            "reference": "ATRGBPGHS10020220608112324",
+            "created_at": "2022-06-08T11:23:24.000000Z",
+            "updated_at": "2022-06-08T11:23:24.000000Z",
+            "pre_fund_account": {
+              "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+              "currency": "GBP",
+              "balance": 1000
+            },
+            "operations_account": {
+              "id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+              "currency": "GHS",
+              "balance": 0
+            }
+        },
+        {
+            "id": "ce10a8f7-9974-4df0-aa45-67960a604b8a",
+            "debit_account_id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+            "credit_account_id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+            "debit_amount": 100,
+            "rate": 9.8,
+            "credit_amount": 980,
+            "status": "pending",
+            "requested_by": 2,
+            "reference": "ATRGBPGHS10020220608112324",
+            "created_at": "2022-06-08T11:23:24.000000Z",
+            "updated_at": "2022-06-08T11:23:24.000000Z",
+            "pre_fund_account": {
+              "id": "1e8cd62d-7e62-4a1f-acd8-c5c4998843b1",
+              "currency": "GBP",
+              "balance": 1000
+            },
+            "operations_account": {
+              "id": "16fa7010-647b-4070-8b74-8e2e2941da0d",
+              "currency": "GHS",
+              "balance": 0
+            }
+        }
+    ]
+}
