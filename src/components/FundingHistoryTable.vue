@@ -6,31 +6,27 @@
         <div class="filter_fields_layout">
           <p>Filter by</p>
           <div class="filter_fields">
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
-            <select>
-              <option>Date</option>
-              <option>Amount</option>
-              <option>Type</option>
-            </select>
+            <form>
+              <div class="filter_input">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date" />
+              </div>
+              <div class="filter_input">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" />
+              </div>
+              <div class="filter_select">
+                <select>
+                  <option value="" disabled selected>Status</option>
+                  <option v-for="(status, index) in statuses" :key="index">
+                    {{ status.charAt(0).toUpperCase() + status.slice(1) }}
+                  </option>
+                </select>
+              </div>
+              <div class="filter_button">
+                <button>Apply</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -86,8 +82,9 @@
                 </span>
               </td>
               <td class="actions">
-                <span class="view" @click="viewFundingDetails(history.id)"
-                  >Enquiry</span
+                <a
+                  :href="`mailto:support@fastpacetransfer?subject=Funding Request ${history.reference}`"
+                  >Enquiry</a
                 >
                 <span
                   class="cancel"
@@ -161,14 +158,8 @@ onMounted(() => {
     });
 });
 
-// View funding details
-const viewFundingDetails = (id: string) => {
-  // Route to the funding details page
-  router.push({
-    name: "funding-history",
-    params: { id: id },
-  });
-};
+// List of statuses
+const statuses = ["pending", "approved", "rejected"];
 
 // Cancel funding
 const cancelFunding = (id: string) => {
@@ -245,7 +236,82 @@ const cancelFunding = (id: string) => {
   width: 80%;
 }
 
-.table_layout .table_header .filter_fields_layout .filter_fields select {
+.table_layout .table_header .filter_fields_layout .filter_fields form {
+  display: flex;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_button {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 10px;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_button
+  button {
+  height: 36px;
+  font-size: 13px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 8px 13px;
+  background: #6fda45;
+  cursor: pointer;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_select {
+  display: flex;
+  align-items: flex-end;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_select
+  select {
+  padding: 8px 13px;
+  background: #fff;
+  border: 1px solid #e9e9f0;
+  color: rgba(21, 30, 63, 0.5);
+  font-size: 13px;
+  height: 36px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_input {
+  display: flex;
+  flex-direction: column;
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  .filter_input
+  input {
   padding: 8px 13px;
   background: #fff;
   border: 1px solid #e9e9f0;
@@ -253,15 +319,7 @@ const cancelFunding = (id: string) => {
   font-size: 13px;
 }
 
-.table_layout .table_header .filter_fields_layout .filter_fields select:focus {
-  outline: none;
-}
-
-.table_layout
-  .table_header
-  .filter_fields_layout
-  .filter_fields
-  select:first-of-type {
+#start_date {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 }
@@ -270,9 +328,20 @@ const cancelFunding = (id: string) => {
   .table_header
   .filter_fields_layout
   .filter_fields
-  select:last-of-type {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  form
+  .filter_input
+  label {
+  font-size: 11px;
+  color: rgba(21, 30, 63, 0.5);
+}
+
+.table_layout
+  .table_header
+  .filter_fields_layout
+  .filter_fields
+  form
+  select:focus {
+  outline: none;
 }
 
 .table_layout .table_header .filter_fields_layout .filter_fields {
@@ -356,10 +425,13 @@ const cancelFunding = (id: string) => {
   cursor: pointer;
 }
 
-.actions .view {
+.actions a {
+  text-decoration: none;
   color: #fff;
   background: var(--primary-color);
-  margin-right: 10px;
+  border-radius: 3px;
+  padding: 5px 15px;
+  cursor: pointer;
 }
 
 .actions .cancel {

@@ -6,15 +6,27 @@
         <div class="filter_fields_layout">
           <p>Filter by</p>
           <div class="filter_fields">
-            <select>
-              <option>Start Date</option>
-            </select>
-            <select>
-              <option>End Date</option>
-            </select>
-            <select>
-              <option>Status</option>
-            </select>
+            <form>
+              <div class="filter_input">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date" />
+              </div>
+              <div class="filter_input">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date" />
+              </div>
+              <div class="filter_select">
+                <select>
+                  <option value="" disabled selected>Status</option>
+                  <option v-for="(status, index) in statuses" :key="index">
+                    {{ status.charAt(0).toUpperCase() + status.slice(1) }}
+                  </option>
+                </select>
+              </div>
+              <div class="filter_button">
+                <button>Apply</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -90,10 +102,9 @@
                 }}</span>
               </td>
               <td class="actions">
-                <span
-                  class="view"
-                  @click="viewFundsTransferDetails(transfer.id)"
-                  >Enquiry</span
+                <a
+                  :href="`mailto:support@fastpacetransfer?subject=Funds Transfer Request ${transfer.reference}`"
+                  >Enquiry</a
                 >
                 <span
                   class="cancel"
@@ -165,14 +176,8 @@ onMounted(() => {
     });
 });
 
-// View funding details
-const viewFundsTransferDetails = (id: string) => {
-  // Route to the funding details page
-  router.push({
-    name: "transfer-history",
-    params: { id: id },
-  });
-};
+// List of statuses
+const statuses = ["pending", "approved", "rejected"];
 
 // Cancel funding
 const cancelFundsTransfer = (id: string) => {
@@ -261,24 +266,6 @@ const cancelFundsTransfer = (id: string) => {
   outline: none;
 }
 
-.table_layout
-  .table_header
-  .filter_fields_layout
-  .filter_fields
-  select:first-of-type {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-.table_layout
-  .table_header
-  .filter_fields_layout
-  .filter_fields
-  select:last-of-type {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
 .table_layout .table_header .filter_fields_layout .filter_fields {
   display: flex;
   color: #151e3f;
@@ -361,9 +348,7 @@ const cancelFundsTransfer = (id: string) => {
   cursor: pointer;
 }
 
-.actions .view {
-  color: #fff;
-  background: var(--primary-color);
+.actions a {
   margin-right: 10px;
 }
 
