@@ -9,6 +9,25 @@
       <NavbarView />
       <div class="dashboard_inner_content_api_documentation_page">
         <!--API Documentation Page -->
+        <div class="api-documentation-page-layout">
+          <div class="api-documentation-page-content">
+            <h2>API Configuration</h2>
+            <div class="generate-api-key-layout">
+              <div class="generate-api-key-input">
+                <p>API Secret Key</p>
+                <input type="text" v-model="apiSecretKey" disabled />
+              </div>
+              <div class="api-key-buttons">
+                <div class="generate-api-key-button">
+                  <button @click="generateApiKey">+ Generate API Key</button>
+                </div>
+                <div class="copy-api-key-button">
+                  <button @click="copyApiKey">Copy API Key</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!--End of API Documentation Page  -->
       </div>
     </section>
@@ -20,24 +39,14 @@
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
-import type { AccountInterface } from "@/models/accounts/account.interface";
 import { useStore } from "vuex";
-import Swal from "sweetalert2";
+import { Toast } from "@/utils/toast";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { handleAPIError } from "@/utils/handleAPIError.js";
 
 // Initialize store
 const store = useStore();
-
-// Initialize router
-const router = useRouter();
-
-// Initialize route
-const route = useRoute();
-
-// Get route params
-const { id, type, currency } = route.params;
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -45,76 +54,55 @@ const loading = computed(() => store.getters.getLoadingStatus);
 // Get token
 const token = computed(() => store.getters.getToken);
 
-// Initial values for prefunding accounts
-const prefundingAccounts = ref<AccountInterface[]>([]);
+// Get api secret key
+const apiSecretKey = ref("");
 
-// When component is mounted
-onMounted(async () => {
-  // Run axios requests
-  await store.dispatch("isLoading");
-  axios
-    .get("/accounts/pre-fund", {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    .then((res) => {
+// Generate API Key
+const generateApiKey = async () => {
+  // Set loading status
+  store.dispatch("isLoading");
+
+  // Get api secret key
+  await axios
+    .post(
+      "generate-token",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      // Stop loading status
       store.dispatch("isLoading");
-      prefundingAccounts.value = res.data.data;
-    });
-});
 
-// Inital states for the form
-const initialState = {
-  prefundAccount: "",
-  operationalAccount: `${currency} - Account`,
-  debitAmount: 0,
-};
-
-// Submit funds transfer form
-const transferFunds = async () => {
-  // Get form values
-  const data = {
-    debit_account_id: initialState.prefundAccount,
-    credit_account_id: id,
-    debit_amount: initialState.debitAmount,
-  };
-
-  // Run axios request
-  await store.dispatch("isLoading");
-  axios
-    .post("/account-transfer", data, {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    .then(() => {
-      // Show success message
-      // Set loading status
-      store.dispatch("isLoading");
-      Swal.fire({
-        title: "Success",
-        text: "Funds Transfer request submitted successfully",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        // Redirect to dashboard
-        router.push({ name: "browse-accounts" });
-      });
+      // Set api secret key
+      apiSecretKey.value = response.data.data.access_token;
     })
     .catch((error) => {
-      // Set loading status
+      // Stop loading status
       store.dispatch("isLoading");
 
       // Show error message
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
+};
+
+// Generate API Key on mount
+onMounted(() => {
+  generateApiKey();
+});
+
+// Copy to clipboard when input is clicked
+const copyApiKey = () => {
+  navigator.clipboard.writeText(apiSecretKey.value).then(() => {
+    Toast.fire({
+      icon: "success",
+      title: "API Key copied to clipboard",
+    });
+  });
 };
 </script>
 
@@ -136,6 +124,122 @@ const transferFunds = async () => {
   padding: 0 1.875rem;
   display: flex;
   justify-content: center;
-  border: 1px solid red;
+  font-family: "Source Sans Pro", sans-serif;
 }
+
+/* API Documentation CSS */
+.api-documentation-page-layout {
+  width: 70%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.api-documentation-page-layout .api-documentation-page-content {
+  border: 1px solid red;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.api-documentation-page-layout .api-documentation-page-content h2 {
+  font-size: 30px;
+  font-weight: 400;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #5a5a5a;
+}
+
+.api-documentation-page-layout .api-documentation-page-content .generate-api-key-layout {
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .generate-api-key-input {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .generate-api-key-input
+  p {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #343434;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .generate-api-key-input
+  input {
+  height: 50px;
+  width: 83%;
+  border: 1px solid #e3e3e3;
+  padding-left: 25px;
+  font-size: 18px;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .generate-api-key-input
+  input:focus {
+  outline: none;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .api-key-buttons {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .api-key-buttons
+  button {
+  height: 30px;
+  border-radius: 3px;
+  color: #fff;
+  padding: 7px;
+  border: none;
+  cursor: pointer;
+}
+
+  .api-documentation-page-layout
+    .api-documentation-page-content
+    .generate-api-key-layout
+    .api-key-buttons
+    .generate-api-key-button
+    button {
+    background: var(--primary-color);
+  }
+
+  .api-documentation-page-layout
+    .api-documentation-page-content
+    .generate-api-key-layout
+    .api-key-buttons
+    .copy-api-key-button
+    button {
+    background: #bebdbd;
+  }
+
+/* Generate API Key CSS */
 </style>
