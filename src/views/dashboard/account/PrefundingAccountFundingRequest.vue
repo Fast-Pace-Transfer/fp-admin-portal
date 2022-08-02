@@ -76,6 +76,7 @@ import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { handleAPIError } from "@/utils/handleAPIError.js";
 
 // Initialize store
 const store = useStore();
@@ -144,13 +145,7 @@ const submitFundingRequest = async () => {
       store.dispatch("isLoading");
 
       // Show error message
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 };
 </script>

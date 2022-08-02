@@ -62,7 +62,7 @@
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
                 <div class="sidebar_category_item_icon">
-                  <IconAccount :isActive="isActive" />
+                  <IconTransactions :isActive="isActive" />
                 </div>
                 <!-- End of Icon -->
                 <!-- Link title -->
@@ -104,6 +104,56 @@
                 <!-- End of Link title -->
               </li>
             </router-link>
+            <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'browse-transactions' }"
+              class="link"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <!-- Icon -->
+                <div class="sidebar_category_item_icon">
+                  <IconFiles :isActive="isActive" />
+                </div>
+                <!-- End of Icon -->
+                <!-- Link title -->
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                  Documents
+                </p>
+                <!-- End of Link title -->
+              </li>
+            </router-link>
+          </ul>
+        </nav>
+        <nav
+          class="sidebar_category"
+          v-if="['admin', 'finance'].includes(role)"
+        >
+          <p class="sidebar_category_title">Developers</p>
+          <ul class="sidebar_category_list">
+            <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'api-keys' }"
+              class="link"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <!-- Icon -->
+                <div class="sidebar_category_item_icon">
+                  <IconApiKeys :isActive="isActive" />
+                </div>
+                <!-- End of Icon -->
+                <!-- Link title -->
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                  API Documentation
+                </p>
+                <!-- End of Link title -->
+              </li>
+            </router-link>
           </ul>
         </nav>
       </div>
@@ -115,9 +165,10 @@
 <script setup lang="ts">
 import IconDashboard from "@/components/icons/payments/IconDashboard.vue";
 import IconAccount from "@/components/icons/payments/IconAccount.vue";
-import IconApiDocumentation from "../icons/developers/IconApiDocumentation.vue";
+import IconFiles from "@/components/icons/business/IconFiles.vue";
 import IconApiKeys from "../icons/developers/IconApiKeys.vue";
 import IconReports from "../icons/business/IconReports.vue";
+import IconTransactions from "@/components/icons/payments/IconTransactions.vue";
 import { RouterLink } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";

@@ -162,9 +162,31 @@ const router = createRouter({
         },
       ],
     },
+    // API Routes
+    {
+      path: "/api-docs",
+      name: "api",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "api-keys",
+          component: () =>
+            import("@/views/dashboard/developers/ApiDocumentation.vue"),
+          meta: {
+            title: "API Documentation",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "dev"],
+          },
+        },
+      ],
+    },
   ],
 });
 
+// Check if user is logged in
 router.beforeEach((toRoute, fromRoute, next) => {
   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
   if (toRoute.matched.some((record) => record.meta.requiresAuth)) {
@@ -180,6 +202,7 @@ router.beforeEach((toRoute, fromRoute, next) => {
   }
 });
 
+// Check if user has the correct roles
 router.beforeEach((toRoute, fromRoute, next) => {
   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
   if (toRoute.matched.some((record) => record.meta.checkRole)) {
