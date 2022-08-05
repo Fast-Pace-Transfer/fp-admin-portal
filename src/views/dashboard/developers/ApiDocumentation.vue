@@ -26,6 +26,15 @@
                 </div>
               </div>
             </div>
+            <div class="link-to-documentation-layout">
+              <p>Documentation Link:</p>
+              <a
+                href="https://fp-partner-api.devsnode.xyz/api/documentation"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://fp-partner-api.devsnode.xyz/api/documentation</a
+              >
+            </div>
           </div>
         </div>
         <!--End of API Documentation Page  -->
@@ -139,7 +148,6 @@ const copyApiKey = () => {
 }
 
 .api-documentation-page-layout .api-documentation-page-content {
-  border: 1px solid red;
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -153,7 +161,9 @@ const copyApiKey = () => {
   color: #5a5a5a;
 }
 
-.api-documentation-page-layout .api-documentation-page-content .generate-api-key-layout {
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout {
   width: 100%;
   margin-top: 3rem;
 }
@@ -223,23 +233,49 @@ const copyApiKey = () => {
   cursor: pointer;
 }
 
-  .api-documentation-page-layout
-    .api-documentation-page-content
-    .generate-api-key-layout
-    .api-key-buttons
-    .generate-api-key-button
-    button {
-    background: var(--primary-color);
-  }
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .api-key-buttons
+  .generate-api-key-button
+  button {
+  background: var(--primary-color);
+}
 
-  .api-documentation-page-layout
-    .api-documentation-page-content
-    .generate-api-key-layout
-    .api-key-buttons
-    .copy-api-key-button
-    button {
-    background: #bebdbd;
-  }
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .generate-api-key-layout
+  .api-key-buttons
+  .copy-api-key-button
+  button {
+  background: #bebdbd;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .link-to-documentation-layout {
+  margin: 3rem 0;
+  width: 100%;
+  display: flex;
+  gap: 30px;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .link-to-documentation-layout
+  p:first-of-type {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #343434;
+}
+
+.api-documentation-page-layout
+  .api-documentation-page-content
+  .link-to-documentation-layout
+  a {
+  font-size: 18px;
+}
 
 /* Generate API Key CSS */
 </style>
