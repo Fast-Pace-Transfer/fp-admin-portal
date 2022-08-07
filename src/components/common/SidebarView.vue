@@ -85,7 +85,7 @@
           <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-transactions' }"
+              :to="{ name: 'browse-reports' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
@@ -106,7 +106,7 @@
             </router-link>
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-transactions' }"
+              :to="{ name: 'upload-documents' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">

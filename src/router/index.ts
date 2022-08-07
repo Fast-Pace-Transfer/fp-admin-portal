@@ -183,6 +183,85 @@ const router = createRouter({
         },
       ],
     },
+    //Reports
+    {
+      path: "/reports",
+      name: "reports",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "browse-reports",
+          component: () =>
+            import("@/views/dashboard/business/reports/BrowseReports.vue"),
+          meta: {
+            title: "Browse Reports",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
+          },
+        },
+        {
+          path: "view/:id",
+          name: "view-report",
+          component: () =>
+            import("@/views/dashboard/business/reports/ViewReport.vue"),
+          meta: {
+            title: "View Report",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
+          },
+        },
+      ],
+    },
+    // Documents
+    {
+      path: "/documents",
+      name: "documents",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "upload-documents",
+          component: () =>
+            import("@/views/dashboard/business/documents/UploadDocument.vue"),
+          meta: {
+            title: "Upload Documents",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
+          path: "view/:id",
+          name: "view-uploaded-transactions",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/ViewUploadedTransactions.vue"
+            ),
+          meta: {
+            title: "View Uploaded Transactions",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
+          path: "edit/:id",
+          name: "edit-uploaded-transaction",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/EditUploadedTransaction.vue"
+            ),
+          meta: {
+            title: "Edit Uploaded Transaction",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+      ],
+    },
   ],
 });
 
