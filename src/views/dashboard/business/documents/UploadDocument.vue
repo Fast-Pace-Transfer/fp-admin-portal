@@ -97,16 +97,25 @@ function onFileChanged($event: Event) {
     document.value = target.files[0];
     console.log(document.value);
     console.log(formatFileSize(document.value.size));
+    // Set file info
+    store.dispatch("setFileInfo", {
+      fileName: target.files[0].name,
+      fileSize: formatFileSize(target.files[0].size),
+    });
   }
 }
 
 // Submit form data
 const uploadTransactions = async () => {
+  // Get form data
   const formData = new FormData();
   formData.append("file", document.value);
   formData.append("payout_country", documentPayoutCountry.value);
   formData.append("payout_method", documentPayoutMethod.value);
   console.log(formData);
+
+  // Set loading status
+  store.dispatch("isLoading");
 };
 </script>
 
