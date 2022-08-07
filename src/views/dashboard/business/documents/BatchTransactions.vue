@@ -9,6 +9,32 @@
       <NavbarView />
       <div class="dashboard_inner_content_batch_transaction_page">
         <!--Batch Transaction Page -->
+        <div class="batch-transaction-layout">
+          <div class="file-info-layout">
+            <div class="file-info-icon">
+              <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div class="file-info-content">
+              <p>{{ fileInfo.fileName }}</p>
+              <p>{{ fileInfo.fileSize }}</p>
+              <div class="file-progress-layout">
+                <div class="file-progress-bar"></div>
+                <div class="file-progress-text">
+                  <p>100%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="batch-info-and-actions-layout">
+            <div class="batch-info">
+              <p>Batch Number: #123455</p>
+            </div>
+            <div class="batch-actions">
+              <button class="batch-button primary">Process Batch</button>
+              <button class="batch-button secondary">View Batch</button>
+            </div>
+          </div>
+        </div>
         <!--Batch Transaction Page  -->
       </div>
     </section>
@@ -30,6 +56,9 @@ const store = useStore();
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
+
+// Get file info
+const fileInfo = computed(() => store.getters.getFileInfo);
 
 // Get token
 const token = computed(() => store.getters.getToken);
@@ -54,5 +83,149 @@ const token = computed(() => store.getters.getToken);
   display: flex;
   justify-content: center;
   font-family: "Source Sans Pro", sans-serif;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout {
+  width: 70%;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout {
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 15px;
+  box-shadow: 0px 0px 2px #00000029;
+  border-radius: 10px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-icon {
+  font-size: 50px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-content {
+  font-family: "Roboto", sans-serif;
+  color: #423e3b;
+  width: 100%;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-content
+  p:first-of-type {
+  font-size: 16px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-content
+  p:nth-of-type(2) {
+  font-size: 12px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-content
+  .file-progress-layout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .file-info-layout
+  .file-info-content
+  .file-progress-layout
+  .file-progress-bar {
+  height: 5px;
+  width: 90%;
+  background: #5ca03e;
+  border-radius: 10px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout {
+  margin-top: 20px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout
+  .batch-info {
+  font-size: 25px;
+  color: #5a5a5a;
+  font-family: "Source Sans Pro", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout
+  .batch-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout
+  .batch-actions
+  .batch-button {
+  cursor: pointer;
+  border: none;
+  font-size: 12px;
+  border-radius: 10px;
+  height: 45px;
+  padding: 10px 20px;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout
+  .batch-actions
+  .batch-button.primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_batch_transaction_page
+  .batch-transaction-layout
+  .batch-info-and-actions-layout
+  .batch-actions
+  .batch-button.secondary {
+  background: #fff;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 </style>

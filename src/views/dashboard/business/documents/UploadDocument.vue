@@ -71,13 +71,18 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { formatFileSize } from "@/utils/formatFileSize";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError";
+import { routerKey } from "vue-router";
 
 // Initialize store
 const store = useStore();
+
+// Initialize router
+const router = useRouter();
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -97,6 +102,8 @@ function onFileChanged($event: Event) {
     document.value = target.files[0];
     console.log(document.value);
     console.log(formatFileSize(document.value.size));
+    // Clear file info
+    store.dispatch("setFileInfo", {});
     // Set file info
     store.dispatch("setFileInfo", {
       fileName: target.files[0].name,
@@ -115,7 +122,9 @@ const uploadTransactions = async () => {
   console.log(formData);
 
   // Set loading status
-  store.dispatch("isLoading");
+  // store.dispatch("isLoading");
+
+  router.push({ name: "batch-transactions", params: { batchId: "1" } });
 };
 </script>
 

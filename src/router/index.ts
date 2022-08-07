@@ -235,6 +235,19 @@ const router = createRouter({
           },
         },
         {
+          path: "batch-transactions/:batchId",
+          name: "batch-transactions",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/BatchTransactions.vue"
+            ),
+          meta: {
+            title: "Batch Transactions",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
           path: "view/:id",
           name: "view-uploaded-transactions",
           component: () =>
