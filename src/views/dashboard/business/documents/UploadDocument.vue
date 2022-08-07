@@ -20,6 +20,7 @@
                 <select
                   id="document-payout-country"
                   v-model="documentPayoutCountry"
+                  required
                 >
                   <option value="">Ghana</option>
                   <option value="">Nigeria</option>
@@ -31,6 +32,7 @@
                 <select
                   id="document-payout-method"
                   v-model="documentPayoutMethod"
+                  required
                 >
                   <option value="">Bank</option>
                   <option value="">Mobile Money</option>
@@ -44,6 +46,7 @@
                   id="transactions-document"
                   accept=".csv"
                   @change="onFileChanged($event)"
+                  required
                 />
                 <p>
                   <i class="fa-solid fa-circle-info"></i> Formats supported
