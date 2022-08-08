@@ -8,6 +8,7 @@
         v-for="operationalAccount in operationalAccounts"
         :key="operationalAccount.id"
         :selected="
+          selectedOperationalAccount &&
           selectedOperationalAccount[0].id === operationalAccount.id
             ? true
             : false

@@ -30,8 +30,12 @@
               <p>Batch Number: #123455</p>
             </div>
             <div class="batch-actions">
-              <button class="batch-button primary">Process Batch</button>
-              <button class="batch-button secondary">View Batch</button>
+              <button class="batch-button primary" @click="processBatch">
+                Process Batch
+              </button>
+              <button class="batch-button secondary" @click="goToViewBatchPage">
+                View Batch
+              </button>
             </div>
           </div>
         </div>
@@ -47,12 +51,16 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
 
 // Initialize store
 const store = useStore();
+
+// Initialize router
+const router = useRouter();
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -62,6 +70,22 @@ const fileInfo = computed(() => store.getters.getFileInfo);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Go to View Batch page
+const goToViewBatchPage = () => {
+  router.push({
+    name: "view-uploaded-transactions",
+    params: {
+      id: "123455",
+    },
+  });
+};
+
+// Process batch
+const processBatch = () => {
+  // Log processed to console
+  console.log("Processing batch...");
+};
 </script>
 
 <style>

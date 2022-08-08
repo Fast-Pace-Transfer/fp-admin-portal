@@ -21,8 +21,11 @@
                   id="document-payout-country"
                   v-model="documentPayoutCountry"
                   required
+                  @change="getPayoutMethods"
                 >
-                  <option value="">Ghana</option>
+                  <option value="" selected disabled>
+                    Select Payout Country
+                  </option>
                   <option value="">Nigeria</option>
                   <option value="">Kenya</option>
                 </select>
@@ -34,7 +37,9 @@
                   v-model="documentPayoutMethod"
                   required
                 >
-                  <option value="">Bank</option>
+                  <option value="" selected disabled>
+                    Select Payout Method
+                  </option>
                   <option value="">Mobile Money</option>
                   <option value="">Cash</option>
                 </select>
@@ -126,6 +131,87 @@ const uploadTransactions = async () => {
 
   router.push({ name: "batch-transactions", params: { batchId: "1" } });
 };
+
+// Interface for payout country
+interface PayoutCountry {
+  name: string;
+  code: string;
+  currency: string;
+  dial_code: string;
+  symbol: string;
+  flag_emoji: string;
+}
+
+// Interface for payout method
+interface PayoutMethod {
+  name: string;
+  code: string;
+  country: string;
+}
+
+// Intitialize payout countries
+const payoutCountries = ref<PayoutCountry[]>([]);
+
+// Intitialize payout methods
+const payoutMethods = ref<PayoutMethod[]>([]);
+
+// Get payout countries
+const getPayoutCountries = async () => {
+  // Set loading status
+  store.dispatch("isLoading");
+  // Get payout countries
+  await axios
+    .get("countries/payout", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+      // Set payout countries
+      payoutCountries.value = response.data.data;
+    })
+    .catch((error) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+      // Handle error
+      handleAPIError(error);
+    });
+};
+
+// Get payout methods
+const getPayoutMethods = async () => {
+  if (documentPayoutCountry.value) {
+    // Set loading status
+    store.dispatch("isLoading");
+    // Get payout methods
+    await axios
+      .get(`payout_methods/${documentPayoutCountry.value}`, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      .then((response) => {
+        // Stop loading status
+        store.dispatch("isLoading");
+        // Set payout methods
+        payoutMethods.value = response.data.data;
+      })
+      .catch((error) => {
+        // Stop loading status
+        store.dispatch("isLoading");
+        // Handle error
+        handleAPIError(error);
+      });
+  }
+};
+
+// When component mounted
+onMounted(async () => {
+  // Get payout countries
+  await getPayoutCountries();
+});
 </script>
 
 <style>

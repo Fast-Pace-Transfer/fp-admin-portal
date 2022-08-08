@@ -72,7 +72,7 @@ const logoutUser = async () => {
     .then(() => {
       store.dispatch("isLoading");
       localStorage.removeItem("vuex");
-      localStorage.removeItem("selectedOperationalAccount");
+      localStorage.removeItem("selectedOperationalAccountBalance");
       router.push({ name: "login" });
     });
 };
