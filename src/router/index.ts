@@ -261,7 +261,7 @@ const router = createRouter({
           },
         },
         {
-          path: "edit/:id",
+          path: "edit/:transactionId",
           name: "edit-uploaded-transaction",
           component: () =>
             import(

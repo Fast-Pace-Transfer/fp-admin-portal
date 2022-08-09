@@ -83,27 +83,23 @@
         >
           <p class="sidebar_category_title">Business</p>
           <ul class="sidebar_category_list">
-            <router-link
+            <!-- <router-link
               v-slot="{ isActive }"
               :to="{ name: 'browse-reports' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
                 <div class="sidebar_category_item_icon">
                   <IconReports :isActive="isActive" />
                 </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
                 <p
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
                   Reports
                 </p>
-                <!-- End of Link title -->
               </li>
-            </router-link>
+            </router-link> -->
             <router-link
               v-slot="{ isActive }"
               :to="{ name: 'upload-documents' }"

@@ -37,7 +37,12 @@
                 <td>GHS100</td>
                 <td>Pending</td>
                 <td>
-                  <button class="edit-transaction-button">Edit</button>
+                  <button
+                    class="edit-transaction-button"
+                    @click="goToEditTransactionPage(1234)"
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -55,6 +60,7 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
@@ -62,11 +68,24 @@ import { handleAPIError } from "@/utils/handleAPIError.js";
 // Initialize store
 const store = useStore();
 
+// Initialize router
+const router = useRouter();
+
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Go to Edit Transaction page
+const goToEditTransactionPage = (transactionId: number) => {
+  router.push({
+    name: "edit-uploaded-transaction",
+    params: {
+      transactionId: transactionId,
+    },
+  });
+};
 </script>
 
 <style>

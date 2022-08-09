@@ -26,8 +26,13 @@
                   <option value="" selected disabled>
                     Select Payout Country
                   </option>
-                  <option value="">Nigeria</option>
-                  <option value="">Kenya</option>
+                  <option
+                    v-for="country in payoutCountries"
+                    :key="country.code"
+                    :value="country.code"
+                  >
+                    {{ country.flag_emoji }} {{ country.name }}
+                  </option>
                 </select>
               </div>
               <div class="upload-document-input">
@@ -40,8 +45,13 @@
                   <option value="" selected disabled>
                     Select Payout Method
                   </option>
-                  <option value="">Mobile Money</option>
-                  <option value="">Cash</option>
+                  <option
+                    v-for="method in payoutMethods"
+                    :key="method.code"
+                    :value="method.id"
+                  >
+                    {{ method.name }}
+                  </option>
                 </select>
               </div>
               <div class="upload-document-input">
@@ -121,15 +131,37 @@ function onFileChanged($event: Event) {
 const uploadTransactions = async () => {
   // Get form data
   const formData = new FormData();
-  formData.append("file", document.value);
+  formData.append("batch_file", document.value);
   formData.append("payout_country", documentPayoutCountry.value);
-  formData.append("payout_method", documentPayoutMethod.value);
-  console.log(formData);
+  formData.append("payout_method_id", documentPayoutMethod.value);
 
   // Set loading status
-  // store.dispatch("isLoading");
+  store.dispatch("isLoading");
 
-  router.push({ name: "batch-transactions", params: { batchId: "1" } });
+  // Upload file
+  await axios
+    .post(`batch-transaction`, formData, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      // Set loading status
+      store.dispatch("isLoading");
+
+      // Redirect to batch transaction page
+      router.push({
+        name: "batch-transactions",
+        params: { batchId: response.data.data.batch_code },
+      });
+    })
+    .catch((error) => {
+      // Set loading status
+      store.dispatch("isLoading");
+      // Handle error
+      handleAPIError(error);
+    });
 };
 
 // Interface for payout country
@@ -144,6 +176,7 @@ interface PayoutCountry {
 
 // Interface for payout method
 interface PayoutMethod {
+  id: number;
   name: string;
   code: string;
   country: string;
@@ -187,7 +220,7 @@ const getPayoutMethods = async () => {
     store.dispatch("isLoading");
     // Get payout methods
     await axios
-      .get(`payout_methods/${documentPayoutCountry.value}`, {
+      .get(`payout-methods/${documentPayoutCountry.value}`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
         },

@@ -27,7 +27,7 @@
           </div>
           <div class="batch-info-and-actions-layout">
             <div class="batch-info">
-              <p>Batch Number: #123455</p>
+              <p>Batch Number: {{ batchId }}</p>
             </div>
             <div class="batch-actions">
               <button class="batch-button primary" @click="processBatch">
@@ -51,7 +51,7 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
@@ -61,6 +61,12 @@ const store = useStore();
 
 // Initialize router
 const router = useRouter();
+
+// Initialize route
+const route = useRoute();
+
+// Get batch id from route
+const batchId = route.params.batchId;
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
