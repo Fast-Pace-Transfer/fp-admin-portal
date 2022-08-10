@@ -2,9 +2,12 @@
   <!-- Sidebar -->
   <section class="layout_dashboard_sidebar">
     <div class="inner_sidebar_content">
+      <!-- Sidebar Logo -->
       <div class="sidebar_logo">
         <img src="@/assets/images/logo.png" alt="fast pace logo" />
       </div>
+      <!-- End of Sidebar Logo -->
+      <!-- Sidebar Categories -->
       <div class="sidebar_categories">
         <nav class="sidebar_category">
           <p class="sidebar_category_title">Payments</p>
@@ -153,6 +156,12 @@
           </ul>
         </nav>
       </div>
+      <!-- End of Sidebar Categories -->
+
+      <!-- Logout Button -->
+      <div class="sidebar_logout">
+        <button @click="logoutUser" class="btn btn-primary">Logout</button>
+      </div>
     </div>
   </section>
   <!-- End of Sidebar -->
@@ -165,12 +174,43 @@ import IconFiles from "@/components/icons/business/IconFiles.vue";
 import IconApiKeys from "../icons/developers/IconApiKeys.vue";
 import IconReports from "../icons/business/IconReports.vue";
 import IconTransactions from "@/components/icons/payments/IconTransactions.vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
+import axios from "axios";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize the store
 const store = useStore();
+
+// Initialize the router
+const router = useRouter();
+
+// Get token from the store
+const token = computed(() => {
+  return store.getters.getToken;
+});
+
+// Logout user
+const logoutUser = async () => {
+  await store.dispatch("isLoading");
+  await axios
+    .get("/logout", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then(() => {
+      store.dispatch("isLoading");
+      localStorage.removeItem("vuex");
+      localStorage.removeItem("selectedOperationalAccountBalance");
+      router.push({ name: "login" });
+    })
+    .catch((error) => {
+      store.dispatch("isLoading");
+      handleAPIError(error);
+    });
+};
 
 // Get role
 const role = computed(() => {
@@ -209,6 +249,22 @@ const role = computed(() => {
   width: 100%;
   margin-top: 4rem;
   padding: 0 0 0 1.875rem;
+}
+
+.layout_dashboard_sidebar .inner_sidebar_content .sidebar_logout {
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+}
+
+.layout_dashboard_sidebar .inner_sidebar_content .sidebar_logout button {
+  height: 30px;
+  width: 60%;
+  border: 1px solid var(--primary-color);
+  background: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  color: var(--primary-color);
 }
 
 .layout_dashboard_sidebar

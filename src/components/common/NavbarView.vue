@@ -16,66 +16,28 @@
           <i class="fa-solid fa-bell"></i>
         </div>
         <div class="separation"></div> -->
-        <div class="name_section" @click="toggleNameSectionDropdown">
+        <div class="name_section">
           <div class="name-circle">
             <p>{{ partner_name.charAt(0) }}</p>
           </div>
-          <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
-      <ul
-        ref="name_section_dropdown"
-        v-show="name_section_dropdown_active"
-        class="name_section_dropdown"
-      >
-        <li @click="logoutUser">Logout</li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import AccountSwitch from "@/components/common/AccountSwitch.vue";
 
-// Initial state of dropdown
-const name_section_dropdown_active = ref(false);
-
-// Initialize router and store
-const router = useRouter();
+// Initialize store
 const store = useStore();
-
-// Toggle dropdown
-const toggleNameSectionDropdown = () => {
-  name_section_dropdown_active.value = !name_section_dropdown_active.value;
-};
 
 // Get name of partner
 const partner_name = computed(() => {
   return store.getters.getUser.partner.name;
 });
-
-// Get token
-const token = computed(() => store.getters.getToken);
-// Logout user
-const logoutUser = async () => {
-  await store.dispatch("isLoading");
-  await axios
-    .get("/logout", {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    .then(() => {
-      store.dispatch("isLoading");
-      localStorage.removeItem("vuex");
-      localStorage.removeItem("selectedOperationalAccountBalance");
-      router.push({ name: "login" });
-    });
-};
 </script>
 
 <style>
