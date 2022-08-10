@@ -12,6 +12,19 @@
         <div class="upload-document-layout">
           <div class="upload-document-title">
             <h2>Upload Document</h2>
+            <p>
+              <i class="fa-solid fa-circle-info"></i>
+              To ensure accurate processing of uploaded transactions, please
+              click on these links
+              <a :href="cashSampleFile" download="cash_sample">cash sample</a
+              >,&nbsp;
+              <a :href="bankSampleFile" download="bank_sample">bank sample</a
+              >,&nbsp;
+              <a :href="mobileWalletSampleFile" download="mobile_wallet_sample"
+                >mobile wallet sample</a
+              >
+              to download the sample files.
+            </p>
           </div>
           <div class="upload-document-form">
             <form @submit.prevent="uploadTransactions">
@@ -188,6 +201,63 @@ const payoutCountries = ref<PayoutCountry[]>([]);
 // Intitialize payout methods
 const payoutMethods = ref<PayoutMethod[]>([]);
 
+// Initialize bank sample file
+const bankSampleFile = ref<string>("");
+
+// Initialize cash sample file
+const cashSampleFile = ref<string>("");
+
+// Initialize mobile wallet sample file
+const mobileWalletSampleFile = ref<string>("");
+
+// Get bank sample file
+const getBankSampleFile = async () => {
+  await axios
+    .get(`samples/bank`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      bankSampleFile.value = response.data.data;
+    })
+    .catch((error) => {
+      handleAPIError(error);
+    });
+};
+
+// Get cash sample file
+const getCashSampleFile = async () => {
+  await axios
+    .get(`samples/cash`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      cashSampleFile.value = response.data.data;
+    })
+    .catch((error) => {
+      handleAPIError(error);
+    });
+};
+
+// Get mobile wallet sample file
+const getMobileWalletSampleFile = async () => {
+  await axios
+    .get(`samples/mobileWallet`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      mobileWalletSampleFile.value = response.data.data;
+    })
+    .catch((error) => {
+      handleAPIError(error);
+    });
+};
+
 // Get payout countries
 const getPayoutCountries = async () => {
   // Set loading status
@@ -244,6 +314,15 @@ const getPayoutMethods = async () => {
 onMounted(async () => {
   // Get payout countries
   await getPayoutCountries();
+
+  // Get bank sample file
+  await getBankSampleFile();
+
+  // Get cash sample file
+  await getCashSampleFile();
+
+  // Get mobile wallet sample file
+  await getMobileWalletSampleFile();
 });
 </script>
 
@@ -283,9 +362,20 @@ onMounted(async () => {
   .upload-document-title {
   padding: 1.875rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   font-size: 18px;
   color: #5a5a5a;
+}
+
+.layout_dashboard_content
+  .dashboard_inner_content_upload_document_page
+  .upload-document-layout
+  .upload-document-title
+  p {
+  width: 70%;
+  text-align: center;
+  font-size: 14px;
 }
 
 .layout_dashboard_content
