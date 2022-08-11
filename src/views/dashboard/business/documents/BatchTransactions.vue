@@ -82,7 +82,7 @@ const goToViewBatchPage = () => {
   router.push({
     name: "view-uploaded-transactions",
     params: {
-      id: "123455",
+      id: batchId,
     },
   });
 };

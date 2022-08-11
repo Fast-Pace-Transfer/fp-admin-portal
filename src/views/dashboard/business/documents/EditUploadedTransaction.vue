@@ -9,105 +9,205 @@
       <NavbarView />
       <div class="dashboard_inner_content_edit_uploaded_transaction_page">
         <!--Edit Uploaded Transaction Page -->
-        <div class="edit-uploaded-transaction-layout">
-          <form>
+        <div class="edit-uploaded-transaction-layout" v-if="batchDetails">
+          <form @submit.prevent="updateBatchTransaction">
             <div class="input-row">
               <div class="uploaded-transaction-input">
                 <label for="payout-country">Payout Country</label>
-                <select id="payout-country">
-                  <option value="">Ghana</option>
-                  <option value="">Nigeria</option>
-                  <option value="">Kenya</option>
-                  <option value="">Uganda</option>
+                <select
+                  id="payout-country"
+                  @change="getPayoutCurrency"
+                  v-model="state.payoutCountry"
+                >
+                  <option value="" selected disabled>
+                    Select Payout Country
+                  </option>
+                  <option
+                    v-for="country in payoutCountries"
+                    :key="country.code"
+                    :value="country.code"
+                    :data-currency="country.currency"
+                  >
+                    {{ country.flag_emoji }} {{ country.name }}
+                  </option>
                 </select>
+              </div>
+              <div class="uploaded-transaction-input">
+                <label for="payout-currency">Payout Currency</label>
+                <input
+                  type="text"
+                  id="payout-currency"
+                  disabled
+                  v-model="payoutCurrency"
+                />
+              </div>
+            </div>
+            <div
+              class="input-row"
+              v-if="
+                batchDetails.transaction_type.toLowerCase().includes('bank')
+              "
+            >
+              <div class="uploaded-transaction-input">
+                <label for="payout-channel">Payout Channel</label>
+                <input
+                  type="text"
+                  id="payout-channel"
+                  v-model="state.payoutChannel"
+                />
+              </div>
+              <div class="uploaded-transaction-input">
+                <label for="bank-code">Bank Code</label>
+                <input type="text" id="bank-code" v-model="state.bankCode" />
+              </div>
+            </div>
+            <div
+              class="input-row"
+              v-if="
+                batchDetails.transaction_type.toLowerCase().includes('mobile')
+              "
+            >
+              <div class="uploaded-transaction-input">
+                <label for="payout-channel">Payout Channel</label>
+                <input
+                  type="text"
+                  id="payout-channel"
+                  v-model="state.payoutChannel"
+                />
+              </div>
+              <div class="uploaded-transaction-input">
+                <label for="bank-code">Network</label>
+                <input type="text" id="bank-code" v-model="state.network" />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="uploaded-transaction-input">
+                <label for="payout-amount">Amount</label>
+                <input
+                  type="text"
+                  id="payout-amount"
+                  v-model="state.payoutAmount"
+                />
               </div>
               <div class="uploaded-transaction-input">
                 <label for="reference">Reference</label>
-                <input type="text" id="reference" />
+                <input type="text" id="reference" v-model="state.reference" />
               </div>
             </div>
             <div class="input-row">
               <div class="uploaded-transaction-input">
-                <label for="channel-type">Channel Type</label>
-                <select id="channel-type">
-                  <option value="">Select</option>
-                  <option value="">Paypal</option>
-                  <option value="">Credit Card</option>
-                  <option value="">Bank Transfer</option>
-                </select>
+                <label for="sender-name">Sender's Name</label>
+                <input
+                  type="text"
+                  id="sender-name"
+                  v-model="state.senderName"
+                />
               </div>
               <div class="uploaded-transaction-input">
-                <label for="channel">Channel</label>
-                <select id="channel">
-                  <option value="">Select</option>
-                  <option value="">Paypal</option>
-                  <option value="">Credit Card</option>
-                  <option value="">Bank Transfer</option>
-                </select>
+                <label for="sender-address">Sender's Address</label>
+                <input
+                  type="text"
+                  id="sender-address"
+                  v-model="state.senderAddress"
+                />
               </div>
             </div>
             <div class="input-row">
               <div class="uploaded-transaction-input">
-                <label for="channel">Payout Country</label>
-                <input type="text" />
+                <label for="sender-id-type">Sender's ID Type</label>
+                <input
+                  type="text"
+                  id="sender-id-type"
+                  v-model="state.senderIdType"
+                />
               </div>
               <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
+                <label for="sender-id-number">Sender's ID Number</label>
+                <input
+                  type="text"
+                  id="sender-id-number"
+                  v-model="state.senderIdNumber"
+                />
               </div>
             </div>
             <div class="input-row">
               <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
+                <label for="sender-id-type-other-name"
+                  >Sender's ID Type (Other) Name</label
+                >
+                <input
+                  type="text"
+                  id="sender-id-type-other-name"
+                  v-model="state.senderIdTypeOtherName"
+                />
               </div>
               <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
+                <label for="sender-source-of-funds"
+                  >Sender's Source Of Funds</label
+                >
+                <input
+                  type="text"
+                  id="sender-source-of-funds"
+                  v-model="state.senderSourceOfFunds"
+                />
+              </div>
+            </div>
+            <div class="input-row">
+              <div
+                class="uploaded-transaction-input"
+                v-if="
+                  batchDetails.transaction_type.toLowerCase().includes('bank')
+                "
+              >
+                <label for="account-number">Account Number</label>
+                <input
+                  type="text"
+                  id="account-number"
+                  v-model="state.accountNumber"
+                />
+              </div>
+              <div
+                class="uploaded-transaction-input"
+                v-if="
+                  batchDetails.transaction_type.toLowerCase().includes('mobile')
+                "
+              >
+                <label for="account-number">Mobile Wallet</label>
+                <input
+                  type="text"
+                  id="account-number"
+                  v-model="state.mobile_wallet"
+                />
+              </div>
+              <div class="uploaded-transaction-input">
+                <label for="beneficiary-name">Beneficiary's Name</label>
+                <input
+                  type="text"
+                  id="beneficiary-name"
+                  v-model="state.beneficiaryName"
+                />
               </div>
             </div>
             <div class="input-row">
               <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
+                <label for="beneficiary-id-type">Beneficiary's ID Type</label>
+                <input
+                  type="text"
+                  id="beneficiary-id-type"
+                  v-model="state.beneficiaryIdType"
+                />
               </div>
               <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
-              </div>
-              <div class="uploaded-transaction-input">
-                <label for="payout-country">Payout Country</label>
-                <input type="text" />
+                <label for="beneficiary-id-number">Beneficiary ID Number</label>
+                <input
+                  type="text"
+                  id="beneficiary-id-number"
+                  v-model="state.beneficiaryIdNumber"
+                />
               </div>
             </div>
             <div class="edit-uploaded-transaction-button">
-              <button class="edit-button">Save</button>
+              <button type="submit" class="edit-button">Save</button>
             </div>
           </form>
         </div>
@@ -123,18 +223,177 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import type { payoutCountriesInterface } from "@/models/business/payoutInterfaces";
+import type { transactionBatchInterface } from "@/models/business/transactionBatch";
 import axios from "axios";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, reactive } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
 
 // Initialize store
 const store = useStore();
+
+// Initialize route
+const route = useRoute();
+
+// Get route params
+const { transactionId } = route.params;
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Intitialize payout countries
+const payoutCountries = ref<payoutCountriesInterface[]>([]);
+
+// Initialize payout currency
+const payoutCurrency = ref<string | null>("");
+
+// Initialize batch details
+const batchDetails = ref<transactionBatchInterface>();
+
+// Get payout currency
+const getPayoutCurrency = (event: Event) => {
+  // Get payout currency on change from select element
+  payoutCurrency.value = (event.target as HTMLSelectElement).options[
+    (event.target as HTMLSelectElement).selectedIndex
+  ].getAttribute("data-currency");
+};
+
+// Get payout countries
+function getPayoutCountries() {
+  return axios.get("countries/payout", {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+}
+
+// Get batch details
+function getBatchDetails() {
+  return axios.get(`batch-item/${transactionId}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+}
+
+// On mounted
+onMounted(async () => {
+  // Set loading status
+  await store.dispatch("isLoading");
+
+  // Get payout countries and batch details
+  await Promise.all([getPayoutCountries(), getBatchDetails()])
+    .then((results) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+      // Set payout countries
+      payoutCountries.value = results[0].data.data;
+      // Set batch details
+      batchDetails.value = results[1].data.data;
+    })
+    .catch((error) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Handle error
+      handleAPIError(error);
+    });
+});
+
+// Initial values for form
+const state = reactive({
+  payoutCountry: batchDetails.value ? batchDetails.value.payout_country : "",
+  payoutChannel: batchDetails.value ? batchDetails.value.transaction_type : "",
+  bankCode: batchDetails.value ? batchDetails.value.bank_code : "",
+  payoutAmount: batchDetails.value ? batchDetails.value.amount : "",
+  network: batchDetails.value ? batchDetails.value.network : "",
+  mobile_wallet: batchDetails.value ? batchDetails.value.mobile_wallet : "",
+  reference: batchDetails.value ? batchDetails.value.reference : "",
+  senderName: batchDetails.value ? batchDetails.value.sender_name : "",
+  senderAddress: batchDetails.value ? batchDetails.value.sender_address : "",
+  senderIdType: batchDetails.value ? batchDetails.value.sender_id_type : "",
+  senderIdNumber: batchDetails.value ? batchDetails.value.sender_id_number : "",
+  senderIdTypeOtherName: batchDetails.value
+    ? batchDetails.value.sender_id_other_type_name
+    : "",
+  senderSourceOfFunds: batchDetails.value
+    ? batchDetails.value.sender_source_of_funds
+    : "",
+  senderIdCountry: batchDetails.value
+    ? batchDetails.value.sender_id_country
+    : "",
+  accountNumber: batchDetails.value ? batchDetails.value.account_number : "",
+  beneficiaryName: batchDetails.value
+    ? batchDetails.value.beneficiary_name
+    : "",
+  beneficiaryIdType: batchDetails.value
+    ? batchDetails.value.beneficiary_id_type
+    : "",
+  beneficiaryIdNumber: batchDetails.value
+    ? batchDetails.value.beneficiary_id_number
+    : "",
+});
+
+// Update batch transaction details
+const updateBatchTransaction = async () => {
+  // Set loading status
+  store.dispatch("isLoading");
+
+  // Get form values
+  const updated_values = {
+    payout_country: state.payoutCountry,
+    payout_currency: payoutCurrency,
+    amount: state.payoutAmount,
+    transaction_type: state.payoutChannel,
+    reference: state.reference,
+    ...(state.bankCode && {
+      bank_code: state.bankCode,
+    }),
+    ...(state.network && {
+      network: state.network,
+    }),
+    ...(state.mobile_wallet && {
+      mobile_wallet: state.mobile_wallet,
+    }),
+    ...(state.accountNumber && {
+      account_number: state.accountNumber,
+    }),
+    sender_name: state.senderName,
+    sender_address: state.senderAddress,
+    sender_source_of_funds: state.senderSourceOfFunds,
+    sender_id_type: state.senderIdType,
+    sender_id_number: state.senderIdNumber,
+    sender_id_country: state.senderIdCountry,
+    ...(state.senderIdTypeOtherName && {
+      sender_id_other_type_name: state.senderIdTypeOtherName,
+    }),
+    beneficiary_name: state.beneficiaryName,
+    beneficiary_id_type: state.beneficiaryIdType,
+    beneficiary_id_number: state.beneficiaryIdNumber,
+  };
+
+  // Submit form
+  await axios
+    .put(`batch-item/${transactionId}`, updated_values, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      console.log(response.data.data);
+    })
+    .catch((error) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Handle API Error
+      handleAPIError(error);
+    });
+};
 </script>
 
 <style>

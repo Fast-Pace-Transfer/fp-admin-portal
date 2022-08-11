@@ -77,8 +77,8 @@
                   required
                 />
                 <p>
-                  <i class="fa-solid fa-circle-info"></i> Formats supported
-                  include .csv and .xlsx (Size: 2MB)
+                  <i class="fa-solid fa-circle-info"></i> File format supported
+                  is .csv extension (Max Size: 100MB)
                 </p>
               </div>
               <div class="upload-document-button">
@@ -102,9 +102,12 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { formatFileSize } from "@/utils/formatFileSize";
 import axios from "axios";
+import type {
+  payoutCountriesInterface,
+  payoutMethodsInterface,
+} from "@/models/business/payoutInterfaces";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError";
-import { routerKey } from "vue-router";
 
 // Initialize store
 const store = useStore();
@@ -177,29 +180,11 @@ const uploadTransactions = async () => {
     });
 };
 
-// Interface for payout country
-interface PayoutCountry {
-  name: string;
-  code: string;
-  currency: string;
-  dial_code: string;
-  symbol: string;
-  flag_emoji: string;
-}
-
-// Interface for payout method
-interface PayoutMethod {
-  id: number;
-  name: string;
-  code: string;
-  country: string;
-}
-
 // Intitialize payout countries
-const payoutCountries = ref<PayoutCountry[]>([]);
+const payoutCountries = ref<payoutCountriesInterface[]>([]);
 
 // Intitialize payout methods
-const payoutMethods = ref<PayoutMethod[]>([]);
+const payoutMethods = ref<payoutMethodsInterface[]>([]);
 
 // Initialize bank sample file
 const bankSampleFile = ref<string>("");

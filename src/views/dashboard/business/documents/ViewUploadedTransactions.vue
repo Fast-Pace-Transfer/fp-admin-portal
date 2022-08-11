@@ -18,31 +18,45 @@
                 <th>Payout Country</th>
                 <th>Channel Type</th>
                 <th>Channel</th>
-                <th>Sending Reason</th>
                 <th>Source of funds</th>
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>20-05-2022</td>
-                <td>#FP3562</td>
-                <td>Ghana</td>
-                <td>Bank</td>
-                <td>CAL Bank</td>
-                <td>Health</td>
-                <td>Salary</td>
-                <td>GHS100</td>
-                <td>Pending</td>
+            <tbody v-if="transactionBatch.length">
+              <tr v-for="transaction in transactionBatch" :key="transaction.id">
+                <td>{{ formatDate(transaction.created_at, false) }}</td>
+                <td>{{ transaction.reference }}</td>
+                <td>{{ transaction.payout_country }}</td>
+                <td>{{ transaction.transaction_type }}</td>
+                <td>
+                  {{
+                    transaction.transaction_type.toLowerCase().includes("bank")
+                      ? transaction.bank_code
+                      : transaction.network
+                  }}
+                </td>
+                <td>{{ transaction.sender_source_of_funds }}</td>
+                <td>
+                  {{ transaction.payout_currency }}
+                  {{ formatAmount(transaction.amount) }}
+                </td>
+                <td>{{ transaction.status }}</td>
                 <td>
                   <button
                     class="edit-transaction-button"
-                    @click="goToEditTransactionPage(1234)"
+                    @click="goToEditTransactionPage(transaction.id)"
                   >
                     Edit
                   </button>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="9" style="text-align: center">
+                  No transactions found
                 </td>
               </tr>
             </tbody>
@@ -60,10 +74,13 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
+import { formatDate } from "@/utils/formatDate.js";
+import { formatAmount } from "@/utils/formatAmount.js";
+import type { transactionBatchInterface } from "@/models/business/transactionBatch";
 
 // Initialize store
 const store = useStore();
@@ -71,11 +88,20 @@ const store = useStore();
 // Initialize router
 const router = useRouter();
 
+// Initialize route
+const route = useRoute();
+
+// Initialize transaction batch id
+const id = route.params.id;
+
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Initialize transaction batch
+const transactionBatch = ref<transactionBatchInterface[]>([]);
 
 // Go to Edit Transaction page
 const goToEditTransactionPage = (transactionId: number) => {
@@ -86,6 +112,33 @@ const goToEditTransactionPage = (transactionId: number) => {
     },
   });
 };
+
+onMounted(() => {
+  // Set loading status
+  store.dispatch("isLoading");
+
+  // Get transaction batch
+  axios
+    .get(`batch-items/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then((response) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Set transaction batch
+      transactionBatch.value = response.data.data;
+    })
+    .catch((error) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Handle error
+      handleAPIError(error);
+    });
+});
 </script>
 
 <style>
