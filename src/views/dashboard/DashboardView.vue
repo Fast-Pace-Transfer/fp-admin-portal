@@ -53,7 +53,10 @@
                 <p class="duration-title">This week</p>
               </div>
             </div>
-            <div class="transaction_history_content">
+            <div
+              class="transaction_history_content"
+              v-if="transactionHistory.length"
+            >
               <div
                 v-for="transaction in transactionHistory"
                 :key="transaction.id"
@@ -85,6 +88,9 @@
                   <p>{{ transaction.currency }} {{ transaction.amount }}</p>
                 </div>
               </div>
+            </div>
+            <div class="transaction_history_content" v-else>
+              <p>No transactions found</p>
             </div>
           </div>
           <!-- End of transaction history -->
@@ -273,6 +279,12 @@ const statArray = [
   display: flex;
   gap: 15px;
   margin-right: 50px;
+}
+
+.transaction_history_content p {
+  text-align: center;
+  font-size: 30px;
+  margin-top: 2rem;
 }
 
 .transaction_history_content .transaction_history_item {
