@@ -17,7 +17,7 @@ export const handleAPIError = (error: any) => {
       //   window.location.reload();
       Swal.fire({
         title: "Error",
-        text: error.response.data.errors.join(" "),
+        text: data.errors ? data.errors.join(" ") : data.message,
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -26,7 +26,7 @@ export const handleAPIError = (error: any) => {
       // Show error message
       Swal.fire({
         title: "Error",
-        text: data.message,
+        text: data.errors ? data.errors.join(" ") : data.message,
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -35,7 +35,7 @@ export const handleAPIError = (error: any) => {
       // Show error message
       Swal.fire({
         title: "Error",
-        text: data.message,
+        text: data.errors ? data.errors.join(" ") : data.message,
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -44,7 +44,25 @@ export const handleAPIError = (error: any) => {
       // Show error message
       Swal.fire({
         title: "Error",
-        text: data.message,
+        text: data.errors ? data.errors.join(" ") : data.message,
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    } else if (status === 403) {
+      // Forbidden
+      // Show error message
+      Swal.fire({
+        title: "Error",
+        text: data.errors ? data.errors.join(" ") : data.message,
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    } else if (status === 413) {
+      // Request entity too large
+      // Show error message
+      Swal.fire({
+        title: "Error",
+        text: "Request entity too large",
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -53,7 +71,7 @@ export const handleAPIError = (error: any) => {
       // Show error message
       Swal.fire({
         title: "Error",
-        text: data.message,
+        text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Ok",
       });

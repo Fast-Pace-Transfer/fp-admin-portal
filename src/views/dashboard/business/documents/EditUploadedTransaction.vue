@@ -19,9 +19,6 @@
                   @change="getPayoutCurrency"
                   v-model="state.payoutCountry"
                 >
-                  <option value="" selected disabled>
-                    Select Payout Country
-                  </option>
                   <option
                     v-for="country in payoutCountries"
                     :key="country.code"
@@ -133,12 +130,12 @@
             <div class="input-row">
               <div class="uploaded-transaction-input">
                 <label for="sender-id-type-other-name"
-                  >Sender's ID Type (Other) Name</label
+                  >Sender's Sending Reason</label
                 >
                 <input
                   type="text"
                   id="sender-id-type-other-name"
-                  v-model="state.senderIdTypeOtherName"
+                  v-model="state.sendingReason"
                 />
               </div>
               <div class="uploaded-transaction-input">
@@ -206,6 +203,21 @@
                 />
               </div>
             </div>
+            <div class="input-row">
+              <div
+                class="uploaded-transaction-input"
+                v-if="batchDetails.sender_id_other_type_name"
+              >
+                <label for="sender-id-type-other-name"
+                  >Sender's ID Type (Other) Name</label
+                >
+                <input
+                  type="text"
+                  id="sender-id-type-other-name"
+                  v-model="state.senderIdTypeOtherName"
+                />
+              </div>
+            </div>
             <div class="edit-uploaded-transaction-button">
               <button type="submit" class="edit-button">Save</button>
             </div>
@@ -229,6 +241,8 @@ import type { transactionBatchInterface } from "@/models/business/transactionBat
 import axios from "axios";
 import { ref, computed, onMounted, reactive } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError.js";
+import { capitalizeFirstLetterInEachWord } from "@/utils/capitalizeFirstLetter";
+import Swal from "sweetalert2";
 
 // Initialize store
 const store = useStore();
@@ -294,6 +308,69 @@ onMounted(async () => {
       payoutCountries.value = results[0].data.data;
       // Set batch details
       batchDetails.value = results[1].data.data;
+      state.payoutCountry = batchDetails.value
+        ? batchDetails.value.payout_country
+        : "";
+      payoutCurrency.value = batchDetails.value
+        ? batchDetails.value.payout_currency
+        : "";
+      state.payoutChannel = batchDetails.value
+        ? batchDetails.value.transaction_type
+        : "";
+      state.bankCode = batchDetails.value ? batchDetails.value.bank_code : "";
+      state.accountNumber = batchDetails.value
+        ? batchDetails.value.account_number
+        : "";
+      state.mobile_wallet = batchDetails.value
+        ? batchDetails.value.mobile_wallet
+        : "";
+      state.beneficiaryName = batchDetails.value
+        ? batchDetails.value.beneficiary_name
+        : "";
+      state.beneficiaryIdType = batchDetails.value
+        ? batchDetails.value.beneficiary_id_type
+        : "";
+      state.beneficiaryIdNumber = batchDetails.value
+        ? batchDetails.value.beneficiary_id_number
+        : "";
+
+      // Set sender source of funds
+      state.senderSourceOfFunds = batchDetails.value
+        ? batchDetails.value.sender_source_of_funds
+        : "";
+
+      // Set amount
+      state.payoutAmount = batchDetails.value
+        ? batchDetails.value.amount.toString()
+        : "";
+
+      // Set reference
+      state.reference = batchDetails.value ? batchDetails.value.reference : "";
+
+      // Set sender name
+      state.senderName = batchDetails.value
+        ? batchDetails.value.sender_name
+        : "";
+
+      // Set sender address
+      state.senderAddress = batchDetails.value
+        ? batchDetails.value.sender_address
+        : "";
+
+      // Set sender Id type
+      state.senderIdType = batchDetails.value
+        ? batchDetails.value.sender_id_type
+        : "";
+
+      // Set sender Id number
+      state.senderIdNumber = batchDetails.value
+        ? batchDetails.value.sender_id_number
+        : "";
+
+      // Set sending reason
+      state.sendingReason = batchDetails.value
+        ? batchDetails.value.sending_reason
+        : "";
     })
     .catch((error) => {
       // Stop loading status
@@ -306,36 +383,25 @@ onMounted(async () => {
 
 // Initial values for form
 const state = reactive({
-  payoutCountry: batchDetails.value ? batchDetails.value.payout_country : "",
-  payoutChannel: batchDetails.value ? batchDetails.value.transaction_type : "",
-  bankCode: batchDetails.value ? batchDetails.value.bank_code : "",
-  payoutAmount: batchDetails.value ? batchDetails.value.amount : "",
-  network: batchDetails.value ? batchDetails.value.network : "",
-  mobile_wallet: batchDetails.value ? batchDetails.value.mobile_wallet : "",
-  reference: batchDetails.value ? batchDetails.value.reference : "",
-  senderName: batchDetails.value ? batchDetails.value.sender_name : "",
-  senderAddress: batchDetails.value ? batchDetails.value.sender_address : "",
-  senderIdType: batchDetails.value ? batchDetails.value.sender_id_type : "",
-  senderIdNumber: batchDetails.value ? batchDetails.value.sender_id_number : "",
-  senderIdTypeOtherName: batchDetails.value
-    ? batchDetails.value.sender_id_other_type_name
-    : "",
-  senderSourceOfFunds: batchDetails.value
-    ? batchDetails.value.sender_source_of_funds
-    : "",
-  senderIdCountry: batchDetails.value
-    ? batchDetails.value.sender_id_country
-    : "",
-  accountNumber: batchDetails.value ? batchDetails.value.account_number : "",
-  beneficiaryName: batchDetails.value
-    ? batchDetails.value.beneficiary_name
-    : "",
-  beneficiaryIdType: batchDetails.value
-    ? batchDetails.value.beneficiary_id_type
-    : "",
-  beneficiaryIdNumber: batchDetails.value
-    ? batchDetails.value.beneficiary_id_number
-    : "",
+  payoutCountry: "",
+  payoutChannel: "",
+  bankCode: "",
+  payoutAmount: "",
+  network: "",
+  mobile_wallet: "",
+  reference: "",
+  senderName: "",
+  senderAddress: "",
+  senderIdType: "",
+  senderIdNumber: "",
+  senderIdTypeOtherName: "",
+  senderSourceOfFunds: "",
+  senderIdCountry: "",
+  accountNumber: "",
+  beneficiaryName: "",
+  beneficiaryIdType: "",
+  beneficiaryIdNumber: "",
+  sendingReason: "",
 });
 
 // Update batch transaction details
@@ -346,7 +412,7 @@ const updateBatchTransaction = async () => {
   // Get form values
   const updated_values = {
     payout_country: state.payoutCountry,
-    payout_currency: payoutCurrency,
+    payout_currency: payoutCurrency.value,
     amount: state.payoutAmount,
     transaction_type: state.payoutChannel,
     reference: state.reference,
@@ -384,7 +450,20 @@ const updateBatchTransaction = async () => {
       },
     })
     .then((response) => {
+      // Stop loading status
+      store.dispatch("isLoading");
+
       console.log(response.data.data);
+      if (response.data.data.has_error) {
+        Swal.fire({
+          title: "Error",
+          text: response.data.data.validation_error
+            ? response.data.data.validation_error.split(",").join(" ")
+            : "Invalid Data",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
     })
     .catch((error) => {
       // Stop loading status

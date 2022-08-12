@@ -19,6 +19,7 @@
                 <th>Channel Type</th>
                 <th>Channel</th>
                 <th>Source of funds</th>
+                <th>Sending Reason</th>
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -29,7 +30,13 @@
                 <td>{{ formatDate(transaction.created_at, false) }}</td>
                 <td>{{ transaction.reference }}</td>
                 <td>{{ transaction.payout_country }}</td>
-                <td>{{ transaction.transaction_type }}</td>
+                <td>
+                  {{
+                    capitalizeFirstLetterInEachWord(
+                      transaction.transaction_type
+                    )
+                  }}
+                </td>
                 <td>
                   {{
                     transaction.transaction_type.toLowerCase().includes("bank")
@@ -37,12 +44,25 @@
                       : transaction.network
                   }}
                 </td>
-                <td>{{ transaction.sender_source_of_funds }}</td>
+                <td>
+                  {{
+                    capitalizeFirstLetterInEachWord(
+                      transaction.sender_source_of_funds
+                    )
+                  }}
+                </td>
+                <td>
+                  {{
+                    capitalizeFirstLetterInEachWord(transaction.sending_reason)
+                  }}
+                </td>
                 <td>
                   {{ transaction.payout_currency }}
                   {{ formatAmount(transaction.amount) }}
                 </td>
-                <td>{{ transaction.status }}</td>
+                <td>
+                  {{ capitalizeFirstLetterInEachWord(transaction.status) }}
+                </td>
                 <td>
                   <button
                     class="edit-transaction-button"
@@ -81,6 +101,7 @@ import { handleAPIError } from "@/utils/handleAPIError.js";
 import { formatDate } from "@/utils/formatDate.js";
 import { formatAmount } from "@/utils/formatAmount.js";
 import type { transactionBatchInterface } from "@/models/business/transactionBatch";
+import { capitalizeFirstLetterInEachWord } from "@/utils/capitalizeFirstLetter";
 
 // Initialize store
 const store = useStore();
@@ -129,7 +150,7 @@ onMounted(() => {
       store.dispatch("isLoading");
 
       // Set transaction batch
-      transactionBatch.value = response.data.data;
+      transactionBatch.value = response.data.data.items;
     })
     .catch((error) => {
       // Stop loading status
