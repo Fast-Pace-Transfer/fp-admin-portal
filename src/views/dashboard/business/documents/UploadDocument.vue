@@ -168,8 +168,8 @@ const uploadTransactions = async () => {
 
       // Redirect to batch transaction page
       router.push({
-        name: "batch-transactions",
-        params: { batchId: response.data.data.batch_code },
+        name: "view-uploaded-transactions",
+        params: { id: response.data.data.batch_code },
       });
     })
     .catch((error) => {

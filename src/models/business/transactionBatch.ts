@@ -16,11 +16,15 @@ export interface transactionBatchInterface {
   mobile_wallet: string;
   account_number: string;
   sending_reason: string;
+  sending_country: string;
+  sender_gender: string;
   sender_name: string;
   sender_address: string;
   sender_source_of_funds: string;
   sender_id_type: string;
   sender_id_number: string;
+  sender_id_issue_date: string;
+  sender_id_expiry_date: string;
   sender_id_country: string;
   sender_id_other_type_name: string;
   beneficiary_name: string;
@@ -28,7 +32,7 @@ export interface transactionBatchInterface {
   beneficiary_id_number: string;
   status: string;
   has_error: boolean;
-  validation_error: null | string;
+  validation_error: string;
   batch: {
     id: number;
     batch_code: string;

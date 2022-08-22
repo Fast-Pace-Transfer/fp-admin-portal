@@ -10,7 +10,7 @@
       <!-- Sidebar Categories -->
       <div class="sidebar_categories">
         <nav class="sidebar_category">
-          <p class="sidebar_category_title">Payments</p>
+          <!-- <p class="sidebar_category_title">Payments</p> -->
           <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
@@ -78,13 +78,34 @@
                 <!-- End of Link title -->
               </li>
             </router-link>
+            <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'upload-documents' }"
+              class="link"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <!-- Icon -->
+                <div class="sidebar_category_item_icon">
+                  <IconFiles :isActive="isActive" />
+                </div>
+                <!-- End of Icon -->
+                <!-- Link title -->
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                  Batch Upload
+                </p>
+                <!-- End of Link title -->
+              </li>
+            </router-link>
           </ul>
         </nav>
         <nav
           class="sidebar_category"
           v-if="['admin', 'finance'].includes(role)"
         >
-          <p class="sidebar_category_title">Business</p>
+          <!-- <p class="sidebar_category_title">Support</p> -->
           <ul class="sidebar_category_list">
             <!-- <router-link
               v-slot="{ isActive }"
@@ -103,34 +124,13 @@
                 </p>
               </li>
             </router-link> -->
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'upload-documents' }"
-              class="link"
-            >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconFiles :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Documents
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
           </ul>
         </nav>
         <nav
           class="sidebar_category"
           v-if="['admin', 'finance'].includes(role)"
         >
-          <p class="sidebar_category_title">Developers</p>
+          <!-- <p class="sidebar_category_title">Developers</p> -->
           <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
@@ -267,12 +267,12 @@ const role = computed(() => {
   color: var(--primary-color);
 }
 
-.layout_dashboard_sidebar
+/* .layout_dashboard_sidebar
   .inner_sidebar_content
   .sidebar_categories
   .sidebar_category {
   margin-bottom: 2rem;
-}
+} */
 
 .layout_dashboard_sidebar
   .inner_sidebar_content

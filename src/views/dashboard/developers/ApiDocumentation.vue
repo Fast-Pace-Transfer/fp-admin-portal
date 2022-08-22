@@ -19,7 +19,9 @@
               </div>
               <div class="api-key-buttons">
                 <div class="generate-api-key-button">
-                  <button @click="generateApiKey">+ Generate API Key</button>
+                  <button @click="generateApiKey">
+                    + Generate New API Key
+                  </button>
                 </div>
                 <div class="copy-api-key-button">
                   <button @click="copyApiKey">Copy API Key</button>

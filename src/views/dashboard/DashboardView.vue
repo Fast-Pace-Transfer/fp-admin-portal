@@ -13,7 +13,7 @@
               :width="`500px`"
               :account="prefundingAccounts"
               :type="`pre-fund`"
-              :title="`Prefund Account - ${
+              :title="`Prefunded Account - ${
                 prefundingAccounts[0] ? prefundingAccounts[0].currency : ''
               }`"
               :showRequest="false"
@@ -82,7 +82,9 @@
                       )} Transfer`
                     }}
                   </p>
-                  <p class="description_date">Friday 17th June</p>
+                  <p class="description_date">
+                    {{ new Date(transaction.created_at).toDateString() }}
+                  </p>
                 </div>
                 <div class="transaction_history_item_amount">
                   <p>{{ transaction.currency }} {{ transaction.amount }}</p>
@@ -90,7 +92,7 @@
               </div>
             </div>
             <div class="transaction_history_content" v-else>
-              <p>No transactions found</p>
+              <p class="no-transactions-found">No transactions found</p>
             </div>
           </div>
           <!-- End of transaction history -->
@@ -281,7 +283,7 @@ const statArray = [
   margin-right: 50px;
 }
 
-.transaction_history_content p {
+.transaction_history_content .no-transactions-found {
   text-align: center;
   font-size: 30px;
   margin-top: 2rem;
