@@ -54,7 +54,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();

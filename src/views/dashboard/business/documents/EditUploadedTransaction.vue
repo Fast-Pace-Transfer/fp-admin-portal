@@ -282,7 +282,7 @@ import type { payoutCountriesInterface } from "@/models/business/payoutInterface
 import type { transactionBatchInterface } from "@/models/business/transactionBatch";
 import axios from "axios";
 import { ref, computed, onMounted, reactive } from "vue";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 import Swal from "sweetalert2";
 
 // Initialize store

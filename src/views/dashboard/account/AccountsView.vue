@@ -63,7 +63,7 @@ import NavbarView from "@/components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
 import FundingHistoryTable from "@/components/FundingHistoryTable.vue";
 import TransferHistoryTable from "@/components/TransferHistoryTable.vue";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();

@@ -76,7 +76,7 @@ import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();

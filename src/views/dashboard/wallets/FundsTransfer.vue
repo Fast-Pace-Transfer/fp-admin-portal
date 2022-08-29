@@ -92,7 +92,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();

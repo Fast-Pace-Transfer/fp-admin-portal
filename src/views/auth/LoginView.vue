@@ -63,7 +63,7 @@
 import LoginSVG from "@/components/icons/auth/LoginSVG.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
-import { handleAPIError } from "@/utils/handleAPIError.js";
+import { handleAPIError } from "@/utils/handleAPIError";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
