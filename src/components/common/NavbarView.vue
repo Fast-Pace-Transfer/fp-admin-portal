@@ -55,7 +55,7 @@ const partner_name = computed(() => {
 .navbar .navbar_content_section {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.25rem;
   width: 15%;
   position: relative;
 }
@@ -95,7 +95,7 @@ const partner_name = computed(() => {
 
 .navbar .notifications_and_name_section .separation {
   width: 1px;
-  height: 28px;
+  height: 1.75rem;
   background: var(--primary-color);
 }
 
@@ -109,19 +109,19 @@ const partner_name = computed(() => {
 }
 
 .navbar .notifications_and_name_section .notifications .new_notification {
-  width: 11px;
-  height: 11px;
+  width: 0.6875rem;
+  height: 0.6875rem;
   background: #ffc06a;
   border-radius: 50%;
   position: absolute;
-  top: -5px;
+  top: -0.3125rem;
   right: 0;
 }
 
 .navbar .notifications_and_name_section .name_section {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.3125rem;
 }
 
 .navbar .notifications_and_name_section .name_section .name-circle {

@@ -138,6 +138,18 @@
                 </td>
               </tr>
             </tbody>
+            <tbody v-else-if="backgroundLoading">
+              <tr>
+                <td colspan="9" style="text-align: center">
+                  <p class="background-loading">
+                    Transactions are still loading in the background.
+                    <span @click="refreshPage" class="click-to-refresh"
+                      >Click here to refresh after 30 seconds</span
+                    >
+                  </p>
+                </td>
+              </tr>
+            </tbody>
             <tbody v-else>
               <tr>
                 <td colspan="9" style="text-align: center">
@@ -227,8 +239,16 @@ const failedTransactions = ref(0);
 // Set table loading status
 const tableLoader = ref(false);
 
+// Background loading
+const backgroundLoading = ref(false);
+
 // Set check processing status
 const checkProcessing = ref(false);
+
+// Refresh page
+const refreshPage = () => {
+  router.go(0);
+};
 
 // Go to Edit Transaction page
 const goToEditTransactionPage = (transactionId: number) => {
@@ -256,23 +276,29 @@ const getTransactionBatchItems = async () => {
       // Stop loading status
       tableLoader.value = false;
 
-      // Set transaction batch
-      transactionBatch.value = response.data.data.items;
+      if (response.data.data.items.length) {
+        console.log(response.data.data.items.length);
+        // Set transaction batch
+        transactionBatch.value = response.data.data.items;
 
-      // Set pagination elements
-      paginationElements.value = {
-        currentPage: response.data.data.meta.current_page,
-        totalPages: response.data.data.meta.total_pages,
-        total: response.data.data.meta.total,
-        startIndex:
-          (response.data.data.meta.current_page - 1) *
-            response.data.data.meta.count +
-          1,
-        endIndex:
-          response.data.data.meta.current_page * response.data.data.meta.count,
-        next_page_url: response.data.data.links.next,
-        prev_page_url: response.data.data.links.prev,
-      };
+        // Set pagination elements
+        paginationElements.value = {
+          currentPage: response.data.data.meta.current_page,
+          totalPages: response.data.data.meta.total_pages,
+          total: response.data.data.meta.total,
+          startIndex:
+            (response.data.data.meta.current_page - 1) *
+              response.data.data.meta.count +
+            1,
+          endIndex:
+            response.data.data.meta.current_page *
+            response.data.data.meta.count,
+          next_page_url: response.data.data.links.next,
+          prev_page_url: response.data.data.links.prev,
+        };
+      } else {
+        backgroundLoading.value = true;
+      }
     })
     .catch((error) => {
       // Stop loading status
@@ -513,8 +539,35 @@ const checkProcessingStatus = async () => {
       // Stop loading status
       tableLoader.value = false;
 
-      // Set processing status
-      alert(response.data.data);
+      if (response.data.data.status === "processing") {
+        // Show processing toast message
+        Toast.fire({
+          icon: "success",
+          title: "Processing transaction batch",
+        });
+
+        // Get transaction batch
+        getTransactionBatch();
+
+        // Get transaction batch items
+        getTransactionBatchItems();
+      } else {
+        checkProcessing.value = false;
+
+        // Get transaction batch
+        getTransactionBatch();
+
+        // Get transaction batch items
+        getTransactionBatchItems();
+
+        //Show processed toast message
+        Swal.fire({
+          title: "Success",
+          text: "Transaction batch successfully processed",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+      }
     })
     .catch((error) => {
       // Stop loading status
@@ -567,7 +620,7 @@ onMounted(() => {
   .dashboard_inner_content_view_uploaded_transaction_page
   .view_uploaded_transaction_table {
   width: 95%;
-  height: 600px;
+  max-height: 600px;
   background: #fff;
   border-radius: 10px;
   padding: 30px 15px 10px 15px;
@@ -864,5 +917,17 @@ onMounted(() => {
 .table_loader_container p {
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+/* Click to refresh */
+.background-loading,
+.click-to-refresh {
+  font-size: 17px;
+}
+
+.click-to-refresh {
+  font-weight: bold;
+  color: var(--primary-color);
+  cursor: pointer;
 }
 </style>

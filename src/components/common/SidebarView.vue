@@ -258,7 +258,7 @@ const role = computed(() => {
 }
 
 .layout_dashboard_sidebar .inner_sidebar_content .sidebar_logout button {
-  height: 30px;
+  height: 1.875rem;
   width: 60%;
   border: 1px solid var(--primary-color);
   background: transparent;
