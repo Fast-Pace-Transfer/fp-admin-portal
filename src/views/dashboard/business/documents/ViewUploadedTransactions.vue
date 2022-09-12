@@ -252,6 +252,11 @@ const refreshPage = () => {
 
 // Go to Edit Transaction page
 const goToEditTransactionPage = (transactionId: number) => {
+  // Set checkProcessing to false
+  if (checkProcessing.value) {
+    checkProcessing.value = false;
+  }
+  // Go to edit page
   router.push({
     name: "edit-uploaded-transaction",
     params: {
