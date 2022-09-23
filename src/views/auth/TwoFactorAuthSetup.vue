@@ -54,10 +54,10 @@
 import TwoFactorAuthSetupSVG from "../../components/icons/auth/TwoFactorAuthSetupSVG.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();
@@ -99,13 +99,7 @@ onMounted(() => {
       setup2FA.value = response.data.data;
     })
     .catch((error) => {
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 });
 

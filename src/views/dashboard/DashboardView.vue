@@ -13,7 +13,7 @@
               :width="`500px`"
               :account="prefundingAccounts"
               :type="`pre-fund`"
-              :title="`Prefund Account - ${
+              :title="`Prefunded Account - ${
                 prefundingAccounts[0] ? prefundingAccounts[0].currency : ''
               }`"
               :showRequest="false"
@@ -53,37 +53,46 @@
                 <p class="duration-title">This week</p>
               </div>
             </div>
-            <div class="transaction_history_content">
-              <div class="transaction_history_item">
-                <div class="transaction_history_item_icon">+</div>
+            <div
+              class="transaction_history_content"
+              v-if="transactionHistory.length"
+            >
+              <div
+                v-for="transaction in transactionHistory"
+                :key="transaction.id"
+                class="transaction_history_item"
+              >
+                <div
+                  class="transaction_history_item_icon"
+                  v-if="transaction.transaction_type.includes('mobile')"
+                >
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <div
+                  class="transaction_history_item_icon"
+                  v-if="transaction.transaction_type.includes('bank')"
+                >
+                  <i class="fa-solid fa-building-columns"></i>
+                </div>
                 <div class="transaction_history_item_description">
-                  <p class="description_title">Account Credited by Fast Pace</p>
-                  <p class="description_date">Wednesday 30th April</p>
+                  <p class="description_title">
+                    {{
+                      `${capitalizeFirstLetterInEachWord(
+                        removeSpecialCharacters(transaction.transaction_type)
+                      )} Transfer`
+                    }}
+                  </p>
+                  <p class="description_date">
+                    {{ new Date(transaction.created_at).toDateString() }}
+                  </p>
                 </div>
                 <div class="transaction_history_item_amount">
-                  <p>$3,000</p>
+                  <p>{{ transaction.currency }} {{ transaction.amount }}</p>
                 </div>
               </div>
-              <div class="transaction_history_item">
-                <div class="transaction_history_item_icon">+</div>
-                <div class="transaction_history_item_description">
-                  <p class="description_title">Account Credited by Fast Pace</p>
-                  <p class="description_date">Wednesday 30th April</p>
-                </div>
-                <div class="transaction_history_item_amount">
-                  <p>$3,000</p>
-                </div>
-              </div>
-              <div class="transaction_history_item">
-                <div class="transaction_history_item_icon">+</div>
-                <div class="transaction_history_item_description">
-                  <p class="description_title">Account Credited by Fast Pace</p>
-                  <p class="description_date">Wednesday 30th April</p>
-                </div>
-                <div class="transaction_history_item_amount">
-                  <p>$3,000</p>
-                </div>
-              </div>
+            </div>
+            <div class="transaction_history_content" v-else>
+              <p class="no-transactions-found">No transactions found</p>
             </div>
           </div>
           <!-- End of transaction history -->
@@ -96,6 +105,7 @@
 
 <script setup lang="ts">
 import type { AccountInterface } from "@/models/accounts/account.interface";
+import type { Transaction } from "@/models/transactions/transaction.interface";
 import { useStore } from "vuex";
 import { computed, ref, onMounted } from "vue";
 import axios from "axios";
@@ -105,6 +115,9 @@ import NavbarView from "../../components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
 import GraphContainer from "@/components/GraphContainer.vue";
 import StatsCard from "@/components/common/StatsCard.vue";
+import { handleAPIError } from "@/utils/handleAPIError";
+import { capitalizeFirstLetterInEachWord } from "@/utils/capitalizeFirstLetter";
+import { removeSpecialCharacters } from "@/utils/removeSpecialCharacters";
 
 // Initialize store
 const store = useStore();
@@ -115,17 +128,52 @@ const token = computed(() => store.getters.getToken);
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<AccountInterface[]>([]);
 
-// When component is mounted
-onMounted(async () => {
-  // Get prefunding accounts
-  const response = await axios.get(`/accounts/pre-fund`, {
+// Initial values for transaction history
+const transactionHistory = ref<Transaction[]>([]);
+
+// Function to fetch prefunding accounts
+function getPrefundingAccounts() {
+  return axios.get("accounts/pre-fund", {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
   });
+}
 
-  // Set prefunding accounts
-  prefundingAccounts.value = response.data.data;
+// Function to fetch transactions
+function getTransactions() {
+  return axios.get("transactions", {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    params: {
+      limit: 3,
+    },
+  });
+}
+
+// When component is mounted
+onMounted(async () => {
+  // Set loading status
+  store.dispatch("isLoading");
+
+  // Get prefunding accounts and transactions
+  await Promise.all([getPrefundingAccounts(), getTransactions()])
+    .then(function (results) {
+      // Stop loading status
+      store.dispatch("isLoading");
+      // Set prefunding accounts
+      prefundingAccounts.value = results[0].data.data;
+      // Set transaction history
+      transactionHistory.value = results[1].data.data.transactions;
+    })
+    .catch(function (error) {
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Handle error
+      handleAPIError(error);
+    });
 });
 
 const statArray = [
@@ -235,6 +283,12 @@ const statArray = [
   margin-right: 50px;
 }
 
+.transaction_history_content .no-transactions-found {
+  text-align: center;
+  font-size: 30px;
+  margin-top: 2rem;
+}
+
 .transaction_history_content .transaction_history_item {
   display: flex;
   margin: 25px 0;
@@ -242,7 +296,7 @@ const statArray = [
   border-bottom: 2px solid #d7dbec;
 }
 
-.transaction_history_content .transaction_history_item:nth-of-type(3) {
+.transaction_history_content .transaction_history_item:last-of-type {
   border-bottom: none;
 }
 
@@ -256,7 +310,7 @@ const statArray = [
   justify-content: center;
   align-items: center;
   margin: 0 40px;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
 }
 

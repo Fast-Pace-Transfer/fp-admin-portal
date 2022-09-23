@@ -16,66 +16,28 @@
           <i class="fa-solid fa-bell"></i>
         </div>
         <div class="separation"></div> -->
-        <div class="name_section" @click="toggleNameSectionDropdown">
+        <div class="name_section">
           <div class="name-circle">
             <p>{{ partner_name.charAt(0) }}</p>
           </div>
-          <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
-      <ul
-        ref="name_section_dropdown"
-        v-show="name_section_dropdown_active"
-        class="name_section_dropdown"
-      >
-        <li @click="logoutUser">Logout</li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import AccountSwitch from "@/components/common/AccountSwitch.vue";
 
-// Initial state of dropdown
-const name_section_dropdown_active = ref(false);
-
-// Initialize router and store
-const router = useRouter();
+// Initialize store
 const store = useStore();
-
-// Toggle dropdown
-const toggleNameSectionDropdown = () => {
-  name_section_dropdown_active.value = !name_section_dropdown_active.value;
-};
 
 // Get name of partner
 const partner_name = computed(() => {
   return store.getters.getUser.partner.name;
 });
-
-// Get token
-const token = computed(() => store.getters.getToken);
-// Logout user
-const logoutUser = async () => {
-  await store.dispatch("isLoading");
-  await axios
-    .get("/logout", {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    .then(() => {
-      store.dispatch("isLoading");
-      localStorage.removeItem("vuex");
-      localStorage.removeItem("selectedOperationalAccount");
-      router.push({ name: "login" });
-    });
-};
 </script>
 
 <style>
@@ -93,7 +55,7 @@ const logoutUser = async () => {
 .navbar .navbar_content_section {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.25rem;
   width: 15%;
   position: relative;
 }
@@ -133,7 +95,7 @@ const logoutUser = async () => {
 
 .navbar .notifications_and_name_section .separation {
   width: 1px;
-  height: 28px;
+  height: 1.75rem;
   background: var(--primary-color);
 }
 
@@ -147,19 +109,19 @@ const logoutUser = async () => {
 }
 
 .navbar .notifications_and_name_section .notifications .new_notification {
-  width: 11px;
-  height: 11px;
+  width: 0.6875rem;
+  height: 0.6875rem;
   background: #ffc06a;
   border-radius: 50%;
   position: absolute;
-  top: -5px;
+  top: -0.3125rem;
   right: 0;
 }
 
 .navbar .notifications_and_name_section .name_section {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.3125rem;
 }
 
 .navbar .notifications_and_name_section .name_section .name-circle {

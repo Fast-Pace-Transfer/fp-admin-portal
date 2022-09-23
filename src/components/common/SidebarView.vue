@@ -2,12 +2,15 @@
   <!-- Sidebar -->
   <section class="layout_dashboard_sidebar">
     <div class="inner_sidebar_content">
+      <!-- Sidebar Logo -->
       <div class="sidebar_logo">
         <img src="@/assets/images/logo.png" alt="fast pace logo" />
       </div>
+      <!-- End of Sidebar Logo -->
+      <!-- Sidebar Categories -->
       <div class="sidebar_categories">
         <nav class="sidebar_category">
-          <p class="sidebar_category_title">Payments</p>
+          <!-- <p class="sidebar_category_title">Payments</p> -->
           <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
@@ -62,7 +65,7 @@
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
                 <div class="sidebar_category_item_icon">
-                  <IconAccount :isActive="isActive" />
+                  <IconTransactions :isActive="isActive" />
                 </div>
                 <!-- End of Icon -->
                 <!-- Link title -->
@@ -75,23 +78,15 @@
                 <!-- End of Link title -->
               </li>
             </router-link>
-          </ul>
-        </nav>
-        <nav
-          class="sidebar_category"
-          v-if="['admin', 'finance'].includes(role)"
-        >
-          <p class="sidebar_category_title">Business</p>
-          <ul class="sidebar_category_list">
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-transactions' }"
+              :to="{ name: 'upload-documents' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
                 <div class="sidebar_category_item_icon">
-                  <IconReports :isActive="isActive" />
+                  <IconFiles :isActive="isActive" />
                 </div>
                 <!-- End of Icon -->
                 <!-- Link title -->
@@ -99,13 +94,73 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Reports
+                  Batch Upload
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
           </ul>
         </nav>
+        <nav
+          class="sidebar_category"
+          v-if="['admin', 'finance'].includes(role)"
+        >
+          <!-- <p class="sidebar_category_title">Support</p> -->
+          <ul class="sidebar_category_list">
+            <!-- <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'browse-reports' }"
+              class="link"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <div class="sidebar_category_item_icon">
+                  <IconReports :isActive="isActive" />
+                </div>
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                  Reports
+                </p>
+              </li>
+            </router-link> -->
+          </ul>
+        </nav>
+        <nav
+          class="sidebar_category"
+          v-if="['admin', 'finance'].includes(role)"
+        >
+          <!-- <p class="sidebar_category_title">Developers</p> -->
+          <ul class="sidebar_category_list">
+            <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'api-keys' }"
+              class="link"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <!-- Icon -->
+                <div class="sidebar_category_item_icon">
+                  <IconApiKeys :isActive="isActive" />
+                </div>
+                <!-- End of Icon -->
+                <!-- Link title -->
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                  API Documentation
+                </p>
+                <!-- End of Link title -->
+              </li>
+            </router-link>
+          </ul>
+        </nav>
+      </div>
+      <!-- End of Sidebar Categories -->
+
+      <!-- Logout Button -->
+      <div class="sidebar_logout">
+        <button @click="logoutUser" class="btn btn-primary">Logout</button>
       </div>
     </div>
   </section>
@@ -115,15 +170,47 @@
 <script setup lang="ts">
 import IconDashboard from "@/components/icons/payments/IconDashboard.vue";
 import IconAccount from "@/components/icons/payments/IconAccount.vue";
-import IconApiDocumentation from "../icons/developers/IconApiDocumentation.vue";
+import IconFiles from "@/components/icons/business/IconFiles.vue";
 import IconApiKeys from "../icons/developers/IconApiKeys.vue";
 import IconReports from "../icons/business/IconReports.vue";
-import { RouterLink } from "vue-router";
+import IconTransactions from "@/components/icons/payments/IconTransactions.vue";
+import { RouterLink, useRouter } from "vue-router";
+import axios from "axios";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize the store
 const store = useStore();
+
+// Initialize the router
+const router = useRouter();
+
+// Get token from the store
+const token = computed(() => {
+  return store.getters.getToken;
+});
+
+// Logout user
+const logoutUser = async () => {
+  await store.dispatch("isLoading");
+  await axios
+    .get("/logout", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+    .then(() => {
+      store.dispatch("isLoading");
+      localStorage.removeItem("vuex");
+      localStorage.removeItem("selectedOperationalAccountBalance");
+      router.push({ name: "login" });
+    })
+    .catch((error) => {
+      store.dispatch("isLoading");
+      handleAPIError(error);
+    });
+};
 
 // Get role
 const role = computed(() => {
@@ -164,12 +251,28 @@ const role = computed(() => {
   padding: 0 0 0 1.875rem;
 }
 
-.layout_dashboard_sidebar
+.layout_dashboard_sidebar .inner_sidebar_content .sidebar_logout {
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+}
+
+.layout_dashboard_sidebar .inner_sidebar_content .sidebar_logout button {
+  height: 1.875rem;
+  width: 60%;
+  border: 1px solid var(--primary-color);
+  background: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  color: var(--primary-color);
+}
+
+/* .layout_dashboard_sidebar
   .inner_sidebar_content
   .sidebar_categories
   .sidebar_category {
   margin-bottom: 2rem;
-}
+} */
 
 .layout_dashboard_sidebar
   .inner_sidebar_content
