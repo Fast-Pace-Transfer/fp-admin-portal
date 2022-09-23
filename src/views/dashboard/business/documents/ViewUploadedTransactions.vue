@@ -201,7 +201,7 @@ import PageLoader from "@/components/common/PageLoader.vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError";
 import { formatDate } from "@/utils/formatDate";
 import { formatAmount } from "@/utils/formatAmount";
@@ -596,6 +596,10 @@ onMounted(() => {
       checkProcessingStatus();
     }
   }, 10000);
+});
+
+onBeforeUnmount(() => {
+  checkProcessing.value = false;
 });
 </script>
 

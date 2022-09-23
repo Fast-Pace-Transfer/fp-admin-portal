@@ -12,7 +12,7 @@ const store = useStore();
 const token = computed(() => store.getters.getToken);
 
 // This is an example script - don't forget to change it!
-if (token.value) {
+if (token.value && store.getters.getUser) {
   LogRocket.identify("FP-PARTNER", {
     name: store.getters.getUser.partner.name,
     email: store.getters.getUser.email,
