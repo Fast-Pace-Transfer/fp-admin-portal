@@ -10,6 +10,16 @@
       <div class="dashboard_inner_content_edit_uploaded_transaction_page">
         <!--Edit Uploaded Transaction Page -->
         <div class="edit-uploaded-transaction-layout" v-if="batchDetails">
+          <!-- Input errors -->
+          <div class="uploaded-transaction-errors">
+            <div class="info-icon"><i class="fa-solid fa-circle-info"></i></div>
+            <div class="transaction-errors">
+              <p v-for="(valError, index) in validationError" :key="index">
+                {{ valError }}
+              </p>
+            </div>
+          </div>
+          <!-- End of Input Errors -->
           <form @submit.prevent="updateBatchTransaction">
             <div class="input-row">
               <div class="uploaded-transaction-input">
@@ -283,6 +293,7 @@ import type { transactionBatchInterface } from "@/models/business/transactionBat
 import axios from "axios";
 import { ref, computed, onMounted, reactive } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError";
+import { removeSpecialCharacters } from "@/utils/removeSpecialCharacters";
 import Swal from "sweetalert2";
 
 // Initialize store
@@ -311,6 +322,9 @@ const payoutCurrency = ref<string | null>("");
 
 // Initialize batch details
 const batchDetails = ref<transactionBatchInterface>();
+
+// Initialize validation errors
+const validationError = ref([]);
 
 // Get payout currency
 const getPayoutCurrency = (event: Event) => {
@@ -440,6 +454,11 @@ onMounted(async () => {
       // Set sending reason
       state.sendingReason = batchDetails.value
         ? batchDetails.value.sending_reason
+        : "";
+
+      // Set validation error
+      validationError.value = batchDetails.value
+        ? JSON.parse(batchDetails.value.validation_error)
         : "";
     })
     .catch((error) => {
@@ -699,5 +718,18 @@ const updateBatchTransaction = async () => {
   height: 45px;
   border-radius: 3px;
   cursor: pointer;
+}
+
+/* Input Errors */
+.uploaded-transaction-errors {
+  width: 70%;
+  margin-top: 1rem;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #00000029;
+  color: red;
 }
 </style>

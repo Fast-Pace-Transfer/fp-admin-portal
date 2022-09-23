@@ -38,5 +38,3 @@ export const formatDate = (date: string, addTime: boolean): string => {
     return formattedDate;
   }
 };
-
-export default formatDate;

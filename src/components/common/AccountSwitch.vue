@@ -161,41 +161,12 @@ const changeOperationalAccount = (event: any) => {
   padding: 9px 0 9px 11px;
   font-family: "Poppins", sans-serif;
   box-shadow: 0px 1px 3px #00000029;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   color: var(--primary-color);
   background: #fff;
 }
 
 .operational_account_switch_section select:focus {
   outline: none;
-}
-
-.name_section_dropdown {
-  position: absolute;
-  left: 67%;
-  top: 130%;
-  background: #fff;
-  width: 30%;
-  padding: 5px 10px;
-  box-shadow: 0px 1px 3px #00000029;
-}
-
-.name_section_dropdown::before {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  top: -10px;
-  left: 50%;
-  margin-left: -10px;
-  border-style: solid;
-  border-width: 0 10px 10px 10px;
-  border-color: transparent transparent #fff transparent;
-}
-
-.name_section_dropdown li {
-  list-style: none;
-  text-align: center;
-  cursor: pointer;
 }
 </style>
