@@ -31,10 +31,10 @@
             <div class="link-to-documentation-layout">
               <p>Documentation Link:</p>
               <a
-                href="https://fp-partner-api.devsnode.xyz/api/documentation"
+                href="https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5"
                 target="_blank"
                 rel="noopener noreferrer"
-                >https://fp-partner-api.devsnode.xyz/api/documentation</a
+                >https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5</a
               >
             </div>
           </div>

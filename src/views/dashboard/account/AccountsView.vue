@@ -146,4 +146,16 @@ onMounted(async () => {
   width: 42%;
 }
 /* End of list of accounts */
+
+/* Media Queries */
+
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .list_of_accounts {
+    flex-direction: column;
+  }
+
+  .layout_dashboard_content .dashboard_inner_content_prefunding_account {
+    padding: 0 2rem;
+  }
+}
 </style>

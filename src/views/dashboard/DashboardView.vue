@@ -179,13 +179,13 @@ onMounted(async () => {
 const statArray = [
   {
     title: "Daily Transactions",
-    amount_of_transactions: "1000",
+    amount_of_transactions: "----",
     rise: true,
     drop: false,
   },
   {
     title: "Weekly Transactions",
-    amount_of_transactions: "3000",
+    amount_of_transactions: "----",
     rise: false,
     drop: true,
   },
@@ -352,5 +352,25 @@ const statArray = [
 .duration-title.active {
   color: var(--primary-color);
   font-weight: bold;
+}
+
+/* Media Queries */
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .layout_dashboard_content .dashboard_inner_content {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .layout_dashboard_content
+    .dashboard_inner_content
+    .dashboard_inner_left_column_content {
+    width: 100%;
+  }
+
+  .layout_dashboard_content
+    .dashboard_inner_content
+    .dashboard_inner_right_column_content {
+    width: 100%;
+  }
 }
 </style>

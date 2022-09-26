@@ -19,7 +19,7 @@ onMounted(() => {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
       datasets: [
         {
-          data: [6, 4, 2, 3, 5, 3, 4],
+          data: [0, 0, 0, 0, 0, 0, 0],
           backgroundColor: ["#4953B2"],
           borderColor: ["#4953B2"],
           borderWidth: 1,
