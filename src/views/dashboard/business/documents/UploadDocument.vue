@@ -494,4 +494,12 @@ onMounted(async () => {
   border-radius: 3px;
   cursor: pointer;
 }
+
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .layout_dashboard_content
+    .dashboard_inner_content_upload_document_page
+    .upload-document-layout {
+    width: 100%;
+  }
+}
 </style>

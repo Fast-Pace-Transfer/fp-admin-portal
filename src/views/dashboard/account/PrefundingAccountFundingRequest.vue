@@ -24,7 +24,7 @@
                   <option value="" selected disabled>
                     Select Funding Type
                   </option>
-                  <option value="bank_deposit">Bank Deposit</option>
+                  <option value="bank_transfer">Bank Deposit</option>
                   <option value="card_payment">Card Payment</option>
                 </select>
               </div>

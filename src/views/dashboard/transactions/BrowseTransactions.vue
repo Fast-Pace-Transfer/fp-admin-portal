@@ -422,4 +422,11 @@ onMounted(() => {
   background: #fdc91c1a;
 }
 /* End of Table CSS */
+
+/* Media Queries */
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .layout_dashboard_content .dashboard_inner_content_transactions {
+    padding: 0 0.4rem;
+  }
+}
 </style>

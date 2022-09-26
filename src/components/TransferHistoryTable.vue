@@ -361,4 +361,15 @@ const cancelFundsTransfer = (id: string) => {
 .bold-fields {
   font-weight: bold;
 }
+
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .table_layout .table_header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .table_layout .table_header .filter_fields_layout {
+    width: 100%;
+  }
+}
 </style>
