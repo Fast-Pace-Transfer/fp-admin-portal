@@ -113,7 +113,7 @@
 import type { AccountInterface } from "@/models/accounts/account.interface";
 import type { Transaction } from "@/models/transactions/transaction.interface";
 import { useStore } from "vuex";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import axios from "axios";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "../../components/common/NavbarView.vue";
@@ -164,6 +164,23 @@ function getTransactions() {
     },
   });
 }
+
+watch(operational_account_currency, async (newCurrency, oldCurrency) => {
+  if (newCurrency) {
+    await axios
+      .get(
+        `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+          },
+        }
+      )
+      .then(function (response) {
+        indicative_rate.value = response.data.data.rate;
+      });
+  }
+});
 
 // When component is mounted
 onMounted(async () => {
