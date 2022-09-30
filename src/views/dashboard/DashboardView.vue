@@ -32,16 +32,22 @@
           <StatsCard :stat-array="statArray" />
           <!-- End of stats card -->
           <!-- Settlement rates -->
-          <div class="dashboard_inner_right_column_content_second_row">
+          <div
+            class="dashboard_inner_right_column_content_second_row"
+            v-if="prefundingAccounts[0] && operational_account_currency"
+          >
             <div class="settlement_rate_title">Indicative Exchange Rate</div>
             <div class="countries_select_box">
               <select>
-                <option>USD - GHS</option>
-                <option>GBP - GHS</option>
-                <option>EUR - GHS</option>
+                <option>
+                  {{ prefundingAccounts[0].currency }} -
+                  {{ operational_account_currency.currency }}
+                </option>
               </select>
             </div>
-            <div class="settlement_rate_amount">GHS 7.79</div>
+            <div class="settlement_rate_amount">
+              {{ indicative_rate ? indicative_rate : "No Rate Found" }}
+            </div>
           </div>
           <!-- End of settlement rates -->
           <!-- Transaction history -->
@@ -107,9 +113,8 @@
 import type { AccountInterface } from "@/models/accounts/account.interface";
 import type { Transaction } from "@/models/transactions/transaction.interface";
 import { useStore } from "vuex";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "../../components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
@@ -124,6 +129,14 @@ const store = useStore();
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Get indicative rate
+const indicative_rate = ref(null);
+
+// Get operational account currency
+const operational_account_currency = computed(
+  () => store.getters.getOperationalAccount[0]
+);
 
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<AccountInterface[]>([]);
@@ -152,6 +165,23 @@ function getTransactions() {
   });
 }
 
+watch(operational_account_currency, async (newCurrency, oldCurrency) => {
+  if (newCurrency) {
+    await axios
+      .get(
+        `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency.currency}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+          },
+        }
+      )
+      .then(function (response) {
+        indicative_rate.value = response.data.data.rate;
+      });
+  }
+});
+
 // When component is mounted
 onMounted(async () => {
   // Set loading status
@@ -164,6 +194,22 @@ onMounted(async () => {
       store.dispatch("isLoading");
       // Set prefunding accounts
       prefundingAccounts.value = results[0].data.data;
+
+      // Get rate
+      if (prefundingAccounts.value) {
+        axios
+          .get(
+            `account-transfer/rate/${prefundingAccounts.value[0].currency}/${operational_account_currency.value.currency}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.value}`,
+              },
+            }
+          )
+          .then(function (response) {
+            indicative_rate.value = response.data.data.rate;
+          });
+      }
       // Set transaction history
       transactionHistory.value = results[1].data.data.transactions;
     })
