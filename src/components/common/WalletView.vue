@@ -111,50 +111,50 @@ const reRoute = (id: string, type: string, currency: string) => {
 .account_design {
   border-style: solid;
   border-width: 1px;
-  border-radius: 15px;
+  border-radius: 0.9375rem;
   position: relative;
   height: 15.75rem;
   background-repeat: no-repeat;
-  background-position: right -132px bottom -100px;
+  background-position: right -8.25rem bottom -6.25rem;
   position: relative;
 }
 
 .account_design .title {
   font-size: 20px;
   color: #fff;
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 .account_design .account_balance {
   font-size: 40px;
   color: #fff;
-  padding: 0 20px;
+  padding: 0 1.25rem;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
-  margin-top: 30px;
+  margin-top: 1.875rem;
 }
 
 .account_design .account_change {
   position: absolute;
-  top: 12px;
-  right: 30px;
+  top: 0.75rem;
+  right: 1.875rem;
   color: var(--primary-color);
   font-size: 12px;
   background: #fff;
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  padding: 3px 10px;
+  padding: 3px 0.625rem;
 }
 
 .request_or_transfer_funds {
   text-align: right;
-  padding: 10px 0;
+  padding: 0.625rem 0;
   color: #383d6f;
   font-weight: bold;
   display: flex;
   justify-content: flex-end;
-  width: 500px;
+  width: 31.25rem;
 }
 
 .request_or_transfer_funds p {

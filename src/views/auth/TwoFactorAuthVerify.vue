@@ -53,10 +53,10 @@ import TwoFactorAuthVerifySVG from "../../components/icons/auth/TwoFactorAuthVer
 import VOtpInput from "vue3-otp-input";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize the store
 const store = useStore();
@@ -108,13 +108,7 @@ const handleOnComplete = async (value: string) => {
       store.dispatch("isLoading");
 
       // Show error message
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 };
 

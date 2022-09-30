@@ -24,7 +24,7 @@
                   <option value="" selected disabled>
                     Select Funding Type
                   </option>
-                  <option value="bank_deposit">Bank Deposit</option>
+                  <option value="bank_transfer">Bank Deposit</option>
                   <option value="card_payment">Card Payment</option>
                 </select>
               </div>
@@ -76,6 +76,7 @@ import NavbarView from "@/components/common/NavbarView.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();
@@ -144,13 +145,7 @@ const submitFundingRequest = async () => {
       store.dispatch("isLoading");
 
       // Show error message
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 };
 </script>

@@ -63,7 +63,7 @@
 import LoginSVG from "@/components/icons/auth/LoginSVG.vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
-import Swal from "sweetalert2";
+import { handleAPIError } from "@/utils/handleAPIError";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
@@ -140,13 +140,7 @@ const submitLoginForm = async () => {
     })
     .catch((error) => {
       store.dispatch("isLoading");
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 };
 </script>

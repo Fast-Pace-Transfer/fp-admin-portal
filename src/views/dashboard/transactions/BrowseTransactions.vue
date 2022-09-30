@@ -9,18 +9,14 @@
       <NavbarView />
       <div class="dashboard_inner_content_transactions">
         <!-- Stats -->
-        <div class="total_statistics_layout">
-          <div class="total_statistics">
-            <StatsCard :stat-array="statArray" />
-          </div>
-        </div>
+        <!-- s -->
         <!-- End of Stats -->
         <!-- Transaction history table -->
         <div class="transaction_history_table_layout">
           <div class="transaction_history_table">
             <div class="transaction_history_table_header">
               <h2>Transactions</h2>
-              <div class="filter_fields_layout">
+              <!-- <div class="filter_fields_layout">
                 <p>Filter by</p>
                 <div class="filter_fields">
                   <select>
@@ -49,7 +45,7 @@
                     <option>Type</option>
                   </select>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="table_container">
               <table>
@@ -115,7 +111,14 @@
                     >
                       <span>{{ transaction.status }}</span>
                     </td>
-                    <td><i class="fa-solid fa-circle-info"></i></td>
+                    <td>
+                      <button
+                        @click="goToViewTransaction(transaction.id)"
+                        class="view-individual-transaction-button"
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
                 <tbody v-else>
@@ -147,6 +150,7 @@ import Swal from "sweetalert2";
 import NavbarView from "@/components/common/NavbarView.vue";
 import axios from "axios";
 import StatsCard from "@/components/common/StatsCard.vue";
+import { useRouter } from "vue-router";
 
 const statArray = [
   {
@@ -190,11 +194,22 @@ const transactions = ref<Transaction[]>([]);
 // Initialize store
 const store = useStore();
 
+// Initialize router
+const router = useRouter();
+
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+// Go To View Transactions page
+const goToViewTransaction = (id: string) => {
+  router.push({
+    name: "view-transactions",
+    params: { id: id },
+  });
+};
 
 // Get transactions when component is mounted
 onMounted(() => {
@@ -340,7 +355,9 @@ onMounted(() => {
   background: #fff;
   border-radius: 10px;
   padding: 30px 15px;
-  margin-top: 40px;
+  margin-top: 30px;
+  max-height: 780px;
+  overflow-x: scroll;
 }
 
 .transaction_history_table table {
@@ -375,5 +392,41 @@ onMounted(() => {
 .transaction_history_table table td {
   padding: 15px 0;
 }
+
+.view-individual-transaction-button {
+  border: none;
+  padding: 7px 15px;
+  cursor: pointer;
+  background: #151e3f;
+  color: #fff;
+}
+
+.status span {
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: #2dfd1c;
+}
+
+.status.success span {
+  color: #2dfd1c;
+  background: #2dfd1c1a;
+}
+
+.status.error span {
+  color: #fd1c25;
+  background: #fd1c251a;
+}
+
+.status.pending span {
+  color: #fdc91c;
+  background: #fdc91c1a;
+}
 /* End of Table CSS */
+
+/* Media Queries */
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .layout_dashboard_content .dashboard_inner_content_transactions {
+    padding: 0 0.4rem;
+  }
+}
 </style>

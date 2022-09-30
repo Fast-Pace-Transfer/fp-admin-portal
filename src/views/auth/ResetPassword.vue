@@ -67,6 +67,7 @@ import Swal from "sweetalert2";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();
@@ -134,11 +135,7 @@ const changePassword = async () => {
           store.dispatch("isLoading");
 
           // Show error message
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error.response.data.errors.join(" "),
-          });
+          handleAPIError(error);
         }
       });
   }

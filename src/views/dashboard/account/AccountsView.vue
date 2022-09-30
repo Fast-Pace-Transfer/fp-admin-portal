@@ -54,23 +54,19 @@
 
 <script setup lang="ts">
 import type { AccountInterface } from "@/models/accounts/account.interface";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 import PageLoader from "@/components/common/PageLoader.vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import SidebarView from "@/components/common/SidebarView.vue";
 import NavbarView from "@/components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
 import FundingHistoryTable from "@/components/FundingHistoryTable.vue";
 import TransferHistoryTable from "@/components/TransferHistoryTable.vue";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();
-
-// Initialize router
-const router = useRouter();
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -108,14 +104,11 @@ onMounted(async () => {
       prefundingAccounts.value = results[0].data.data;
     })
     .catch(function (error) {
-      if (error.response) {
-        store.dispatch("isLoading");
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      // Stop loading status
+      store.dispatch("isLoading");
+
+      // Show error message
+      handleAPIError(error);
     });
 });
 </script>
@@ -153,4 +146,16 @@ onMounted(async () => {
   width: 42%;
 }
 /* End of list of accounts */
+
+/* Media Queries */
+
+@media screen and (min-width: 37.5rem) and (max-width: 64rem) {
+  .list_of_accounts {
+    flex-direction: column;
+  }
+
+  .layout_dashboard_content .dashboard_inner_content_prefunding_account {
+    padding: 0 2rem;
+  }
+}
 </style>

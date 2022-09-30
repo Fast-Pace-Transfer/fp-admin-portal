@@ -42,7 +42,7 @@ const props = defineProps({
 <style>
 .dashboard_inner_right_column_stats_content {
   width: 50%;
-  padding-left: 20px;
+  padding-left: 1.25rem;
   border-right: 1px solid #a5a5a58e;
 }
 
@@ -53,7 +53,7 @@ const props = defineProps({
 .dashboard_inner_right_column_stats_content .title {
   color: #343434;
   font-size: 1.175rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   font-family: "Poppins", sans-serif;
   font-weight: normal;
 }
@@ -69,7 +69,7 @@ const props = defineProps({
 
 .dashboard_inner_right_column_stats_content .bottom_stats {
   display: flex;
-  gap: 5px;
+  gap: 0.3125rem;
   align-items: center;
   font-family: "Poppins", sans-serif;
   font-size: 12px;

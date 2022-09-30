@@ -11,10 +11,11 @@ export default createStore({
     user: {},
     role: "",
     operationalAccount: [] as AccountInterface[],
+    file: {},
   },
   plugins: [
     createPersistedState({
-      paths: ["token", "user", "role", "operationalAccount"],
+      paths: ["token", "user", "role", "operationalAccount", "file"],
       storage: {
         getItem: (key) => ls.get(key),
         setItem: (key, value) => ls.set(key, value),
@@ -37,6 +38,10 @@ export default createStore({
 
     setUserData(state, payload) {
       state.user = payload;
+    },
+
+    setFileInfo(state, payload) {
+      state.file = payload;
     },
 
     setOperationalAccount(state, payload) {
@@ -65,6 +70,10 @@ export default createStore({
       state.commit("setUserData", payload);
     },
 
+    setFileInfo(state, payload) {
+      state.commit("setFileInfo", payload);
+    },
+
     setOperationalAccount(state, payload) {
       state.commit("setOperationalAccount", payload);
     },
@@ -81,5 +90,6 @@ export default createStore({
     getUser: (state) => state.user,
     getRole: (state) => state.role,
     getOperationalAccount: (state) => state.operationalAccount,
+    getFileInfo: (state) => state.file,
   },
 });

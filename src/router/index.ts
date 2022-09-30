@@ -162,9 +162,123 @@ const router = createRouter({
         },
       ],
     },
+    // API Routes
+    {
+      path: "/api-docs",
+      name: "api",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "api-keys",
+          component: () =>
+            import("@/views/dashboard/developers/ApiDocumentation.vue"),
+          meta: {
+            title: "API Documentation",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "dev"],
+          },
+        },
+      ],
+    },
+    //Reports
+    {
+      path: "/reports",
+      name: "reports",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "browse-reports",
+          component: () =>
+            import("@/views/dashboard/business/reports/BrowseReports.vue"),
+          meta: {
+            title: "Browse Reports",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
+          },
+        },
+        {
+          path: "view/:id",
+          name: "view-report",
+          component: () =>
+            import("@/views/dashboard/business/reports/ViewReport.vue"),
+          meta: {
+            title: "View Report",
+            requiresAuth: true,
+            checkRole: ["admin", "finance", "user", "dev"],
+          },
+        },
+      ],
+    },
+    // Documents
+    {
+      path: "/documents",
+      name: "documents",
+      component: {
+        render: () => h(resolveComponent("router-view")),
+      },
+      children: [
+        {
+          path: "",
+          name: "upload-documents",
+          component: () =>
+            import("@/views/dashboard/business/documents/UploadDocument.vue"),
+          meta: {
+            title: "Upload Documents",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
+          path: "batch-transactions/:batchId",
+          name: "batch-transactions",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/BatchTransactions.vue"
+            ),
+          meta: {
+            title: "Batch Transactions",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
+          path: "view/:id",
+          name: "view-uploaded-transactions",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/ViewUploadedTransactions.vue"
+            ),
+          meta: {
+            title: "View Uploaded Transactions",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+        {
+          path: "edit/:transactionId",
+          name: "edit-uploaded-transaction",
+          component: () =>
+            import(
+              "@/views/dashboard/business/documents/EditUploadedTransaction.vue"
+            ),
+          meta: {
+            title: "Edit Uploaded Transaction",
+            requiresAuth: true,
+            checkRole: ["admin"],
+          },
+        },
+      ],
+    },
   ],
 });
 
+// Check if user is logged in
 router.beforeEach((toRoute, fromRoute, next) => {
   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
   if (toRoute.matched.some((record) => record.meta.requiresAuth)) {
@@ -180,6 +294,7 @@ router.beforeEach((toRoute, fromRoute, next) => {
   }
 });
 
+// Check if user has the correct roles
 router.beforeEach((toRoute, fromRoute, next) => {
   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
   if (toRoute.matched.some((record) => record.meta.checkRole)) {

@@ -92,6 +92,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store
 const store = useStore();
@@ -103,7 +104,7 @@ const router = useRouter();
 const route = useRoute();
 
 // Get route params
-const { id, type, currency } = route.params;
+const { id, currency } = route.params;
 
 // Get loading status
 const loading = computed(() => store.getters.getLoadingStatus);
@@ -173,13 +174,7 @@ const transferFunds = async () => {
       store.dispatch("isLoading");
 
       // Show error message
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 };
 </script>
