@@ -41,7 +41,7 @@
               <select>
                 <option>
                   {{ prefundingAccounts[0].currency }} -
-                  {{ operational_account_currency }}
+                  {{ operational_account_currency.currency }}
                 </option>
               </select>
             </div>
@@ -135,7 +135,7 @@ const indicative_rate = ref(null);
 
 // Get operational account currency
 const operational_account_currency = computed(
-  () => store.getters.getOperationalAccount[0].currency
+  () => store.getters.getOperationalAccount[0]
 );
 
 // Initial values for prefunding accounts
@@ -169,7 +169,7 @@ watch(operational_account_currency, async (newCurrency, oldCurrency) => {
   if (newCurrency) {
     await axios
       .get(
-        `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency}`,
+        `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency.currency}`,
         {
           headers: {
             Authorization: `Bearer ${token.value}`,
@@ -199,7 +199,7 @@ onMounted(async () => {
       if (prefundingAccounts.value) {
         axios
           .get(
-            `account-transfer/rate/${prefundingAccounts.value[0].currency}/${operational_account_currency.value}`,
+            `account-transfer/rate/${prefundingAccounts.value[0].currency}/${operational_account_currency.value.currency}`,
             {
               headers: {
                 Authorization: `Bearer ${token.value}`,
