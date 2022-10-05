@@ -131,8 +131,6 @@ function onFileChanged($event: Event) {
   const target = $event.target as HTMLInputElement;
   if (target && target.files) {
     document.value = target.files[0];
-    console.log(document.value);
-    console.log(formatFileSize(document.value.size));
     // Clear file info
     store.dispatch("setFileInfo", {});
     // Set file info

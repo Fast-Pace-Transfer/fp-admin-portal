@@ -225,8 +225,11 @@
             </div>
             <div class="transaction_details_help_section_second_column">
               <p>
-                <i class="fa-solid fa-triangle-exclamation"></i
-                >&nbsp;&nbsp;Report Problem
+                <a
+                  :href="`mailto:support@fastpacetransfer?subject=Transaction Reference ${transaction.reference}`"
+                  ><i class="fa-solid fa-triangle-exclamation"></i
+                  >&nbsp;&nbsp;Report Problem</a
+                >
               </p>
             </div>
           </div>
@@ -632,12 +635,20 @@ onMounted(async () => {
 .transaction_details_help_section
   .transaction_details_help_section_second_column
   p {
-  color: var(--primary-color);
   font-size: 20px;
   font-weight: 700;
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.transaction_details_help_section
+  .transaction_details_help_section_second_column
+  p
+  a {
+  text-decoration: none;
+  display: flex;
+  color: var(--primary-color);
 }
 
 .transaction_details_help_section
