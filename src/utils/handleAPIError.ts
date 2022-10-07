@@ -15,12 +15,27 @@ export const handleAPIError = (error: any) => {
       // Logout user
       //   localStorage.removeItem("vuex");
       //   window.location.reload();
-      Swal.fire({
-        title: "Error",
-        text: data.errors ? data.errors.join(" ") : data.message,
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      if (data.message === "inactive") {
+        Swal.fire({
+          title: "Error",
+          text: data.errors ? data.errors.join(" ") : data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem("vuex");
+            localStorage.removeItem("selectedOperationalAccountBalance");
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: data.errors ? data.errors.join(" ") : data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
     } else if (status === 400) {
       // Bad request
       // Show error message
