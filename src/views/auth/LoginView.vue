@@ -96,7 +96,7 @@ const submitLoginForm = async () => {
   };
 
   // Set CSRF token
-  await axios.get("sanctum/csrf-cookie");
+  await axios.get(`${import.meta.env.VITE_CSRF_URL}/sanctum/csrf-cookie`);
 
   // Send the form data to the server
   await axios
