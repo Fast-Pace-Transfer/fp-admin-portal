@@ -39,15 +39,6 @@ export const handleAPIError = (error: any) => {
         icon: "error",
         confirmButtonText: "Ok",
       });
-    } else if (status === 500) {
-      // Internal server error
-      // Show error message
-      Swal.fire({
-        title: "Error",
-        text: data.errors ? data.errors.join(" ") : data.message,
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
     } else if (status === 403) {
       // Forbidden
       // Show error message
@@ -71,7 +62,7 @@ export const handleAPIError = (error: any) => {
       // Show error message
       Swal.fire({
         title: "Error",
-        text: "Something went wrong",
+        text: "Something went wwrong",
         icon: "error",
         confirmButtonText: "Ok",
       });
