@@ -149,35 +149,36 @@ import SidebarView from "@/components/common/SidebarView.vue";
 import Swal from "sweetalert2";
 import NavbarView from "@/components/common/NavbarView.vue";
 import axios from "axios";
-import StatsCard from "@/components/common/StatsCard.vue";
+// import StatsCard from "@/components/common/StatsCard.vue";
 import { useRouter } from "vue-router";
+import { handleAPIError } from "@/utils/handleAPIError";
 
-const statArray = [
-  {
-    title: "Daily Transactions",
-    amount_of_transactions: "1000",
-    rise: true,
-    drop: false,
-  },
-  {
-    title: "Weekly Transactions",
-    amount_of_transactions: "7000",
-    rise: false,
-    drop: true,
-  },
-  {
-    title: "Monthly Transactions",
-    amount_of_transactions: "14000",
-    rise: true,
-    drop: false,
-  },
-  {
-    title: "Annual Transactions",
-    amount_of_transactions: "168000",
-    rise: false,
-    drop: true,
-  },
-];
+// const statArray = [
+//   {
+//     title: "Daily Transactions",
+//     amount_of_transactions: "1000",
+//     rise: true,
+//     drop: false,
+//   },
+//   {
+//     title: "Weekly Transactions",
+//     amount_of_transactions: "7000",
+//     rise: false,
+//     drop: true,
+//   },
+//   {
+//     title: "Monthly Transactions",
+//     amount_of_transactions: "14000",
+//     rise: true,
+//     drop: false,
+//   },
+//   {
+//     title: "Annual Transactions",
+//     amount_of_transactions: "168000",
+//     rise: false,
+//     drop: true,
+//   },
+// ];
 
 const options: Intl.DateTimeFormatOptions = {
   year: "2-digit",
@@ -235,13 +236,7 @@ onMounted(() => {
       store.dispatch("isLoading");
 
       // Set error
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error.response.data.errors.join(" "),
-        });
-      }
+      handleAPIError(error);
     });
 });
 </script>
