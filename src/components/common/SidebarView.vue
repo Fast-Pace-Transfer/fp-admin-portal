@@ -82,6 +82,7 @@
               v-slot="{ isActive }"
               :to="{ name: 'upload-documents' }"
               class="link"
+              v-if="can_upload_batch"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -189,6 +190,11 @@ const router = useRouter();
 // Get token from the store
 const token = computed(() => {
   return store.getters.getToken;
+});
+
+// Batch Capability
+const can_upload_batch = computed(() => {
+  return store.getters.getUser.partner.can_upload_batch;
 });
 
 // Logout user
