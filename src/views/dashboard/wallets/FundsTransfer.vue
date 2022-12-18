@@ -20,12 +20,14 @@
                 <select
                   id="funds_form_select"
                   v-model="initialState.prefundAccount"
+                  @change="getIndicativeRate"
                 >
                   <option value="" selected disabled>Select Account</option>
                   <option
                     v-for="(prefundAccount, index) in prefundingAccounts"
                     :key="index"
                     :value="prefundAccount.id"
+                    :data-currency="prefundAccount.currency"
                   >
                     {{ prefundAccount.currency }} - Prefund Account
                   </option>
@@ -39,6 +41,10 @@
                   disabled
                   v-model="initialState.operationalAccount"
                 />
+                <p v-if="indicative_rate">
+                  Today's indicative rate is 1 {{ current_prefund_currency }} =
+                  {{ indicative_rate }} {{ currency }}
+                </p>
               </div>
               <!-- <div class="rate_calculation">
                 <div class="debit_amount">
@@ -62,7 +68,12 @@
               </div>
               <p class="settlement_rate">at 7.7 GHS settlement rate</p> -->
               <div class="funds_form_input">
-                <label for="amount_input">Amount</label>
+                <label for="amount_input"
+                  >Amount in
+                  {{
+                    current_prefund_currency ? current_prefund_currency : "-"
+                  }}</label
+                >
                 <input
                   type="number"
                   id="amount_input"
@@ -115,6 +126,12 @@ const token = computed(() => store.getters.getToken);
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<AccountInterface[]>([]);
 
+// Get indicative rate
+const indicative_rate = ref(null);
+
+// Initialize current prefund currency
+const current_prefund_currency = ref<string | null>("");
+
 // When component is mounted
 onMounted(async () => {
   // Run axios requests
@@ -136,6 +153,31 @@ const initialState = {
   prefundAccount: "",
   operationalAccount: `${currency} - Account`,
   debitAmount: 0,
+};
+
+// Get indicative rate
+const getIndicativeRate = async (event: Event) => {
+  // Get prefund currency
+  const prefund_currency = event.target
+    ? (event.target as HTMLSelectElement).options[
+        (event.target as HTMLSelectElement).selectedIndex
+      ].getAttribute("data-currency")
+    : "";
+  current_prefund_currency.value = prefund_currency;
+  if (prefund_currency) {
+    await axios
+      .get(`account-transfer/rate/${prefund_currency}/${currency}`, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      .then(function (response) {
+        indicative_rate.value = response.data.data.rate;
+      })
+      .catch((error) => {
+        handleAPIError(error);
+      });
+  }
 };
 
 // Submit funds transfer form
