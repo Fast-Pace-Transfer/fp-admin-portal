@@ -38,6 +38,7 @@
               <th style="width: 20%">Reference</th>
               <th style="width: 20%">Amount</th>
               <th style="width: 20%">Funding Status</th>
+              <th style="width: 20%">Reason</th>
               <th style="width: 20%">Action</th>
             </tr>
           </thead>
@@ -81,6 +82,10 @@
                   }}
                 </span>
               </td>
+              <td class="rejection_message" v-if="history.rejection_message">
+                <span @click="viewReason(history.rejection_message)">View</span>
+              </td>
+              <td v-else>N/A</td>
               <td class="actions">
                 <a
                   :href="`mailto:support@fastpacetransfer?subject=Funding Request ${history.reference}`"
@@ -157,6 +162,14 @@ onMounted(() => {
       });
     });
 });
+
+// View reason function
+const viewReason = (reason: string) => {
+  Swal.fire({
+    icon: "warning",
+    html: `<p>${reason}</p>`,
+  });
+};
 
 // List of statuses
 const statuses = ["pending", "approved", "rejected"];
@@ -442,6 +455,18 @@ const cancelFunding = (id: string) => {
 /* Amount */
 .bold-fields {
   font-weight: bold;
+}
+
+/* Rejection message */
+.rejection_message {
+  word-break: normal;
+}
+
+.rejection_message span {
+  border-radius: 3px;
+  padding: 5px 15px;
+  cursor: pointer;
+  border: 1px solid var(--primary-color);
 }
 
 @media screen and (min-width: 37.5rem) and (max-width: 64rem) {
