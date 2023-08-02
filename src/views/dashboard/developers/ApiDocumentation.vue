@@ -34,7 +34,7 @@
                 href="https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5"
                 target="_blank"
                 rel="noopener noreferrer"
-                >https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5</a
+                >https://documenter.getpostman.com/view/17812328/2s9XxvUvZN</a
               >
             </div>
             <div class="end-point">
