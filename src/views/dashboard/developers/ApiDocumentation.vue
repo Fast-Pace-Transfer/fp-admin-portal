@@ -31,7 +31,7 @@
             <div class="link-to-documentation-layout">
               <p>Documentation Link:</p>
               <a
-                href="https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5"
+                href="https://documenter.getpostman.com/view/17812328/2s9XxvUvZN"
                 target="_blank"
                 rel="noopener noreferrer"
                 >https://documenter.getpostman.com/view/17812328/2s9XxvUvZN</a
