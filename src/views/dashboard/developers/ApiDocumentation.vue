@@ -31,11 +31,15 @@
             <div class="link-to-documentation-layout">
               <p>Documentation Link:</p>
               <a
-                href="https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5"
+                href="https://documenter.getpostman.com/view/17812328/2s9XxvUvZN"
                 target="_blank"
                 rel="noopener noreferrer"
-                >https://documenter.getpostman.com/view/17812328/2s7ZLjKBx5</a
+                >https://documenter.getpostman.com/view/17812328/2s9XxvUvZN</a
               >
+            </div>
+            <div class="end-point">
+              <p>Base URL:</p>
+              <p>{{ baseUrl }}</p>
             </div>
           </div>
         </div>
@@ -67,6 +71,9 @@ const token = computed(() => store.getters.getToken);
 
 // Get api secret key
 const apiSecretKey = ref("");
+
+// Get base url
+const baseUrl = import.meta.env.VITE_PARTNER_API_URL;
 
 // Generate API Key
 const generateApiKey = async () => {
@@ -280,4 +287,12 @@ const copyApiKey = () => {
 }
 
 /* Generate API Key CSS */
+.end-point {
+  width: 100%;
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 30px;
+}
+/* End of Endpoint CSS */
 </style>

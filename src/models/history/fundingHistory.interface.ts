@@ -10,6 +10,7 @@
  * @property {number} requested_by - The data of the user who requested the funding history
  * @property {string} funding_type - The type of funding
  * @property {string} status - The status of the funding history
+ * @property {string} rejection_message - The rejection reason,
  * @property {string} created_at - The date the funding history was created
  * @property {string} updated_at - The date the funding history was last updated
  * @property {Object} account - The data of the account
@@ -29,7 +30,7 @@ export interface FundingHistoryInterface {
   funding_type: string;
   status: string;
   created_at: string;
-
+  rejection_message: string;
   updated_at: string;
   account: {
     id: string;

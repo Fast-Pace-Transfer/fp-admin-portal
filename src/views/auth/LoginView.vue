@@ -118,6 +118,7 @@ const submitLoginForm = async () => {
           partner: {
             id: response.data.data.partner.id,
             name: response.data.data.partner.name,
+            can_upload_batch: response.data.data.partner.can_upload_batch,
           },
         };
         store.dispatch("setUserData", userData);
