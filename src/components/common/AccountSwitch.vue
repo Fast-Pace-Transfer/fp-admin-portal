@@ -91,8 +91,6 @@ onMounted(() => {
               selectedOperationalAccount.value[0].balance !==
               operationalAccount.balance
             ) {
-              console.log(selectedOperationalAccount.value[0].balance);
-              console.log(operationalAccount.balance);
               // Add selected account balance to LocalStorage
               localStorage.setItem(
                 "selectedOperationalAccountBalance",

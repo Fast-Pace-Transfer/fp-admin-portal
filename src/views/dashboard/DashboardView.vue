@@ -10,6 +10,7 @@
         <div class="dashboard_inner_left_column_content">
           <div class="dashboard_inner_left_column_top_content">
             <WalletView
+              v-if="prefundingAccounts.length"
               :width="`500px`"
               :account="prefundingAccounts"
               :type="`pre-fund`"
@@ -21,6 +22,18 @@
               :background-color="`#4953B2`"
               :border-color="`#4953B2`"
               :background-image="`url(src/assets/images/wallet.svg)`"
+            />
+            <WalletView
+              v-else-if="operationalAccount.length"
+              :account="operationalAccount"
+              :show-request="user.can_prefund ? true : false"
+              :title="`Operational Account - ${operationalAccount[0].currency}`"
+              :type="'operation'"
+              :width="`500px`"
+              :switchable="false"
+              :background-color="`#B24949`"
+              :border-color="`#B24949`"
+              :background-image="`url('src/assets/images/wallet_red.svg')`"
             />
           </div>
           <div class="dashboard_inner_left_column_bottom_content">
@@ -138,6 +151,11 @@ const operational_account_currency = computed(
   () => store.getters.getOperationalAccount[0]
 );
 
+const user = computed(() => store.getters.getUser);
+
+// Initial values for operational accounts
+const operationalAccount = ref<AccountInterface[]>([]);
+
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<AccountInterface[]>([]);
 
@@ -147,6 +165,15 @@ const transactionHistory = ref<Transaction[]>([]);
 // Function to fetch prefunding accounts
 function getPrefundingAccounts() {
   return axios.get("accounts/pre-fund", {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+}
+
+// Get prefunding accounts
+function getOperationalAccounts() {
+  return axios.get("/accounts/operation", {
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
@@ -164,23 +191,24 @@ function getTransactions() {
     },
   });
 }
-
-watch(operational_account_currency, async (newCurrency, oldCurrency) => {
-  if (newCurrency) {
-    await axios
-      .get(
-        `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency.currency}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token.value}`,
-          },
-        }
-      )
-      .then(function (response) {
-        indicative_rate.value = response.data.data.rate;
-      });
-  }
-});
+if (prefundingAccounts.value.length) {
+  watch(operational_account_currency, async (newCurrency, oldCurrency) => {
+    if (newCurrency) {
+      await axios
+        .get(
+          `account-transfer/rate/${prefundingAccounts.value[0].currency}/${newCurrency.currency}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token.value}`,
+            },
+          }
+        )
+        .then(function (response) {
+          indicative_rate.value = response.data.data.rate;
+        });
+    }
+  });
+}
 
 // When component is mounted
 onMounted(async () => {
@@ -188,7 +216,11 @@ onMounted(async () => {
   store.dispatch("isLoading");
 
   // Get prefunding accounts and transactions
-  await Promise.all([getPrefundingAccounts(), getTransactions()])
+  await Promise.all([
+    getPrefundingAccounts(),
+    getTransactions(),
+    getOperationalAccounts(),
+  ])
     .then(function (results) {
       // Stop loading status
       store.dispatch("isLoading");
@@ -196,7 +228,7 @@ onMounted(async () => {
       prefundingAccounts.value = results[0].data.data;
 
       // Get rate
-      if (prefundingAccounts.value) {
+      if (prefundingAccounts.value.length) {
         axios
           .get(
             `account-transfer/rate/${prefundingAccounts.value[0].currency}/${operational_account_currency.value.currency}`,
@@ -212,6 +244,7 @@ onMounted(async () => {
       }
       // Set transaction history
       transactionHistory.value = results[1].data.data.transactions;
+      operationalAccount.value = results[2].data.data;
     })
     .catch(function (error) {
       // Stop loading status
@@ -250,6 +283,7 @@ const statArray = [
   min-height: 100vh;
   margin-left: 15.625rem;
 }
+
 /* Inner Content CSS */
 
 .layout_dashboard_content .dashboard_inner_content {
@@ -269,6 +303,7 @@ const statArray = [
   flex-direction: column;
   gap: 80px;
 }
+
 /* End of Inner Left Content CSS */
 
 .layout_dashboard_content
