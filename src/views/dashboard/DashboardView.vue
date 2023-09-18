@@ -152,7 +152,6 @@ const operational_account_currency = computed(
 );
 
 const user = computed(() => store.getters.getUser);
-console.log(user.value);
 
 // Initial values for operational accounts
 const operationalAccount = ref<AccountInterface[]>([]);
