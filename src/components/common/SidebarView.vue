@@ -210,6 +210,7 @@ const logoutUser = async () => {
       store.dispatch("isLoading");
       localStorage.removeItem("vuex");
       localStorage.removeItem("selectedOperationalAccountBalance");
+      store.dispatch("clearOperationalAccount");
       router.push({ name: "login" });
     })
     .catch((error) => {

@@ -119,6 +119,8 @@ const submitLoginForm = async () => {
             id: response.data.data.partner.id,
             name: response.data.data.partner.name,
             can_upload_batch: response.data.data.partner.can_upload_batch,
+            callback_url: response.data.data.partner.callback_url,
+            can_prefund: response.data.data.partner.can_prefund,
           },
         };
         store.dispatch("setUserData", userData);

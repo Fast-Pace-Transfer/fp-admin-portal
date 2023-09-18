@@ -10,7 +10,7 @@
       <div class="dashboard_inner_content_prefunding_account">
         <!-- List of accounts -->
         <div class="list_of_accounts">
-          <div class="prefunded_account">
+          <div class="prefunded_account" v-if="prefundingAccounts.length">
             <WalletView
               :account="prefundingAccounts"
               :title="`Prefund Account - ${
@@ -30,7 +30,7 @@
           <div class="operational_accounts">
             <WalletView
               :account="operationalAccount"
-              :show-request="true"
+              :show-request="user.can_prefund ? true : false"
               :title="`Operational Account - ${operationalAccount[0].currency}`"
               :type="'operation'"
               :width="`500px`"
@@ -43,7 +43,7 @@
         </div>
         <!-- End of list of accounts -->
         <!-- Funding History Table -->
-        <FundingHistoryTable />
+        <FundingHistoryTable v-show="user.can_prefund" />
         <TransferHistoryTable />
         <!-- End of Funding History Table -->
       </div>
@@ -73,6 +73,8 @@ const loading = computed(() => store.getters.getLoadingStatus);
 
 // Get token
 const token = computed(() => store.getters.getToken);
+
+const user = computed(() => store.getters.getUser);
 
 // Initial values for prefunding accounts
 const prefundingAccounts = ref<AccountInterface[]>([]);
