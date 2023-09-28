@@ -16,36 +16,17 @@
           <div class="transaction_history_table">
             <div class="transaction_history_table_header">
               <h2>Transactions</h2>
-              <!-- <div class="filter_fields_layout">
-                <p>Filter by</p>
-                <div class="filter_fields">
-                  <select>
-                    <option>Date</option>
-                    <option>Amount</option>
-                    <option>Type</option>
-                  </select>
-                  <select>
-                    <option>Date</option>
-                    <option>Amount</option>
-                    <option>Type</option>
-                  </select>
-                  <select>
-                    <option>Date</option>
-                    <option>Amount</option>
-                    <option>Type</option>
-                  </select>
-                  <select>
-                    <option>Date</option>
-                    <option>Amount</option>
-                    <option>Type</option>
-                  </select>
-                  <select>
-                    <option>Date</option>
-                    <option>Amount</option>
-                    <option>Type</option>
-                  </select>
+              <div class="search_box_and_download">
+                <div class="search_box">
+                  <label for="search">Search: </label>
+                  <input type="text" id="search" v-model="keyword" />
                 </div>
-              </div> -->
+                <div class="download_button">
+                  <button @click="downloadTransactionsReport()">
+                    Download
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="table_container">
               <table>
@@ -63,15 +44,18 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody v-if="transactions.length">
-                  <tr v-for="transaction in transactions" :key="transaction.id">
+                <tbody v-if="filteredTransactions.length">
+                  <tr
+                    v-for="transaction in filteredTransactions"
+                    :key="transaction.id"
+                  >
                     <td>
                       {{
                         new Date(transaction.created_at)
                           .toLocaleDateString("en-US", options)
                           .replace("/", "-")
                           .replace("/", "-")
-                          .replace(",", "  ")
+                          .replace(",", " ")
                       }}
                     </td>
                     <td>{{ transaction.reference }}</td>
@@ -146,39 +130,11 @@ import { computed, ref, onMounted } from "vue";
 import type { Transaction } from "@/models/transactions/transaction.interface";
 import PageLoader from "@/components/common/PageLoader.vue";
 import SidebarView from "@/components/common/SidebarView.vue";
-import Swal from "sweetalert2";
+import { exportTransactionsAsExcel } from "@/utils/excelExport";
 import NavbarView from "@/components/common/NavbarView.vue";
 import axios from "axios";
-// import StatsCard from "@/components/common/StatsCard.vue";
 import { useRouter } from "vue-router";
 import { handleAPIError } from "@/utils/handleAPIError";
-
-// const statArray = [
-//   {
-//     title: "Daily Transactions",
-//     amount_of_transactions: "1000",
-//     rise: true,
-//     drop: false,
-//   },
-//   {
-//     title: "Weekly Transactions",
-//     amount_of_transactions: "7000",
-//     rise: false,
-//     drop: true,
-//   },
-//   {
-//     title: "Monthly Transactions",
-//     amount_of_transactions: "14000",
-//     rise: true,
-//     drop: false,
-//   },
-//   {
-//     title: "Annual Transactions",
-//     amount_of_transactions: "168000",
-//     rise: false,
-//     drop: true,
-//   },
-// ];
 
 const options: Intl.DateTimeFormatOptions = {
   year: "2-digit",
@@ -210,6 +166,50 @@ const goToViewTransaction = (id: string) => {
     name: "view-transactions",
     params: { id: id },
   });
+};
+
+// Search keyword
+const keyword = ref("");
+
+// Initializing filtered transactions
+const filteredTransactions = computed(() => {
+  let filteredData = transactions.value;
+
+  if (keyword.value) {
+    filteredData = searchTransactions(keyword.value);
+  }
+
+  return filteredData;
+});
+
+function searchTransactions(keyword: string | number): Transaction[] {
+  const searchKeyword = String(keyword).toLowerCase();
+
+  return filteredTransactions.value.filter((transaction) => {
+    const transactionPropertiesToSearch = [
+      transaction.reference,
+      transaction.amount,
+      transaction.sender_address,
+      transaction.sender_name,
+      transaction.sender_phone_number,
+      transaction.sender_email,
+      transaction.beneficiary_name,
+      transaction.bank_account_number,
+      transaction.network,
+      transaction.status,
+      transaction.phone_number,
+    ];
+
+    return transactionPropertiesToSearch.some((property) => {
+      const propertyValue = String(property).toLowerCase();
+      return propertyValue.includes(searchKeyword);
+    });
+  });
+}
+
+// Download report
+const downloadTransactionsReport = () => {
+  exportTransactionsAsExcel(filteredTransactions.value);
 };
 
 // Get transactions when component is mounted
@@ -252,6 +252,7 @@ onMounted(() => {
   width: calc(100% - 15.625rem);
   height: 100%;
 }
+
 /* Inner Content CSS */
 
 .layout_dashboard_content .dashboard_inner_content_transactions {
@@ -264,9 +265,11 @@ onMounted(() => {
   display: flex;
   justify-content: center;
 }
+
 .total_statistics {
   width: 90%;
 }
+
 /* End of Stats CSS*/
 
 /* Table CSS */
@@ -283,6 +286,53 @@ onMounted(() => {
 .transaction_history_table_layout .transaction_history_table_header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.transaction_history_table_layout
+  .transaction_history_table_header
+  .search_box_and_download {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.transaction_history_table_layout
+  .transaction_history_table_header
+  .search_box_and_download
+  button {
+  border-style: none;
+  height: 35px;
+  font-size: 14px;
+  padding: 5px 15px;
+  color: white;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+.transaction_history_table_layout
+  .transaction_history_table_header
+  .search_box {
+  font-size: 16px;
+  line-height: 1.42857143;
+  color: #333;
+  font-weight: normal;
+}
+
+.transaction_history_table_layout
+  .transaction_history_table_header
+  .search_box
+  input {
+  height: 35px;
+  font-size: 16px;
+  padding-left: 15px;
+}
+
+.transaction_history_table_layout
+  .transaction_history_table_header
+  .search_box
+  input:focus {
+  outline: none;
 }
 
 .transaction_history_table_layout .transaction_history_table_header h2 {
@@ -392,7 +442,7 @@ onMounted(() => {
   border: none;
   padding: 7px 15px;
   cursor: pointer;
-  background: #151e3f;
+  background: var(--primary-color);
   color: #fff;
 }
 
@@ -416,6 +466,7 @@ onMounted(() => {
   color: #fdc91c;
   background: #fdc91c1a;
 }
+
 /* End of Table CSS */
 
 /* Media Queries */
