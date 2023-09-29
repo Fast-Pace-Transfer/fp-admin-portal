@@ -21,11 +21,6 @@
                   <label for="search">Search: </label>
                   <input type="text" id="search" v-model="keyword" />
                 </div>
-                <!-- <div class="download_button">
-                  <button @click="downloadTransactionsReport()">
-                    Download
-                  </button>
-                </div> -->
               </div>
             </div>
             <div class="table_container">
@@ -130,7 +125,6 @@ import { computed, ref, onMounted } from "vue";
 import type { Transaction } from "@/models/transactions/transaction.interface";
 import PageLoader from "@/components/common/PageLoader.vue";
 import SidebarView from "@/components/common/SidebarView.vue";
-import { exportTransactionsAsExcel } from "@/utils/excelExport";
 import NavbarView from "@/components/common/NavbarView.vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
@@ -206,11 +200,6 @@ function searchTransactions(keyword: string | number): Transaction[] {
     });
   });
 }
-
-// Download report
-const downloadTransactionsReport = () => {
-  exportTransactionsAsExcel(filteredTransactions.value);
-};
 
 // Get transactions when component is mounted
 onMounted(() => {
