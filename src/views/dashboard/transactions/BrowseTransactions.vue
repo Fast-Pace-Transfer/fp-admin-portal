@@ -21,11 +21,11 @@
                   <label for="search">Search: </label>
                   <input type="text" id="search" v-model="keyword" />
                 </div>
-                <div class="download_button">
+                <!-- <div class="download_button">
                   <button @click="downloadTransactionsReport()">
                     Download
                   </button>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="table_container">
