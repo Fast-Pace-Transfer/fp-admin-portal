@@ -193,9 +193,9 @@ const router = createRouter({
       children: [
         {
           path: "",
-          name: "browse-reports",
+          name: "generate-reports",
           component: () =>
-            import("@/views/dashboard/business/reports/BrowseReports.vue"),
+            import("@/views/dashboard/business/reports/GenerateReports.vue"),
           meta: {
             title: "Browse Reports",
             requiresAuth: true,
