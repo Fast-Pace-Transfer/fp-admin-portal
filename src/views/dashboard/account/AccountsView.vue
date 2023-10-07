@@ -44,7 +44,8 @@
         <!-- End of list of accounts -->
         <!-- Funding History Table -->
         <FundingHistoryTable v-show="user.can_prefund" />
-        <TransferHistoryTable />
+        <TransferHistoryTable v-show="user.can_prefund" />
+        <SettlementHistoryTable v-show="!user.can_prefund" />
         <!-- End of Funding History Table -->
       </div>
     </section>
@@ -63,6 +64,7 @@ import NavbarView from "@/components/common/NavbarView.vue";
 import WalletView from "@/components/common/WalletView.vue";
 import FundingHistoryTable from "@/components/FundingHistoryTable.vue";
 import TransferHistoryTable from "@/components/TransferHistoryTable.vue";
+import SettlementHistoryTable from "@/components/SettlementHistoryTable.vue";
 import { handleAPIError } from "@/utils/handleAPIError";
 
 // Initialize store

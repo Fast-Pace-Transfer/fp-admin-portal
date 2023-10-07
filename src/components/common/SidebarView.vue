@@ -106,11 +106,10 @@
           class="sidebar_category"
           v-if="['admin', 'finance'].includes(role)"
         >
-          <!-- <p class="sidebar_category_title">Support</p> -->
           <ul class="sidebar_category_list">
-            <!-- <router-link
+            <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-reports' }"
+              :to="{ name: 'generate-reports' }"
               class="link"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
@@ -124,7 +123,7 @@
                   Reports
                 </p>
               </li>
-            </router-link> -->
+            </router-link>
           </ul>
         </nav>
         <nav
