@@ -30,7 +30,7 @@
           <div class="operational_accounts">
             <WalletView
               :account="operationalAccount"
-              :show-request="user.can_prefund ? true : false"
+              :show-request="user.can_prefund == 1 ? true : false"
               :title="`Operational Account - ${operationalAccount[0].currency}`"
               :type="'operation'"
               :width="`500px`"
@@ -43,9 +43,9 @@
         </div>
         <!-- End of list of accounts -->
         <!-- Funding History Table -->
-        <FundingHistoryTable v-show="user.can_prefund" />
-        <TransferHistoryTable v-show="user.can_prefund" />
-        <SettlementHistoryTable v-show="!user.can_prefund" />
+        <FundingHistoryTable v-show="user.can_prefund == 1" />
+        <TransferHistoryTable v-show="user.can_prefund == 1" />
+        <SettlementHistoryTable v-show="user.can_prefund == 0" />
         <!-- End of Funding History Table -->
       </div>
     </section>
