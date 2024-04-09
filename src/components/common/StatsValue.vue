@@ -5,7 +5,14 @@
     </div> -->
     <h4 class="title">{{ statsObject.title }}</h4>
     <p class="amount_of_transactions">
-      {{ statsObject.amount_of_transactions }}
+      {{
+        typeof statsObject.amount_of_transactions === "string"
+          ? statsObject.amount_of_transactions.replace(
+              /\B(?=(\d{3})+(?!\d))/g,
+              ","
+            )
+          : statsObject.amount_of_transactions
+      }}
     </p>
   </div>
 </template>
