@@ -136,6 +136,7 @@ import StatsCard from "@/components/common/StatsCard.vue";
 import { handleAPIError } from "@/utils/handleAPIError";
 import { capitalizeFirstLetterInEachWord } from "@/utils/capitalizeFirstLetter";
 import { removeSpecialCharacters } from "@/utils/removeSpecialCharacters";
+import type { TransactionStatistics } from "@/models/transactions/transactionStatistics.interface";
 
 // Initialize store
 const store = useStore();
@@ -161,6 +162,8 @@ const prefundingAccounts = ref<AccountInterface[]>([]);
 
 // Initial values for transaction history
 const transactionHistory = ref<Transaction[]>([]);
+
+const transactionStatistics = ref<TransactionStatistics>();
 
 // Function to fetch prefunding accounts
 function getPrefundingAccounts() {
@@ -254,7 +257,7 @@ onMounted(async () => {
       // Set transaction history
       transactionHistory.value = results[1].data.data.transactions;
       operationalAccount.value = results[2].data.data;
-      console.log(results[3].data);
+      transactionStatistics.value = results[2].data.data;
     })
     .catch(function (error) {
       // Stop loading status
@@ -268,13 +271,17 @@ onMounted(async () => {
 const statArray = [
   {
     title: "Daily Transactions",
-    amount_of_transactions: "----",
+    amount_of_transactions: transactionStatistics.value
+      ? transactionStatistics.value.dailycount
+      : "----",
     rise: true,
     drop: false,
   },
   {
     title: "Weekly Transactions",
-    amount_of_transactions: "----",
+    amount_of_transactions: transactionStatistics.value
+      ? transactionStatistics.value.weeklycount
+      : "----",
     rise: false,
     drop: true,
   },

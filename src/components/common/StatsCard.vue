@@ -14,7 +14,7 @@ import StatsValue from "@/components/common/StatsValue.vue";
 interface Props {
   statArray: Array<{
     title: string;
-    amount_of_transactions: string;
+    amount_of_transactions: number | string;
     rise: boolean;
     drop: boolean;
   }>;

@@ -1,32 +1,14 @@
 <template>
   <div class="dashboard_inner_right_column_stats_content">
+    <div class="refresh-icon">
+      <i class="fa-solid fa-rotate-right"></i>
+    </div>
     <h4 class="title">{{ statsObject.title }}</h4>
     <p class="amount_of_transactions">
       {{
         statsObject.amount_of_transactions.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       }}
     </p>
-    <div class="bottom_stats">
-      <div
-        class="bottom_stats_percentage"
-        :class="[{ rise: statsObject.rise }, { drop: statsObject.drop }]"
-      >
-        1.3%
-      </div>
-      <div
-        class="bottom_stats_icon"
-        :class="[{ rise: statsObject.rise }, { drop: statsObject.drop }]"
-      >
-        <i v-if="statsObject.rise" class="fa-solid fa-arrow-up"></i>
-        <i v-else class="fa-solid fa-arrow-down"></i>
-      </div>
-      <div class="bottom_stats_text" v-if="statsObject.rise">
-        rise in last hour
-      </div>
-      <div class="bottom_stats_text" v-if="statsObject.drop">
-        drop in last hour
-      </div>
-    </div>
   </div>
 </template>
 
@@ -44,6 +26,7 @@ const props = defineProps({
   width: 50%;
   padding-left: 1.25rem;
   border-right: 1px solid #a5a5a58e;
+  position: relative;
 }
 
 .dashboard_inner_right_column_stats_content:last-of-type {
@@ -99,5 +82,11 @@ const props = defineProps({
   .bottom_stats
   .bottom_stats_icon.rise {
   color: #32d513;
+}
+
+/* Refresh Icon */
+.dashboard_inner_right_column_stats_content .refresh-icon {
+  border: 1px solid red;
+  position: absolute;
 }
 </style>
