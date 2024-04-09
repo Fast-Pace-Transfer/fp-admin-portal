@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard_inner_right_column_stats_content">
-    <div class="refresh-icon">
+    <!-- <div class="refresh-icon">
       <i class="fa-solid fa-rotate-right"></i>
-    </div>
+    </div> -->
     <h4 class="title">{{ statsObject.title }}</h4>
     <p class="amount_of_transactions">
       {{
@@ -86,7 +86,10 @@ const props = defineProps({
 
 /* Refresh Icon */
 .dashboard_inner_right_column_stats_content .refresh-icon {
-  border: 1px solid red;
   position: absolute;
+  right: 0.625rem;
+  font-size: 1.675rem;
+  color: #4953b2;
+  cursor: pointer;
 }
 </style>

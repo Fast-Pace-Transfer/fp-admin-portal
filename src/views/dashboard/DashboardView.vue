@@ -221,6 +221,24 @@ if (prefundingAccounts.value.length) {
   });
 }
 
+// Function to fetch updated statistics
+async function refreshStatistics() {
+  try {
+    const response = await axios.get("/transactions/stats", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    });
+
+    // Update the statistics data with the new data from the server
+    transactionStatistics.value = response.data.data;
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.error("Error refreshing statistics:", error);
+    // You can also show an error message to the user if needed
+  }
+}
+
 // When component is mounted
 onMounted(async () => {
   // Set loading status
@@ -257,7 +275,7 @@ onMounted(async () => {
       // Set transaction history
       transactionHistory.value = results[1].data.data.transactions;
       operationalAccount.value = results[2].data.data;
-      transactionStatistics.value = results[2].data.data;
+      transactionStatistics.value = results[3].data.data;
     })
     .catch(function (error) {
       // Stop loading status
