@@ -287,8 +287,7 @@ onMounted(async () => {
     });
 });
 
-console.log(transactionStatistics.value);
-const statArray = [
+const statArray = computed(() => [
   {
     title: "Daily Transactions",
     amount_of_transactions: transactionStatistics.value
@@ -305,7 +304,7 @@ const statArray = [
     rise: false,
     drop: true,
   },
-];
+]);
 </script>
 
 <style>
