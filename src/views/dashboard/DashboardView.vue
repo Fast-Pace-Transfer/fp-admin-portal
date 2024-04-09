@@ -171,6 +171,14 @@ function getPrefundingAccounts() {
   });
 }
 
+function getTransactionStatistics() {
+  return axios.get("transactions/stats", {
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+  });
+}
+
 // Get prefunding accounts
 function getOperationalAccounts() {
   return axios.get("/accounts/operation", {
@@ -220,6 +228,7 @@ onMounted(async () => {
     getPrefundingAccounts(),
     getTransactions(),
     getOperationalAccounts(),
+    getTransactionStatistics(),
   ])
     .then(function (results) {
       // Stop loading status
@@ -245,6 +254,7 @@ onMounted(async () => {
       // Set transaction history
       transactionHistory.value = results[1].data.data.transactions;
       operationalAccount.value = results[2].data.data;
+      console.log(results[3].data);
     })
     .catch(function (error) {
       // Stop loading status
