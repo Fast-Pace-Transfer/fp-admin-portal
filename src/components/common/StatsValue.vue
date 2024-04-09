@@ -11,13 +11,14 @@
               /\B(?=(\d{3})+(?!\d))/g,
               ","
             )
-          : statsObject.amount_of_transactions
+          : formatAmount(statsObject.amount_of_transactions)
       }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { formatAmount } from "@/utils/formatAmount";
 const props = defineProps({
   statsObject: {
     type: Object,
