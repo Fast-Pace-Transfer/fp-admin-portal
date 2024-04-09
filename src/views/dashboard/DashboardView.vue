@@ -276,6 +276,9 @@ onMounted(async () => {
       transactionHistory.value = results[1].data.data.transactions;
       operationalAccount.value = results[2].data.data;
       transactionStatistics.value = results[3].data.data;
+
+      console.log(transactionStatistics.value);
+      console.log(results[3].data.data);
     })
     .catch(function (error) {
       // Stop loading status
