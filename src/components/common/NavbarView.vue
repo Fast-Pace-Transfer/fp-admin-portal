@@ -18,7 +18,7 @@
         <div class="separation"></div> -->
         <div class="name_section">
           <div class="name-circle">
-            <p>{{ partner_name.charAt(0) }}</p>
+            <!-- <p>{{ partner_name.charAt(0) }}</p> -->
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@ const store = useStore();
 
 // Get name of partner
 const partner_name = computed(() => {
-  return store.getters.getUser.partner.name;
+  // return store.getters.getUser.partner.name;
 });
 </script>
 

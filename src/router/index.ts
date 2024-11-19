@@ -19,7 +19,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/auth/login",
+      redirect: "/dashboard",
     },
     {
       path: "/auth/login",
@@ -162,6 +162,31 @@ const router = createRouter({
         },
       ],
     },
+
+    {
+      path: "/customers",
+      name: "customers",
+      component: () => import("@/views/dashboard/customers/Customers.vue"),
+    },
+
+    {
+      path: "/recipients",
+      name: "recipients",
+      component: () => import("@/views/dashboard/recipients/Recipients.vue"),
+    },
+
+    {
+      path: "/fund-transfer-credit",
+      name: "fund-transfer-credit",
+      component: () => import("@/views/dashboard/fund_transfer/fundTransferCredit.vue"),
+    },
+
+    {
+      path: "/fund-transfer-debit",
+      name: "fund-transfer-debit",
+      component: () => import("@/views/dashboard/fund_transfer/fundTransferDebit.vue"),
+    },
+
     // API Routes
     {
       path: "/api-docs",
@@ -284,11 +309,13 @@ router.beforeEach((toRoute, fromRoute, next) => {
   if (toRoute.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!token.value) {
-      next({ name: "login" });
-    } else {
-      next();
-    }
+    // if (!token.value) {
+    //   next({ name: "dashboard" });
+    // } else {
+    //   next();
+    // }
+    next();
+
   } else {
     next();
   }
@@ -298,16 +325,18 @@ router.beforeEach((toRoute, fromRoute, next) => {
 router.beforeEach((toRoute, fromRoute, next) => {
   window.document.title = `${toRoute.meta.title} | Fast Pace Transfer`;
   if (toRoute.matched.some((record) => record.meta.checkRole)) {
-    if (
-      toRoute.meta.checkRole instanceof Array &&
-      toRoute.meta.checkRole !== null
-    ) {
-      if (!toRoute.meta.checkRole.includes(role.value)) {
-        next({ path: "/:catchAll(.*)" });
-      } else {
-        next();
-      }
-    }
+    // if (
+    //   toRoute.meta.checkRole instanceof Array &&
+    //   toRoute.meta.checkRole !== null
+    // ) {
+    //   if (!toRoute.meta.checkRole.includes(role.value)) {
+    //     next({ path: "/:catchAll(.*)" });
+    //   } else {
+    //     next();
+    //   }
+    // }
+    next();
+
   } else {
     next();
   }

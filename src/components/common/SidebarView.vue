@@ -16,7 +16,7 @@
               v-slot="{ isActive }"
               :to="{ name: 'dashboard' }"
               class="link"
-              v-if="['admin', 'finance'].includes(role)"
+              v-if="['admin', 'finance'].includes('finance')"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -34,11 +34,12 @@
                 <!-- End of Link title -->
               </li>
             </router-link>
+
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-accounts' }"
+              :to="{ name: 'customers' }"
               class="link"
-              v-if="['admin', 'finance'].includes(role)"
+              v-if="['admin', 'finance'].includes('admin')"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -51,16 +52,40 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Accounts
+                  Customers
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
+
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'browse-transactions' }"
+              :to="{ name: 'recipients' }"
               class="link"
-              v-if="['admin', 'finance', 'dev', 'user'].includes(role)"
+              v-if="['admin', 'finance'].includes('admin')"
+            >
+              <li class="sidebar_category_item" :class="{ active: isActive }">
+                <!-- Icon -->
+                <div class="sidebar_category_item_icon">
+                  <IconAccount :isActive="isActive" />
+                </div>
+                <!-- End of Icon -->
+                <!-- Link title -->
+                <p
+                  :class="{ active: isActive }"
+                  class="sidebar_category_item_title"
+                >
+                Recipients
+                </p>
+                <!-- End of Link title -->
+              </li>
+            </router-link>
+
+            <router-link
+              v-slot="{ isActive }"
+              :to="{ name: 'fund-transfer-credit' }"
+              class="link"
+              v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
@@ -73,21 +98,22 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Transactions
+                  Fund Transfer Credit
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
+
             <router-link
               v-slot="{ isActive }"
-              :to="{ name: 'upload-documents' }"
+              :to="{ name: 'fund-transfer-debit' }"
               class="link"
-              v-if="can_upload_batch"
+              v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
             >
               <li class="sidebar_category_item" :class="{ active: isActive }">
                 <!-- Icon -->
                 <div class="sidebar_category_item_icon">
-                  <IconFiles :isActive="isActive" />
+                  <IconTransactions :isActive="isActive" />
                 </div>
                 <!-- End of Icon -->
                 <!-- Link title -->
@@ -95,37 +121,16 @@
                   :class="{ active: isActive }"
                   class="sidebar_category_item_title"
                 >
-                  Batch Upload
+                  Fund Transfer Debit
                 </p>
                 <!-- End of Link title -->
               </li>
             </router-link>
+
           </ul>
         </nav>
-        <nav
-          class="sidebar_category"
-          v-if="['admin', 'finance'].includes(role)"
-        >
-          <ul class="sidebar_category_list">
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'generate-reports' }"
-              class="link"
-            >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <div class="sidebar_category_item_icon">
-                  <IconReports :isActive="isActive" />
-                </div>
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Reports
-                </p>
-              </li>
-            </router-link>
-          </ul>
-        </nav>
+
+        
         <nav
           class="sidebar_category"
           v-if="['admin', 'finance'].includes(role)"
@@ -193,7 +198,7 @@ const token = computed(() => {
 
 // Batch Capability
 const can_upload_batch = computed(() => {
-  return store.getters.getUser.partner.can_upload_batch;
+  //return store.getters.getUser.partner.can_upload_batch;
 });
 
 // Logout user
