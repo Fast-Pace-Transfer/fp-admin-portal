@@ -10,127 +10,145 @@
       <!-- Sidebar Categories -->
       <div class="sidebar_categories">
         <nav class="sidebar_category">
-          <!-- <p class="sidebar_category_title">Payments</p> -->
-          <ul class="sidebar_category_list">
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'dashboard' }"
-              class="link"
-              v-if="['admin', 'finance'].includes('finance')"
+    <ul class="sidebar_category_list">
+      <li
+        class="sidebar_category_item"
+        @click="toggleFPMobile"
+        :class="{ active: isFPMobileActive }"
+      >
+        <!-- Icon -->
+        <div class="sidebar_category_item_icon">
+          <IconAccount :isActive="isFPMobileActive" />
+        </div>
+        <!-- End of Icon -->
+        <!-- Link title -->
+        <p
+          :class="{ active: isFPMobileActive }"
+          class="sidebar_category_item_title"
+        >
+          FP MOBILE
+        </p>
+        <!-- End of Link title -->
+      </li>
+      <ul v-if="isFPMobileActive">
+        <router-link
+          v-slot="{ isActive }"
+          :to="{ name: 'dashboard' }"
+          class="link"
+          v-if="['admin', 'finance'].includes('finance')"
+        >
+          <li class="sidebar_category_item" :class="{ active: isActive }">
+            <!-- Icon -->
+            <div class="sidebar_category_item_icon">
+              <IconDashboard :isActive="isActive" />
+            </div>
+            <!-- End of Icon -->
+            <!-- Link title -->
+            <p
+              :class="{ active: isActive }"
+              class="sidebar_category_item_title"
             >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconDashboard :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Dashboard
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
+              Dashboard
+            </p>
+            <!-- End of Link title -->
+          </li>
+        </router-link>
 
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'customers' }"
-              class="link"
-              v-if="['admin', 'finance'].includes('admin')"
+        <router-link
+          v-slot="{ isActive }"
+          :to="{ name: 'customers' }"
+          class="link"
+          v-if="['admin', 'finance'].includes('admin')"
+        >
+          <li class="sidebar_category_item" :class="{ active: isActive }">
+            <!-- Icon -->
+            <div class="sidebar_category_item_icon">
+              <IconAccount :isActive="isActive" />
+            </div>
+            <!-- End of Icon -->
+            <!-- Link title -->
+            <p
+              :class="{ active: isActive }"
+              class="sidebar_category_item_title"
             >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconAccount :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Customers
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
+              Customers
+            </p>
+            <!-- End of Link title -->
+          </li>
+        </router-link>
 
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'recipients' }"
-              class="link"
-              v-if="['admin', 'finance'].includes('admin')"
+        <router-link
+          v-slot="{ isActive }"
+          :to="{ name: 'recipients' }"
+          class="link"
+          v-if="['admin', 'finance'].includes('admin')"
+        >
+          <li class="sidebar_category_item" :class="{ active: isActive }">
+            <!-- Icon -->
+            <div class="sidebar_category_item_icon">
+              <IconAccount :isActive="isActive" />
+            </div>
+            <!-- End of Icon -->
+            <!-- Link title -->
+            <p
+              :class="{ active: isActive }"
+              class="sidebar_category_item_title"
             >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconAccount :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                Recipients
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
+              Recipients
+            </p>
+            <!-- End of Link title -->
+          </li>
+        </router-link>
 
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'fund-transfer-credit' }"
-              class="link"
-              v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
+        <router-link
+          v-slot="{ isActive }"
+          :to="{ name: 'fund-transfer-credit' }"
+          class="link"
+          v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
+        >
+          <li class="sidebar_category_item" :class="{ active: isActive }">
+            <!-- Icon -->
+            <div class="sidebar_category_item_icon">
+              <IconTransactions :isActive="isActive" />
+            </div>
+            <!-- End of Icon -->
+            <!-- Link title -->
+            <p
+              :class="{ active: isActive }"
+              class="sidebar_category_item_title"
             >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconTransactions :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Fund Transfer Credit
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
+              Fund Transfer Credit
+            </p>
+            <!-- End of Link title -->
+          </li>
+        </router-link>
 
-            <router-link
-              v-slot="{ isActive }"
-              :to="{ name: 'fund-transfer-debit' }"
-              class="link"
-              v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
+        <router-link
+          v-slot="{ isActive }"
+          :to="{ name: 'fund-transfer-debit' }"
+          class="link"
+          v-if="['admin', 'finance', 'dev', 'user'].includes('admin')"
+        >
+          <li class="sidebar_category_item" :class="{ active: isActive }">
+            <!-- Icon -->
+            <div class="sidebar_category_item_icon">
+              <IconTransactions :isActive="isActive" />
+            </div>
+            <!-- End of Icon -->
+            <!-- Link title -->
+            <p
+              :class="{ active: isActive }"
+              class="sidebar_category_item_title"
             >
-              <li class="sidebar_category_item" :class="{ active: isActive }">
-                <!-- Icon -->
-                <div class="sidebar_category_item_icon">
-                  <IconTransactions :isActive="isActive" />
-                </div>
-                <!-- End of Icon -->
-                <!-- Link title -->
-                <p
-                  :class="{ active: isActive }"
-                  class="sidebar_category_item_title"
-                >
-                  Fund Transfer Debit
-                </p>
-                <!-- End of Link title -->
-              </li>
-            </router-link>
+              Fund Transfer Debit
+            </p>
+            <!-- End of Link title -->
+          </li>
+        </router-link>
+      </ul>
+    </ul>
+  </nav>
 
-          </ul>
-        </nav>
-
-        
         <nav
           class="sidebar_category"
           v-if="['admin', 'finance'].includes(role)"
@@ -184,6 +202,7 @@ import axios from "axios";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { handleAPIError } from "@/utils/handleAPIError";
+import { ref } from "vue";
 
 // Initialize the store
 const store = useStore();
@@ -203,31 +222,62 @@ const can_upload_batch = computed(() => {
 
 // Logout user
 const logoutUser = async () => {
-  await store.dispatch("isLoading");
-  await axios
-    .get("/logout", {
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    .then(() => {
-      store.dispatch("isLoading");
-      localStorage.removeItem("vuex");
-      localStorage.removeItem("selectedOperationalAccountBalance");
-      store.dispatch("clearOperationalAccount");
-      router.push({ name: "login" });
-    })
-    .catch((error) => {
-      store.dispatch("isLoading");
-      handleAPIError(error);
-    });
+  router.push({ name: "login" });
+  // await store.dispatch("isLoading");
+  // await axios
+  //   .get("/logout", {
+  //     headers: {
+  //       Authorization: `Bearer ${token.value}`,
+  //     },
+  //   })
+  //   .then(() => {
+  //     store.dispatch("isLoading");
+  //     localStorage.removeItem("vuex");
+  //     localStorage.removeItem("selectedOperationalAccountBalance");
+  //     store.dispatch("clearOperationalAccount");
+  //     router.push({ name: "login" });
+  //   })
+  //   .catch((error) => {
+  //     store.dispatch("isLoading");
+  //     handleAPIError(error);
+  //   });
 };
 
 // Get role
 const role = computed(() => {
   return store.getters.getRole;
 });
+
+const isFPMobileActive = ref(false);
+
+const toggleFPMobile = () => {
+  isFPMobileActive.value = !isFPMobileActive.value;
+};
 </script>
+
+<style scoped>
+.sidebar_category_list {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar_category_item {
+  cursor: pointer;
+}
+
+.sidebar_category_item_icon {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.sidebar_category_item_title {
+  display: inline-block;
+}
+
+.active {
+  font-weight: bold;
+}
+</style>
 
 <style>
 /* Sidebar css */

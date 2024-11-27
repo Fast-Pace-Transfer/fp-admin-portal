@@ -16,12 +16,13 @@
       <tr>
         <th>Transfer Reference</th>
         <th>Type</th>
+        <th>Recipient name</th>
         <th>Sending Amount</th>
         <th>Sending Currency</th>
         <th>Receiving Amount</th>
         <th>Receiving Currency</th>
         <th>Status</th>
-        <th>Processed At</th>
+        <th>Created At</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -29,12 +30,13 @@
       <tr v-for="transfer in fundTransferCredits" :key="transfer.id">
         <td data-label="Transfer Reference">{{ transfer.fp_transfer_reference }}</td>
         <td data-label="Type">{{ transfer.type }}</td>
+        <td data-label="Name"> {{ transfer.individual_recipient?.name }}</td>
         <td data-label="Sending Amount">{{ transfer.sending_amount }}</td>
         <td data-label="Sending Currency">{{ transfer.sending_currency }}</td>
         <td data-label="Receiving Amount">{{ transfer.receiving_amount }}</td>
         <td data-label="Receiving Currency">{{ transfer.receiving_currency }}</td>
         <td data-label="Status">{{ transfer.status }}</td>
-        <td data-label="Processed At">{{ transfer.processed_at }}</td>
+        <td data-label="Processed At">{{ transfer.created_at }}</td>
         <td data-label="Actions">
           <button>View</button>
           <button >Edit</button>
@@ -272,7 +274,7 @@ import { FundTransferCredit } from "@/models/fund_transfer/FundTransferCredit.in
   function getFundTransferCredits (){
         return axios.get("/api/fund-transfer-credits/all", {
         headers: {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDg0ZmUxNS1jODU5LTRiZWQtOTMwNS1kN2Y4MmM4MDBkZGYiLCJqdGkiOiJjMzcxNWIyMTAwNDg1OGY1YzMyOGFmOGQ2YTY5ZmY3MmJhMzA4YzE2ZWUwOTRkYWVhOGNjMmE3MTVjYzY4Y2ZlZDBkZjc5ZTA4NDI0NjQ3MiIsImlhdCI6MTczMTk0NjY3OC4xNTMzMTQsIm5iZiI6MTczMTk0NjY3OC4xNTMzMTYsImV4cCI6MTc2MzQ4MjY3OC4xNDY2NjMsInN1YiI6IjlkODRmOWYzLTNmOWYtNDE4OS1hODU0LTc0ODIyYmIzMjcxYSIsInNjb3BlcyI6W119.Hvl9JhKjZLyZhi9xefOBeJClYmOJyEwmjQAvwVDiykjxy6pkcTcGjhHmLZXw9KuyXdmyI3phv3SzYj0zq_XznhMI4c2i7n4d99I_8YvAv4n89g4J6c4e1gh4LPDzT3MTq8dkzhUei7b9eeo470YHVF5cXDsKrfKP7vPAvrzXmxEOPSH0j5FW9KBiBY73YQTVG_MValWT79i4K2dUQlFNLQh2k88duPP1WmrBugn6P7524u5dUpnFig_AVHPOL2NsCqTZjmzqnnaPquCm2yCDmRyxVq56rcXmMEp_gqRtNy_zUD_vNeSNFwFGciVgmBDB2TLNGkRQfMP0n3q2uZxYo18353aFA21D4vhN4CXhtzigYacaGZsgfnrjbF1NGqMQPfMcsJQlil5PghoKbp1aLbR-i-lcMblamK5AjRsQzIP6rfdkn40NKWYVT1y3cZC5ssVkM-r4W0pMvWpRpETNSK0pm8MHbAHqqw0y44rBy7kI7WuzIpR9jsKzjYSiLVr6VsJS09JuWx3cpwGoYbwac-8vGGG5GoTUacD-KsA47gxCfJ8VFfzwnQVB3XgBps_pOKZvGQ3OOJSAxW8oBEukPpQ1UZZok7_IRjGnI-5-PI9jhO1zJVYZTUQ25WC3pZdjU2O4KBPyQvZfPvdsu3JQluNGfWRtHGneYvkg2MbYZZo`,
+          Authorization: `Bearer ${token.value}`,
         },
     });
   };

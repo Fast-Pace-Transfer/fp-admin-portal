@@ -5,7 +5,6 @@ import LoginView from "../views/auth/LoginView.vue";
 import DashboardView from "@/views/dashboard/DashboardView.vue";
 
 // Navigation Guards
-
 const token = computed(() => {
   return store.getters.getToken;
 });
@@ -19,7 +18,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/dashboard",
+      redirect: "/auth/login",
     },
     {
       path: "/auth/login",

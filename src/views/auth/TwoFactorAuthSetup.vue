@@ -86,7 +86,7 @@ onMounted(() => {
   store.dispatch("isLoading");
   axios
     .post(
-      "/2fa/setup",
+      "/api/auth/two-factor/enable",
       {},
       {
         headers: {

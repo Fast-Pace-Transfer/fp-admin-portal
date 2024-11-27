@@ -100,33 +100,28 @@ const submitLoginForm = async () => {
 
   // Send the form data to the server
   await axios
-    .post("/login", loginData)
+    .post("/api/auth/signin", loginData)
     .then((response) => {
+
+      console.log(response.data.data);
+
       // If the response is successful
       if (response.status === 200) {
         store.dispatch("isLoading");
 
         // Set token
-        store.dispatch("setToken", response.data.data.token.access_token);
+        store.dispatch("setToken", response.data.data.token);
 
         // Set user data
         const userData = {
           id: response.data.data.id,
           email: response.data.data.email,
-          role: response.data.data.role,
-          two_fa_active: response.data.data.two_fa_active,
-          partner: {
-            id: response.data.data.partner.id,
-            name: response.data.data.partner.name,
-            can_upload_batch: response.data.data.partner.can_upload_batch,
-            callback_url: response.data.data.partner.callback_url,
-            can_prefund: response.data.data.partner.can_prefund,
-          },
         };
+        
         store.dispatch("setUserData", userData);
 
         // Set role
-        store.dispatch("setRole", response.data.data.role);
+        //store.dispatch("setRole", response.data.data.role);
         // Redirect to change password view
         if (response.data.data.password_changed !== null) {
           if (response.data.data.two_fa_active === true) {
@@ -134,7 +129,8 @@ const submitLoginForm = async () => {
             router.push({ name: "2fa-verify" });
           } else {
             // Redirect to 2FA setup view
-            router.push({ name: "2fa-setup" });
+            //router.push({ name: "2fa-setup" });
+            router.push({ name: "dashboard" });
           }
         } else {
           router.push({ name: "change-password" });
@@ -147,6 +143,7 @@ const submitLoginForm = async () => {
     });
 };
 </script>
+
 <style>
 .layout {
   height: 100vh;
