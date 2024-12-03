@@ -14,6 +14,8 @@
             <table class="fund-transfer-debits-table">
               <thead>
                 <tr>
+                  <!-- <th>Account Number</th> -->
+                  <th>Acquirer</th>
                   <th>Acquirer Reference</th>
                   <th>User ID</th>
                   <th>Fund Transfer Credit ID</th>
@@ -22,13 +24,15 @@
                   <th>Currency</th>
                   <th>Acquirer</th>
                   <th>Status</th>
-                  <th>Processed At</th>
+                  <th>Created At</th>
 
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="debitTransfer in fundTransferDebits" :key="debitTransfer.id">
+                  <!-- <td data-label="Account Number">{{ debitTransfer.account_number }}</td> -->
+                  <td data-label="Acquirer">{{ debitTransfer.acquirer }}</td>
                   <td data-label="Acquirer Reference">{{ debitTransfer.fp_acquirer_reference }}</td>
                   <td data-label="User ID">{{ debitTransfer.user_id }}</td>
                   <td data-label="Fund Transfer Credit ID">{{ debitTransfer.fund_transfer_credit_id }}</td>
@@ -37,7 +41,7 @@
                   <td data-label="Currency">{{ debitTransfer.currency }}</td>
                   <td data-label="Acquirer">{{ debitTransfer.acquirer }}</td>
                   <td data-label="Status">{{ debitTransfer.status }}</td>
-                  <td data-label="Processed At">{{ debitTransfer.processed_at }}</td>
+                  <td data-label="Processed At">{{ debitTransfer.created_at }}</td>
                   <td data-label="Actions">
                     <button >View</button>
                     <button >Edit</button>

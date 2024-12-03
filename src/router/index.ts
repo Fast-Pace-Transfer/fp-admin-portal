@@ -163,27 +163,48 @@ const router = createRouter({
     },
 
     {
+      path: "/settings",
+      name: "settings",
+      component: () => import("@/views/dashboard/configurate/settings.vue"),
+      meta: {
+        title: "Settings"
+      }
+    },
+
+    {
       path: "/customers",
       name: "customers",
       component: () => import("@/views/dashboard/customers/Customers.vue"),
+      meta: {
+        title: "Customers"
+      }
     },
 
     {
       path: "/recipients",
       name: "recipients",
       component: () => import("@/views/dashboard/recipients/Recipients.vue"),
+      meta: {
+        title: "Recipients"
+      }
     },
 
     {
       path: "/fund-transfer-credit",
       name: "fund-transfer-credit",
       component: () => import("@/views/dashboard/fund_transfer/fundTransferCredit.vue"),
+      meta: {
+        title: "Fund Transfer Credit"
+      }
     },
 
     {
       path: "/fund-transfer-debit",
       name: "fund-transfer-debit",
       component: () => import("@/views/dashboard/fund_transfer/fundTransferDebit.vue"),
+      meta: {
+        title: "Fund Transfer Debit"
+      }
     },
 
     // API Routes
